@@ -1,17 +1,35 @@
-import java.util.List;
+
 import java.util.Set;
 
 public class Shop {
+
     private String name;
     private Set<FoodCategories> foodCategories;
 
+    private int numberOfRatings;
     private Rating rating;
     private Price price;
 
+    //Missing products data
+    private ShopInventory catalog;
+
+    //product sales
+    private int revenue;
 
     private static final int PRICE_LOW_TOP_LIMIT = 5;
     private static final int PRICE_MEDIUM_TOP_LIMIT = 10;
     private static final int PRICE_HIGH_TOP_LIMIT = 15;
+
+
+
+
+
+
+
+
+
+
+
 
     //CATEGORIES SET AND GET
     public Set<FoodCategories> getFoodCategories() {
@@ -23,7 +41,6 @@ public class Shop {
     }
 
     // PRICES SET AND GET
-
     /**
      * @param averagePrice
      *

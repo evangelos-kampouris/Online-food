@@ -1,0 +1,22 @@
+ALL POSSIBLE REQUESTS:
+
+Client to Master:
+	* Search(filters)
+	* Buy
+
+Manager to Master:
+	* Addition of store (json format)
+	* Addition of new product
+	* Change of product stock
+	* Stats
+
+Master to Workers:
+	* Filters -> θα γίνει map ( <Filter, List(shops)> )
+	* Updates stocks, revenue etc. after buy
+	
+Worker to Reducer:
+	* map result ( <Filter, List(shops)> )
+
+Reducer to Master:
+	
+	* Results (list of shops)
