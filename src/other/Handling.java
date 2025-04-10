@@ -1,3 +1,5 @@
+package other;
+
 import java.net.Socket;
 
 public interface Handling {

@@ -1,3 +1,5 @@
+package other;
+
 public enum FoodCategories {
     SOUVLAKI("Souvlaki"),
     BURGERS("Burgers"),

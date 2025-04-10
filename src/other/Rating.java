@@ -1,3 +1,5 @@
+package other;
+
 public enum Rating {
     ONE_STAR(1.0),
     ONE_HALF_STAR(1.5),

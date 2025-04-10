@@ -1,3 +1,5 @@
+package Filtering;
+
 public class FilterFoodCategory implements Filtering {
     FoodCategories selectedCategory;
 

@@ -1,5 +1,9 @@
+package Filtering;
+
+import other.Rating;
+import other.Shop;
+
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class CriteriaRating implements Criteria {

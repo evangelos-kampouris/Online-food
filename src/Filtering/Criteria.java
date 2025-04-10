@@ -1,4 +1,7 @@
-import java.util.List;
+package Filtering;
+
+import other.Shop;
+
 import java.util.Set;
 
 public interface Criteria {

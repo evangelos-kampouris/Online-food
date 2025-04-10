@@ -1,3 +1,6 @@
+package other;
+
+import Inventory.ShopInventory;
 
 import java.util.Set;
 
