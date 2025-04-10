@@ -1,7 +1,6 @@
 package Filtering;
 
-import other.Rating;
-import other.Shop;
+import other.*;
 
 import java.util.HashSet;
 import java.util.Set;

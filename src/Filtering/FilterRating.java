@@ -1,4 +1,6 @@
 package Filtering;
+import other.*;
+
 
 public class FilterRating implements Filtering {
     Rating rating;

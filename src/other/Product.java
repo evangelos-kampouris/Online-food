@@ -28,4 +28,9 @@ public class Product {
     public void setFoodCategory(FoodCategories foodCategory) {
         this.foodCategory = foodCategory;
     }
+
+    @Override
+    public String toString(){
+        return "Price: " + price + ", Name: " + name + ", Category: " + foodCategory;
+    }
 }

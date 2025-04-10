@@ -1,133 +1,87 @@
 package Inventory;
 
-import java.util.HashMap;
-import java.util.Map;
+import other.*;
 
 public class ShopInventory extends Inventory{
 
-    Map<String, Boolean> enable = new HashMap<>();
-    Map<String, Integer> stock = new HashMap<>();
 
     @Override
-    public void addProduct(String productName, Product product) {
+    public void addProduct(String productName, Product product, int quantity) {
+
+        if (!isValidProductInput(productName, product, quantity))
+            throw new IllegalArgumentException("Invalid Arguments. Given arguments are:\n\t Product" + product.toString() + ",\n\t Quantity:" + quantity);
+
         if(inventory.containsKey(productName)) {
             System.err.println("Product already exists");
         }
-        else {
-            inventory.put(productName, product);
-            enable.put(productName, false);
-            stock.put(productName, 0);
-        }
+        else
+            inventory.put(productName, new ShopInventoryItem(product, quantity));
     }
 
     public void addProduct(String productName, Product product, int quantity, boolean enabled) {
+        if (!isValidProductInput(productName, product, quantity))
+            throw new IllegalArgumentException("Invalid Arguments. Given arguments are:\n\t Product" + product.toString() + ",\n\t Quantity:" + quantity);
+
         if(inventory.containsKey(productName)) {
-            System.err.println("Product already exists");;
+            System.err.println("Product already exists");
         }
-        else{
-            inventory.put(productName, product);
-            enable.put(productName, enabled);
-            stock.put(productName, quantity);
-        }
+        else
+            inventory.put(productName, new ShopInventoryItem(product, quantity, enabled));
 
     }
 
     @Override
     public void removeProduct(String productName) {
-        if(inventory.containsKey(productName)) {
-            inventory.remove(productName);
+        if (!isValidName(productName)) {
+            System.err.println("Invalid Product Name");
             return;
         }
-        System.err.println("Product does not exist");
-    }
 
-
-    public Map<String, Integer> getStock() {
-        return stock;
-    }
-
-    public int getItemStock(String productName){
-        if(inventory.containsKey(productName)) {
-            return stock.get(productName);
-        }
-        System.err.println("Product does not exist.");
-        return -1;
-    }
-
-    public void setStock(Map<String, Integer> stock) {
-        this.stock = stock;
-    }
-
-    /**
-     * @param productName
-     * @param itemStock
-     *
-     * Edits the stock of an EXISTING product.
-     */
-    public void setItemStock(String productName, int itemStock) {
-        if(inventory.containsKey(productName)) {
-            stock.put(productName, itemStock);
+        if(! inventory.containsKey(productName)){
+            System.err.println("Product does not exist");
             return;
         }
-        System.err.println("Product does not exist.");
-    }
-
-    /**
-     * @param productName
-     * @param itemStock
-     * Creates a new product stock entry.
-     * Does nothing if the product already exists.
-     */
-    public void createItemStock(String productName, int itemStock) {
-        if (!stock.containsKey(productName)) {
-            stock.put(productName, itemStock);
-        } else {
-            System.err.println("Product already exists in inventory.");
-        }
-    }
-
-    public Map<String, Boolean> getEnable() {
-        return enable;
+        inventory.remove(productName);
     }
 
     public boolean getItemEnableStatus(String productName) {
-        if(enable.containsKey(productName)) {
-            return enable.get(productName);
+        if (!isValidName(productName)) {
+            System.err.println("Invalid Product Name");
+            return false;
         }
-        System.err.println("Product does not exist.");
-        return false;
-    }
 
-    public void setEnable(Map<String, Boolean> enable) {
-        this.enable = enable;
+        InventoryItem item = inventory.get(productName);
+        if (item == null)
+            System.err.println("NULL value in inventory");
+
+        if (item instanceof ShopInventoryItem) {
+            return ((ShopInventoryItem) item).isEnabled();
+        }
+
+        System.err.println("Product is not a ShopInventoryItem.");
+        return false;
     }
 
     /**
      * @param productName
      * @param enable
      *
-     * Edits the enable of an EXISTING product
-     */
+     * Edits enable of an EXISTING product
+     * */
     public void setItemEnableStatus(String productName, boolean enable) {
-        if(this.enable.containsKey(productName)) {
-            this.enable.put(productName, enable);
-        }
-        else{
-            System.err.println("Product does not exist.");
-        }
-    }
+        if (!isValidName(productName))
+            System.err.println("Invalid Product Name");
 
-    /**
-     * @param productName
-     * @param enableStatus
-     * Creates a new product stock entry.
-     * Does nothing if the product already exists.
-     */
-    public void createItemEnableStatus(String productName, boolean enableStatus) {
-        if (!this.enable.containsKey(productName)) {
-            this.enable.put(productName, enableStatus);
-        } else {
-            System.err.println("Product already exists in enable map.");
+        InventoryItem item = inventory.get(productName);
+        if (item == null)
+            System.err.println("NULL value in inventory");
+
+        if (item instanceof ShopInventoryItem) {
+            ((ShopInventoryItem) item).setEnabled(enable);
+        }
+
+        else {
+            System.err.println("Product is not a ShopInventoryItem.");
         }
     }
 }

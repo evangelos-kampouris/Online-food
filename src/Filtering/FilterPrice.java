@@ -1,5 +1,7 @@
 package Filtering;
 
+import other.*;
+
 public class FilterPrice implements Filtering {
     Price price;
 
