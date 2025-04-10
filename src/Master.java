@@ -15,7 +15,7 @@ public class Master{
     private ServerSocket serverSocket;
 
     private final String worker_config_filepath = "Worker_config.json";
-    private List<Worker> workers = new ArrayList<>();
+    private List<Worker> workers = new ArrayList<>(); //TEMPORARY DATA STRUCTURE
 
     public Master() throws IOException {
         ServerSocket serverSocket = new ServerSocket(PORT); //TODO NEEDS REWORK
@@ -24,6 +24,9 @@ public class Master{
     }
 
 
+    /**
+     * @throws IOException
+     */
     private void acceptConnections() throws IOException {
         while(!serverSocket.isClosed()) {
             Socket connectionSocket = serverSocket.accept();

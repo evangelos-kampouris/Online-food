@@ -1,7 +1,7 @@
 public class Product {
-    int price;
-    String name;
-    FoodCategories foodCategory;
+    private int price;
+    private String name;
+    private FoodCategories foodCategory;
 
     public int getPrice() {
         return price;
