@@ -1,3 +1,5 @@
+package other;
+
 public class Product {
     private int price;
     private String name;

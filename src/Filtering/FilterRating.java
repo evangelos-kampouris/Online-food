@@ -1,3 +1,5 @@
+package Filtering;
+
 public class FilterRating implements Filtering {
     Rating rating;
 

@@ -1,3 +1,5 @@
+package Filtering;
+
 public class FilterPrice implements Filtering {
     Price price;
 

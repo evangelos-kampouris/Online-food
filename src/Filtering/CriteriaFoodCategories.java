@@ -1,3 +1,8 @@
+package Filtering;
+
+import other.FoodCategories;
+import other.Shop;
+
 import java.util.HashSet;
 import java.util.Set;
 

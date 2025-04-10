@@ -1,3 +1,5 @@
+package other;
+
 public class Worker {
     private static String MASTER_IP;
     private static String MASTER_PORT;

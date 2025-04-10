@@ -1,3 +1,5 @@
+package other;
+
 import com.google.gson.Gson;
 
 import java.io.FileNotFoundException;

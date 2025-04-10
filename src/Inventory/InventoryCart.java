@@ -1,4 +1,5 @@
-import java.util.HashMap;
+package Inventory;
+
 import java.util.Map;
 
 public class InventoryCart extends Inventory {
