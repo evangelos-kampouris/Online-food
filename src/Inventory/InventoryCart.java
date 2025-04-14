@@ -15,6 +15,8 @@ public class InventoryCart extends Inventory {
         }
         InventoryItem item = new InventoryItem(product, quantity);
         inventory.put(productName, item);
+
+        //TODO condider whether the cart must be update using updateCost()
     }
 
     @Override
