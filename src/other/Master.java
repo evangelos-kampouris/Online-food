@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Master{
+public class Master extends Entity{
     private final String IP = "localhost";
     private final int PORT = 55000;
 
