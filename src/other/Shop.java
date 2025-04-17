@@ -23,17 +23,6 @@ public class Shop {
     private static final int PRICE_MEDIUM_TOP_LIMIT = 10;
     private static final int PRICE_HIGH_TOP_LIMIT = 15;
 
-
-
-
-
-
-
-
-
-
-
-
     //CATEGORIES SET AND GET
     public Set<FoodCategories> getFoodCategories() {
         return foodCategories;

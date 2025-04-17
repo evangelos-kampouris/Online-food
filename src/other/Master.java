@@ -38,7 +38,6 @@ public class Master extends Entity{
             Runnable handler = new Handler(this, connectionSocket);
             Thread thread = new Thread(handler);
             thread.start();
-
         }
     }
     /**

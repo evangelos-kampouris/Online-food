@@ -16,7 +16,7 @@ public class InventoryCart extends Inventory {
         InventoryItem item = new InventoryItem(product, quantity);
         inventory.put(productName, item);
 
-        //TODO consdider whether the cart must be update using updateCost()
+        //TODO consider whether the cart must be update using updateCost()
     }
 
     @Override
@@ -27,7 +27,7 @@ public class InventoryCart extends Inventory {
             System.err.println("Invalid Product Name");
             return;
         }
-        //Existance check
+        //Existence check
         if(!inventory.containsKey(productName)){
             System.err.println("Product not in cart");
             return;

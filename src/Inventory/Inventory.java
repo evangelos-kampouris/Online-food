@@ -20,21 +20,31 @@ public abstract class Inventory implements Serializable {
 
     public int getItemQuantity(String productName){
         if (!isValidName(productName)) {
-            System.err.println("Invalid Product Name");
+            System.err.println("Invalid Product Name.");
             return -1;
         }
 
         if(! inventory.containsKey(productName)) {
-
+            System.err.println("Product does not exist.");
             return -1;
         }
 
         InventoryItem item = inventory.get(productName);
         if (item == null) {
-            System.err.println("NULL value in inventory");
+            System.err.println("NULL value in inventory.");
             return -1;
         }
         return item.getQuantity();
+    }
+
+    public void listProducts() {
+        for (Map.Entry<String, InventoryItem> entry : inventory.entrySet()) {
+            System.out.println(entry.getValue().getProduct().toString());
+        }
+    }
+
+    public Product getProduct(String productName) {
+        return inventory.get(productName).getProduct();
     }
 
     /**
