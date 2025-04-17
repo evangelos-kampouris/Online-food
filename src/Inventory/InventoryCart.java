@@ -10,12 +10,14 @@ public class InventoryCart extends Inventory {
     @Override
     public void addProduct(String productName, Product product, int quantity) {
         if(inventory.containsKey(productName)) {
-            System.err.println("Product already in the cart.");
-            return;
+            System.out.println("Product already in the cart - Adjusting quantity");
+            InventoryItem inventoryItem = inventory.get(productName);
+            inventoryItem.setQuantity(inventoryItem.getQuantity() + quantity);
         }
-        InventoryItem item = new InventoryItem(product, quantity);
-        inventory.put(productName, item);
-
+        else {
+            InventoryItem item = new InventoryItem(product, quantity);
+            inventory.put(productName, item);
+        }
         //TODO consider whether the cart must be update using updateCost()
     }
 
