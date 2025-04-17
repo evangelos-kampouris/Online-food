@@ -21,15 +21,25 @@ public class InventoryCart extends Inventory {
 
     @Override
     public void removeProduct(String productName) {
+
+        //Name format check
         if (!isValidName(productName)) {
             System.err.println("Invalid Product Name");
             return;
         }
+        //Existance check
         if(!inventory.containsKey(productName)){
             System.err.println("Product not in cart");
             return;
         }
-        inventory.remove(productName);
+        //Removals
+        InventoryItem item = inventory.get(productName);
+        int quantity = item.getQuantity();
+
+        if(quantity > 1)
+            item.setQuantity(quantity - 1);
+        else
+            inventory.remove(productName);
     }
 
     public void updateCost(){
