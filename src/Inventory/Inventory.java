@@ -1,10 +1,12 @@
 package Inventory;
 
 import other.*;
+
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class Inventory {
+public abstract class Inventory implements Serializable {
 
     Map<String, InventoryItem> inventory = new HashMap<String, InventoryItem>(); // Selected DataStructure <name, product>
 

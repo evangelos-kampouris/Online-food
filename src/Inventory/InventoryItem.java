@@ -2,8 +2,10 @@ package Inventory;
 
 import other.Product;
 
+import java.io.Serializable;
 
-public class InventoryItem {
+
+public class InventoryItem implements Serializable {
     private Product product;
     private int quantity;
 
