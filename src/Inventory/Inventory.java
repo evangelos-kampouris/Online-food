@@ -4,7 +4,9 @@ import other.*;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class Inventory implements Serializable {
 
@@ -12,7 +14,32 @@ public abstract class Inventory implements Serializable {
 
     public abstract void addProduct(String productName, Product product, int quantity);
 
-    public abstract void removeProduct(String productName);
+    public void removeProduct(String productName, Integer quantity){
+        //Name format check
+        if (!isValidName(productName)) {
+            System.err.println("Invalid Product Name");
+            return;
+        }
+        //Existence check
+        if(!inventory.containsKey(productName)){
+            System.err.println("Product not in cart");
+            return;
+        }
+        //Removals
+        InventoryItem item = inventory.get(productName);
+        int existanceQuantity = item.getQuantity();
+
+        int quantityToReduce;
+
+        if(existanceQuantity > 1) {
+            if (quantity != null) quantityToReduce = quantity;
+            else quantityToReduce = 1;
+
+            item.setQuantity(existanceQuantity - quantityToReduce);
+        }
+        else
+            inventory.remove(productName);
+    }
 
     public Map<String, InventoryItem> getInventory() {
         return inventory;
@@ -37,11 +64,25 @@ public abstract class Inventory implements Serializable {
         return item.getQuantity();
     }
 
-    public void listProducts() {
+    /**
+     * @return A set of the all the product categories of the cart.
+     */
+    public Set<ProductCategory> getProductCategories(){
+        Set<ProductCategory> productCategories = new HashSet<ProductCategory>();
+
+        for (Map.Entry<String, InventoryItem> entry : inventory.entrySet()) {
+            InventoryItem item = entry.getValue();
+            productCategories.add(item.getProduct().getFoodCategory());
+        }
+        return productCategories;
+    }
+
+    public void printListProducts() {
         for (Map.Entry<String, InventoryItem> entry : inventory.entrySet()) {
             System.out.println(entry.getValue().getProduct().toString());
         }
     }
+
 
     public Product getProduct(String productName) {
         return inventory.get(productName).getProduct();

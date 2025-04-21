@@ -3,6 +3,7 @@ package Inventory;
 import other.Product;
 import java.util.Map;
 
+
 public class InventoryCart extends Inventory {
 
     private float cost;
@@ -21,28 +22,6 @@ public class InventoryCart extends Inventory {
         //TODO consider whether the cart must be update using updateCost()
     }
 
-    @Override
-    public void removeProduct(String productName) {
-
-        //Name format check
-        if (!isValidName(productName)) {
-            System.err.println("Invalid Product Name");
-            return;
-        }
-        //Existence check
-        if(!inventory.containsKey(productName)){
-            System.err.println("Product not in cart");
-            return;
-        }
-        //Removals
-        InventoryItem item = inventory.get(productName);
-        int quantity = item.getQuantity();
-
-        if(quantity > 1)
-            item.setQuantity(quantity - 1);
-        else
-            inventory.remove(productName);
-    }
 
     public void updateCost(){
         float sum = 0;

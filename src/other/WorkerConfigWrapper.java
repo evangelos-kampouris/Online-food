@@ -3,9 +3,9 @@ package other;
 import java.util.List;
 
 public class WorkerConfigWrapper {
-    private List<Worker> workers;
+    private List<WorkerNode> workers;
 
-    public List<Worker> getWorkers() {
+    public List<WorkerNode> getWorkers() {
         return workers;
     }
 }

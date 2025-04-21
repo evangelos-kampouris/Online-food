@@ -3,7 +3,7 @@ package other;
 public class Product {
     private int price;
     private String name;
-    private FoodCategories foodCategory;
+    private ProductCategory productCategory;
 
     public int getPrice() {
         return price;
@@ -21,16 +21,16 @@ public class Product {
         this.name = name;
     }
 
-    public FoodCategories getFoodCategory() {
-        return foodCategory;
+    public ProductCategory getFoodCategory() {
+        return productCategory;
     }
 
-    public void setFoodCategory(FoodCategories foodCategory) {
-        this.foodCategory = foodCategory;
+    public void setFoodCategory(ProductCategory foodCategory) {
+        this.productCategory = foodCategory;
     }
 
     @Override
     public String toString(){
-        return "Name: " + name + ", Price: " + price + ", Category: " + foodCategory;
+        return "Name: " + name + ", Price: " + price + ", Category: " + productCategory;
     }
 }

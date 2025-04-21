@@ -73,10 +73,11 @@ public class Handler implements Runnable{
                 statsRequestHandler.handle(entity, connection, DTO, out, in);
             }
 
-            else if(receivedObject instanceof UpdateBuyDataDTO DTO){
+            else if(receivedObject instanceof UpdateBuyDataRequestDTO DTO){
                 UpdateBuyDataHandler updateBuyDataHandler = new UpdateBuyDataHandler();
                 updateBuyDataHandler.handle(entity, connection, DTO, out, in);
             }
+            //EACH CONNECTION IS TO BE CLOSED IN THE HANDLERS
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }

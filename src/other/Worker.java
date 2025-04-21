@@ -1,13 +1,21 @@
 package other;
 
-public class Worker {
+import java.util.HashMap;
+import java.util.Map;
+
+public class Worker extends Entity {
     private static String MASTER_IP;
     private static String MASTER_PORT;
 
     private String IP;
     private String PORT;
 
-    public Worker() {}
+    //Shop Name, Shop -- The shops the worker holds.  Received from Master.
+    public Map<String, Shop> shops = new HashMap<>();
+
+    public Worker() {
+        //TODO SET OWN IP AND PORT
+    }
 
     public Worker(String IP, String PORT) {
         this.IP = IP;

@@ -14,7 +14,8 @@ public class Client extends User{
 
     //Attributes
     InventoryCart cart;
-    Map<String, ShopInventory> shops = new HashMap<>(); //Shop Name, Shop's catalog -- Received upon search or initialization
+    //Shop Name, Shop's catalog -- Received upon  initialization - Updated on search.
+    Map<String, Shop> shops = new HashMap<>();
 
     public Client() {
         super();
@@ -54,13 +55,14 @@ public class Client extends User{
         addToCart(product, 1);
     }
 
+    //TODO NEEDS FIXING
 //    /**
 //     * @param product
 //     *
 //     * Removes the product from the cart COMPLETELY.
 //     */
     public void removeFromCart(Product product) {
-        cart.removeProduct(product.getName());
+        cart.removeProduct(product.getName(), null);
     }
 
 //    /**
@@ -77,10 +79,19 @@ public class Client extends User{
      *
      * Send the buy request.
      */
-    public void performPurchase() throws IOException {
-        BuyRequestDTO buyRequestDTO = new BuyRequestDTO(cart);
+    public void performPurchase(Shop selectedShop) throws IOException {
+        BuyRequestDTO buyRequestDTO = new BuyRequestDTO(selectedShop, cart);
         out.writeObject(buyRequestDTO);
         out.flush();
+
+        //close the connection
+        try {
+            if (in != null) in.close();
+            if (out != null) out.close();
+            if (connectionSocket != null && !connectionSocket.isClosed()) connectionSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -104,11 +115,12 @@ public class Client extends User{
 
         System.out.println("Select a Store: ");
         String storeName = scanner.nextLine();
+        Shop shop = shops.get(storeName);
 
         do{
             System.out.println("Select a product to buy: ");
             String productName = scanner.nextLine();
-            Product product = shops.get(storeName).getProduct(productName);
+            Product product = shops.get(storeName).getCatalog().getProduct(productName);
 
             System.out.println("Select a quantity to buy: ");
             int quantity = scanner.nextInt();
@@ -123,7 +135,7 @@ public class Client extends User{
 
         System.out.println("Total Cost: " + cart.getCost());
 
-        performPurchase();
+        performPurchase(shop);
 
         System.out.println("Purchase Completed.");
     }

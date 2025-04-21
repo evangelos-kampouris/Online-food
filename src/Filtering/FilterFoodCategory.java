@@ -1,12 +1,12 @@
 package Filtering;
 
-import other.FoodCategories;
+import other.StoreCategories;
 
 
 public class FilterFoodCategory implements Filtering {
-    FoodCategories selectedCategory;
+    StoreCategories selectedCategory;
 
-    public FilterFoodCategory(FoodCategories selectedCategory) {
+    public FilterFoodCategory(StoreCategories selectedCategory) {
         this.selectedCategory = selectedCategory;
     }
 

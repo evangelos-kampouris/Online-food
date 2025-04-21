@@ -1,35 +1,55 @@
 package other;
 
-import Inventory.ShopInventory;
+import Inventory.*;
 
+import java.util.Map;
 import java.util.Set;
 
 public class Shop {
 
     private String name;
-    private Set<FoodCategories> foodCategories;
+    private Set<ProductCategory> productCategory;
+    private StoreCategories storeCategory;
 
     private int numberOfRatings;
     private Rating rating;
     private Price price;
 
+
     //Missing products data
     private ShopInventory catalog;
 
     //product sales
-    private int revenue;
+    private float revenue;
 
     private static final int PRICE_LOW_TOP_LIMIT = 5;
     private static final int PRICE_MEDIUM_TOP_LIMIT = 10;
     private static final int PRICE_HIGH_TOP_LIMIT = 15;
 
-    //CATEGORIES SET AND GET
-    public Set<FoodCategories> getFoodCategories() {
-        return foodCategories;
+    public synchronized void addRevenue(float revenue){ this.revenue += revenue; }
+
+    public synchronized void sell(InventoryCart cart){
+        //Add the revenue from the cart
+        float profit = cart.getCost();
+        addRevenue(profit);
+
+        //remove stock
+        for (Map.Entry<String, InventoryItem> entry : cart.getInventory().entrySet()) {
+            catalog.removeProduct(entry.getKey(), entry.getValue().getQuantity());
+        }
     }
 
-    public void setFoodCategories(Set<FoodCategories> foodCategories) {
-        this.foodCategories = foodCategories;
+    /*
+     * |---------------- SETTERS AND GETTERS ---------------------|
+     */
+
+    //CATEGORIES SET AND GET
+    public Set<ProductCategory> getFoodCategories() {
+        return productCategory;
+    }
+
+    public void setFoodCategories(Set<ProductCategory> productCategory) {
+        this.productCategory = productCategory;
     }
 
     // PRICES SET AND GET
@@ -72,4 +92,32 @@ public class Shop {
     public void setRating(Rating rating) {
         this.rating = rating;
     }
+
+    //CATALOG SETTER AND GETTER
+    public ShopInventory getCatalog() {return catalog;}
+
+    public void setCatalog(ShopInventory catalog) {this.catalog = catalog;}
+
+    //NAME SETTER GETTERS
+    public String getName() {return name;}
+
+    public void setName(String name) {this.name = name;}
+
+    public float getRevenue() {
+        return revenue;
+    }
+
+    public void setRevenue(float revenue) {
+        this.revenue = revenue;
+    }
+
+    public StoreCategories getStoreCategory() {
+        return storeCategory;
+    }
+
+    public void setStoreCategory(StoreCategories storeCategory) {
+        this.storeCategory = storeCategory;
+    }
+
+
 }

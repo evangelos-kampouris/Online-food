@@ -30,20 +30,6 @@ public class ShopInventory extends Inventory{
 
     }
 
-    @Override
-    public void removeProduct(String productName) {
-        if (!isValidName(productName)) {
-            System.err.println("Invalid Product Name");
-            return;
-        }
-
-        if(! inventory.containsKey(productName)){
-            System.err.println("Product does not exist");
-            return;
-        }
-        inventory.remove(productName);
-    }
-
     public boolean getItemEnableStatus(String productName) {
         if (!isValidName(productName)) {
             System.err.println("Invalid Product Name");

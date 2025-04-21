@@ -12,7 +12,7 @@ Manager to Master:
 
 Master to Workers:
 	* Filters -> θα γίνει map ( <Filter, List(shops)> )
-	* Updates stocks, revenue etc. after buy
+	* Updates stocks, revenue etc. after buy -> SAME AS BUY BUT JUST FORWARDED.
 	
 Worker to Reducer:
 	* map result ( <Filter, List(shops)> )
