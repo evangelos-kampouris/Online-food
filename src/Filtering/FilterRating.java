@@ -13,4 +13,18 @@ public class FilterRating implements Filtering {
     public Object getFilter() {
         return rating;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        FilterRating that = (FilterRating) obj;
+        return this.rating == that.rating;
+    }
+
+    @Override
+    public int hashCode() {
+        return rating.hashCode();
+    }
+
 }
