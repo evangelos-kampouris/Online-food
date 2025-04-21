@@ -5,7 +5,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class User {
+public abstract class User {
 
     //Console Menu
     protected static final Scanner scanner = new Scanner(System.in);
@@ -24,4 +24,6 @@ public class User {
     public User() {
         id = ++idCounter;
     }
+
+    protected abstract void showMenu();
 }

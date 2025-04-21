@@ -96,7 +96,8 @@ public class Client extends User{
 
 
     //Console Menu
-    private static void showMenu() {
+   @Override
+    protected void showMenu() {
         System.out.println("\n--- Menu ---");
         System.out.println("1. Search for Stores");
         System.out.println("2. Buy Products");
@@ -155,7 +156,7 @@ public class Client extends User{
         System.out.println("=== Welcome to the Food Delivery Platform (Client Mode) ===");
 
         while (running) {
-            showMenu();
+            client.showMenu();
             String choice = scanner.nextLine();
 
             switch (choice) {
