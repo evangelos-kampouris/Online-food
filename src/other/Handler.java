@@ -7,8 +7,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import DTO.*;
-//
-public class Handler implements Runnable{
+
+public class Handler implements Runnable{                   //Για να μπορεί να τρέχει σε δικό του thread
     Socket connection;
     Entity entity;
     ObjectOutputStream out;
@@ -31,7 +31,8 @@ public class Handler implements Runnable{
      */
     public void handle(Entity entity, Socket connection) {
         try {
-            Object receivedObject = in.readObject();                        //ένα από τις επιλογές του request.txt
+            Object receivedObject = in.readObject();                 //Ο πελάτης έχει στείλει π.χ. ένα BuyRequestDTO, AddStoreRequestDTO, κτλ.
+                                                                    //ένα από τις επιλογές του request.txt
 
             if(receivedObject instanceof BuyRequestDTO DTO){
                 BuyRequestHandler buyRequestHandler = new BuyRequestHandler();
