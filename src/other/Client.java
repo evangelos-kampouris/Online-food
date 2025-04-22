@@ -348,7 +348,7 @@ public class Client extends User{
             switch (choice) {
                 case "1":
                     try {
-                        client.searchMenuOption(); //TODO
+                        client.searchMenuOption();
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -366,6 +366,12 @@ public class Client extends User{
                 case "0":
                     running = false;
                     System.out.println("Exiting Client Console. Goodbye!");
+                    try {
+                        client.closeConnection();
+                    } catch (IOException e) {
+                        System.out.println("An error occurred while closing connection.");
+                    }
+
                     //TODO CLOSE CONNECITON
                     break;
                 default:
