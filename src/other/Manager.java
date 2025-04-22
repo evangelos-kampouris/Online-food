@@ -71,12 +71,25 @@ public class Manager extends User{
                     String productName2 = scanner.nextLine();
 
                     System.out.print("Enter Action (add/remove): ");
-                    String action = scanner.nextLine().toLowerCase();
+                    String actionInput = scanner.nextLine().toLowerCase();
+
+                    ActionType action;
+
+                    if (actionInput.equals("add")) {
+                        action = ActionType.ADD;
+                    }
+                    else if (actionInput.equals("remove")) {
+                        action = ActionType.REMOVE;
+                    }
+                    else {
+                        System.out.println("Invalid action. Please enter 'add' or 'remove'.");
+                        break;
+                    }
 
                     String productCategory = "";
                     double price = 0.0;
 
-                    if (action.equals("add")) {
+                    if (action == ActionType.ADD) {
                         System.out.print("Enter Product Category: ");
                         productCategory = scanner.nextLine();
 

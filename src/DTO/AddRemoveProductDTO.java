@@ -1,19 +1,21 @@
 package DTO;
 
+import other.ActionType;
+
 import java.io.Serializable;
 
 public class AddRemoveProductDTO extends Request implements Serializable {
 
     private String storeName;
     private String productName;
-    private String action;                  //θα δέχετε είτε "add" ή "remove"
+    private ActionType action;                  //θα δέχετε είτε "add" ή "remove"
                                             //διόρθωσε το σε enum
 
     //Αυτα θα χρησιμοποιηθούν μόνο όταν το action = "add"
     private String productCategory;
     private double price;
 
-    public AddRemoveProductDTO(String store, String productName, String action, String productCategory, double price) {
+    public AddRemoveProductDTO(String storeName, String productName, ActionType action, String productCategory, double price) {
         this.storeName = storeName;
         this.productName = productName;
         this.action = action;
@@ -29,7 +31,7 @@ public class AddRemoveProductDTO extends Request implements Serializable {
         return productName;
     }
 
-    public String getAction() {
+    public ActionType getAction() {
         return action;
     }
 

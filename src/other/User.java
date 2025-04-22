@@ -1,5 +1,6 @@
 package other;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -14,7 +15,7 @@ public abstract class User {
     protected static final String MASTER_IP = "localhost";
     protected static final int MASTER_PORT = 55000;
     protected Socket connectionSocket;
-    protected ObjectOutputStream out;
+    protected static ObjectOutputStream out;
     protected ObjectInputStream in;
 
     //Attributes
