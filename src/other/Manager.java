@@ -12,8 +12,16 @@ import DTO.*;
 
 public class Manager extends User{
 
-    private static final String SERVER_IP = "localhost";
-    private static final int SERVER_PORT = 55000;
+    @Override
+    public void establishConnection() throws IOException {
+        System.out.println("Initializing connection to Master...");
+
+        connectionSocket = new java.net.Socket(MASTER_IP, MASTER_PORT);
+        out = new java.io.ObjectOutputStream(connectionSocket.getOutputStream());
+        in = new java.io.ObjectInputStream(connectionSocket.getInputStream());
+
+        System.out.println("Connection to Master Achieved.");
+    }
 
     @Override
     protected void showMenu(){
@@ -30,13 +38,10 @@ public class Manager extends User{
     public static void main(String[] args) {
         Manager manager = new Manager();
 
-        //ftiaksimo koitakse USER
-        try (Socket socket = new Socket(SERVER_IP, SERVER_PORT)) {
-            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-            Scanner scanner = new Scanner(System.in);
+        try {
+            manager.establishConnection();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to connect to Master", e);
         }
 
         boolean running = true;
@@ -54,8 +59,8 @@ public class Manager extends User{
                         Gson gson = new Gson();
                         AddStoreRequestDTO addStoreRequestDTO = gson.fromJson(reader, AddStoreRequestDTO.class);
 
-                        out.writeObject(addStoreRequestDTO);
-                        out.flush();
+                        manager.out.writeObject(addStoreRequestDTO);
+                        manager.out.flush();
 
                         System.out.println("Store sent successfully.");
                     } catch (IOException e) {
@@ -101,8 +106,8 @@ public class Manager extends User{
                     AddRemoveProductDTO addRemoveProductDTO = new AddRemoveProductDTO(storeName2, productName2, action, productCategory, price);
 
                     try {
-                        out.writeObject(addRemoveProductDTO);
-                        out.flush();
+                        manager.out.writeObject(addRemoveProductDTO);
+                        manager.out.flush();
                         System.out.println("Product " + action + " request sent successfully.");
                     } catch (IOException e) {
                         System.out.println("Failed to send product request: " + e.getMessage());
@@ -124,8 +129,8 @@ public class Manager extends User{
                     ChangeStockDTO changeStockDTO = new ChangeStockDTO(storeName3, productName3, newStock);
 
                     try {
-                        out.writeObject(changeStockDTO);
-                        out.flush();
+                        manager.out.writeObject(changeStockDTO);
+                        manager.out.flush();
                         System.out.println("Stock change request sent successfully.");
                     } catch (IOException e) {
                         System.out.println("Failed to send stock change request: " + e.getMessage());
@@ -136,8 +141,8 @@ public class Manager extends User{
                     StatsRequestDTO statsRequestByStore = new StatsRequestDTO("store");
 
                     try {
-                        out.writeObject(statsRequestByStore);
-                        out.flush();
+                        manager.out.writeObject(statsRequestByStore);
+                        manager.out.flush();
                         System.out.println("Request to view sales by store category sent successfully.");
                     } catch (IOException e) {
                         System.out.println("Failed to send stats request: " + e.getMessage());
@@ -148,8 +153,8 @@ public class Manager extends User{
                     StatsRequestDTO statsRequestByProduct = new StatsRequestDTO("product");
 
                     try {
-                        out.writeObject(statsRequestByProduct);
-                        out.flush();
+                        manager.out.writeObject(statsRequestByProduct);
+                        manager.out.flush();
                         System.out.println("Request to view sales by product category sent successfully.");
                     } catch (IOException e) {
                         System.out.println("Failed to send stats request: " + e.getMessage());

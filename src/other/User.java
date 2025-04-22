@@ -26,9 +26,9 @@ public abstract class User {
         id = ++idCounter;
     }
 
-    protected abstract void showMenu();
-
     public abstract void establishConnection() throws IOException;
+
+    protected abstract void showMenu();
 
     protected void closeConnection() throws IOException {
         if (in != null) in.close();
