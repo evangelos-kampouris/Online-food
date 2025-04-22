@@ -29,6 +29,7 @@ public class Client extends User{
 
 
     //Networking
+    @Override
     public void establishConnection() throws IOException {
         System.out.println("Initializing connection to Master...");
 

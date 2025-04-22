@@ -28,6 +28,8 @@ public abstract class User {
 
     protected abstract void showMenu();
 
+    public abstract void establishConnection() throws IOException;
+
     protected void closeConnection() throws IOException {
         if (in != null) in.close();
         if (out != null) out.close();
