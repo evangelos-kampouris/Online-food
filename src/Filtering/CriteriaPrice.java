@@ -7,20 +7,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class CriteriaPrice implements Criteria {
+    Filtering filter;
 
+    public CriteriaPrice(Filtering filter){this.filter = filter;}
 
     @Override
-    public Set<Shop> meetCriteria(Set<Shop> shops, Filtering filter) {
-        Set<Shop> shopMeetCriteria = new HashSet<>();
-
+    public Set<Shop> meetCriteria(Set<Shop> shops) {
+        if(filter == null)
+            throw new IllegalArgumentException("No filter Provided in the criteria.");
         if(filter instanceof FilterPrice selected_filter){
             Price price = (Price) selected_filter.getFilter();
-            for (Shop shop : shops) {
-                if(shop.getPrice() == price){
-                    shopMeetCriteria.add(shop);
-                }
-            }
+            shops.removeIf(shop -> shop.getPrice() != price);
         }
-        return shopMeetCriteria;
+        return shops;
     }
 }

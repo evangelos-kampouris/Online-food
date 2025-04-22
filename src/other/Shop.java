@@ -15,7 +15,6 @@ public class Shop {
     private Rating rating;
     private Price price;
 
-
     //Missing products data
     private ShopInventory catalog;
 

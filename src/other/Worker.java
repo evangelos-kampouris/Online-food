@@ -1,11 +1,17 @@
 package other;
 
+import Node.ReducerNode;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class Worker extends Entity {
     private static String MASTER_IP;
     private static String MASTER_PORT;
+
+
+
+    private ReducerNode REDUCER = new ReducerNode("localhost", 8999); //temporary data information.
 
     private String IP;
     private String PORT;
@@ -29,4 +35,10 @@ public class Worker extends Entity {
         this.PORT = PORT;
     }
 
+    public Map<String, Shop> getShops() {
+        return shops;
+    }
+    public ReducerNode getREDUCER() {
+        return REDUCER;
+    }
 }

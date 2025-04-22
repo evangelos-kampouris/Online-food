@@ -13,6 +13,7 @@ public class BuyRequestDTO extends Request{
     private Shop shop;
 
     public BuyRequestDTO(Shop shop, InventoryCart cart) {
+        super();
         this.cart = cart;
         this.shop = shop;
     }

@@ -1,5 +1,6 @@
 package other;
 
+import Node.WorkerNode;
 import com.google.gson.Gson;
 
 import java.io.FileNotFoundException;
@@ -16,7 +17,7 @@ public class Master extends Entity{
     //Networking
     private final String IP = "localhost";
     private final int PORT = 55000;
-    private ServerSocket serverSocket;
+    private final ServerSocket serverSocket;
 
     //Workers
     private final String worker_config_filepath = "Worker_config.json";
@@ -32,7 +33,7 @@ public class Master extends Entity{
 
     //Constructor
     public Master() throws IOException {
-        ServerSocket serverSocket = new ServerSocket(PORT); //TODO NEEDS REWORK
+        this.serverSocket = new ServerSocket(PORT); //TODO NEEDS REWORK
         System.out.println("Server started - Listening on port " + PORT); //logging.
         initiateWorkers();
         workers = new HashRing(workersList, VIRTUAL_NODES_OF_WORKER);
@@ -108,4 +109,6 @@ public class Master extends Entity{
      * Adds the product related statistics.
      */
     public void addStatsProductCategory(ProductCategory productCategory){addStatsProductCategory(productCategory, 1);}
+
+    public List<WorkerNode> getWorkersList() {return workersList;}
 }

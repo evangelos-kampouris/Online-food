@@ -1,22 +1,21 @@
 ALL POSSIBLE REQUESTS:
 
 Client to Master:
-	* Search(filters)
-	* Buy
+	* Search(filters) - ID GEN TICK
+	* Buy - ID GEN TICK
 
 Manager to Master:
-	* Addition of store (json format)
-	* Addition of new product
-	* Change of product stock
-	* Stats
+	* Addition of store (json format) - ID GEN
+	* Addition of new product - ID GEN
+	* Change of product stock - ID GEN
+	* Stats - ID GEN
 
 Master to Workers:
-	* Filters -> θα γίνει map ( <Filter, List(shops)> )
-	* Updates stocks, revenue etc. after buy -> SAME AS BUY BUT JUST FORWARDED.
+	* Filters -> θα γίνει map (το map γινεται αυτοματα στελνοντας απλα το request σε ολους τους workers καθως καθε worker εχει μοναδικα μαγαζια) - ID INHERIT
+	* Updates stocks, revenue etc. after buy -> SAME AS BUY BUT JUST FORWARDED. - ID INHERIT
 	
 Worker to Reducer:
-	* map result ( <Filter, List(shops)> )
+	* map result ( <StoreName - StoreID, StoreJson> ) - ID INHERIT
 
 Reducer to Master:
-	
-	* Results (list of shops)
+	* Results (list of shops) - ID INHERIT

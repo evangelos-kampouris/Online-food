@@ -1,5 +1,7 @@
 package other;
 
+import Node.WorkerNode;
+
 import java.util.List;
 
 public class WorkerConfigWrapper {

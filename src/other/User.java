@@ -1,5 +1,6 @@
 package other;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -26,4 +27,10 @@ public abstract class User {
     }
 
     protected abstract void showMenu();
+
+    protected void closeConnection() throws IOException {
+        if (in != null) in.close();
+        if (out != null) out.close();
+        if (connectionSocket != null && !connectionSocket.isClosed()) connectionSocket.close();
+    }
 }

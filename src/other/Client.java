@@ -1,8 +1,10 @@
 package other;
 
 import DTO.BuyRequestDTO;
+import DTO.SearchRequestDTO;
+import Filtering.*;
 import Inventory.InventoryCart;
-import Inventory.ShopInventory;
+
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -10,12 +12,15 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.*;
 
+
 public class Client extends User{
 
     //Attributes
     InventoryCart cart;
     //Shop Name, Shop's catalog -- Received upon  initialization - Updated on search.
-    Map<String, Shop> shops = new HashMap<>();
+    Map<String, Shop> shops;
+
+
 
     public Client() {
         super();
@@ -79,19 +84,18 @@ public class Client extends User{
      *
      * Send the buy request.
      */
-    public void performPurchase(Shop selectedShop) throws IOException {
+    private void performPurchase(Shop selectedShop) throws IOException {
         BuyRequestDTO buyRequestDTO = new BuyRequestDTO(selectedShop, cart);
         out.writeObject(buyRequestDTO);
         out.flush();
+        closeConnection(); //close the connection
+    }
 
-        //close the connection
-        try {
-            if (in != null) in.close();
-            if (out != null) out.close();
-            if (connectionSocket != null && !connectionSocket.isClosed()) connectionSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void performSearch(List<Filtering> filters) throws IOException{
+        SearchRequestDTO searchRequestDTO = new SearchRequestDTO(filters);
+        out.writeObject(searchRequestDTO);
+        out.flush();
+        closeConnection(); //close the connection
     }
 
 
@@ -105,6 +109,7 @@ public class Client extends User{
         System.out.println("0. Exit");
         System.out.print("Select an option: ");
     }
+
 
     /**
      * @throws IOException
@@ -141,6 +146,186 @@ public class Client extends User{
         System.out.println("Purchase Completed.");
     }
 
+    private void searchMenuOption() throws IOException{
+        boolean finished = false;
+        List<Filtering> selectedFilters = new ArrayList<>();
+
+        do{
+            System.out.println("Select a Filter(Price/Rating/Food Category): ");
+            String filter = scanner.nextLine();
+            filter = filter.toLowerCase();
+
+            switch (filter){
+                case "price":
+                    System.out.println("Select a price: [$, $$, $$$]");
+                    String price_str = scanner.nextLine();
+                    Price selectedPrice;
+
+                    switch (price_str) {
+                        case "$":
+                            selectedPrice = Price.LOW;
+                            break;
+                        case "$$":
+                            selectedPrice = Price.MEDIUM;
+                            break;
+                        case "$$$":
+                            selectedPrice = Price.HIGH;
+                            break;
+                        default:
+                            System.out.println("Invalid price selection.");
+                            return;
+                    }
+
+                    FilterPrice filterPrice = new FilterPrice(selectedPrice);
+
+                    //Checking if the same filter has been applied.
+                    if(!selectedFilters.contains(filterPrice))
+                        selectedFilters.add(filterPrice);
+                    else
+                        System.out.println("Rating filter already selected.");
+                    break;
+
+                case "rating":
+                    System.out.println("Select a rating: (Float 1.0-5.0");
+                    String rating_str = scanner.nextLine();
+                    float rating_float = Float.parseFloat(rating_str);
+
+                    //Check input
+                    if (rating_float < 1.0 || rating_float > 5.0) {
+                        System.out.println("Rating must be between 1.0 and 5.0.");
+                        return;
+                    }
+
+                    Rating selectedRating;
+
+                    switch (rating_str) {
+                        case "1":
+                            selectedRating = Rating.ONE_STAR;
+                            break;
+                        case "1.5":
+                            selectedRating = Rating.ONE_HALF_STAR;
+                            break;
+                        case "2":
+                            selectedRating = Rating.TWO_STARS;
+                            break;
+                        case "2.5":
+                            selectedRating = Rating.TWO_HALF_STARS;
+                            break;
+                        case "3":
+                            selectedRating = Rating.THREE_STARS;
+                            break;
+                        case "3.5":
+                            selectedRating = Rating.THREE_HALF_STARS;
+                            break;
+                        case "4":
+                            selectedRating = Rating.FOUR_STARS;
+                            break;
+                        case "4.5":
+                            selectedRating = Rating.FOUR_HALF_STARS;
+                            break;
+                        case "5":
+                            selectedRating = Rating.FIVE_STARS;
+                            break;
+                        default:
+                            System.out.println("Invalid rating. Please enter one of: 1, 1.5, ..., 5");
+                            return;
+                    }
+
+                    FilterRating rating = new FilterRating(selectedRating);
+
+                    //Checking if the same filter has been applied.
+                    if(!selectedFilters.contains(rating))
+                        selectedFilters.add(rating);
+                    else
+                        System.out.println("Rating filter already selected.");
+                    break;
+
+
+                case "food category":
+                    System.out.println("Select a food Category: ");
+                    String foodCategory = scanner.nextLine();
+
+                    ProductCategory selectedFoodCategory;
+
+                    switch (foodCategory) {
+                        case "souvlaki":
+                            selectedFoodCategory = ProductCategory.SOUVLAKI;
+                            break;
+                        case "burger":
+                            selectedFoodCategory = ProductCategory.BURGER;
+                            break;
+                        case "pizza":
+                            selectedFoodCategory = ProductCategory.PIZZA;
+                            break;
+                        case "crepe":
+                            selectedFoodCategory = ProductCategory.CREPE;
+                            break;
+                        case "coffee":
+                            selectedFoodCategory = ProductCategory.COFFEE;
+                            break;
+                        case "sushi":
+                            selectedFoodCategory = ProductCategory.SUSHI;
+                            break;
+                        case "sandwich":
+                            selectedFoodCategory = ProductCategory.SANDWICH;
+                            break;
+                        case "pasta":
+                            selectedFoodCategory = ProductCategory.PASTA;
+                            break;
+                        case "brunch":
+                            selectedFoodCategory = ProductCategory.BRUNCH;
+                            break;
+                        case "steak":
+                            selectedFoodCategory = ProductCategory.STEAK;
+                            break;
+                        case "soup":
+                            selectedFoodCategory = ProductCategory.SOUP;
+                            break;
+                        case "tea":
+                            selectedFoodCategory = ProductCategory.TEA;
+                            break;
+                        case "waffle":
+                            selectedFoodCategory = ProductCategory.WAFFLE;
+                            break;
+                        case "ice cream":
+                            selectedFoodCategory = ProductCategory.ICE_CREAM;
+                            break;
+                        case "tacos":
+                            selectedFoodCategory = ProductCategory.TACOS;
+                            break;
+                        case "beverage":
+                            selectedFoodCategory = ProductCategory.BEVERAGE;
+                            break;
+                        case "pie":
+                            selectedFoodCategory = ProductCategory.PIE;
+                            break;
+                        default:
+                            System.out.println("Invalid category. Please choose a valid food category.");
+                            return;
+                    }
+
+                    FilterFoodCategory filterCategory = new FilterFoodCategory(selectedFoodCategory);
+
+                    //Checking if the same filter has been applied.
+                    if(!selectedFilters.contains(filterCategory))
+                        selectedFilters.add(filterCategory);
+                    else
+                        System.out.println("Rating filter already selected.");
+                    break;
+
+                default:
+                    System.out.println("Invalid Filter. Select either price, rating, or food Category.");
+                    break;
+            }
+            System.out.println("Select another filter?: ");
+            String answer = scanner.nextLine();
+            if (answer.equalsIgnoreCase("N")) finished = true;
+        } while(!finished);
+
+        performSearch(selectedFilters);
+
+    }
+
 
     public static void main(String[] args) {
         //Create a client object
@@ -161,7 +346,11 @@ public class Client extends User{
 
             switch (choice) {
                 case "1":
-                    searchStores(); //TODO
+                    try {
+                        client.searchMenuOption(); //TODO
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
                 case "2": //Implemented
                     try {
@@ -183,4 +372,6 @@ public class Client extends User{
             }
         }
     }
+
+
 }

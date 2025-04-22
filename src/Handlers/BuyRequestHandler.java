@@ -6,7 +6,7 @@ import DTO.UpdateBuyDataRequestDTO;
 import other.Entity;
 import other.Master;
 import other.ProductCategory;
-import other.WorkerNode;
+import Node.WorkerNode;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

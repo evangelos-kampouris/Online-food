@@ -1,5 +1,6 @@
 package Filtering;
 
+import other.ProductCategory;
 import other.StoreCategories;
 import other.Shop;
 
@@ -8,18 +9,17 @@ import java.util.Set;
 
 public class CriteriaFoodCategories implements Criteria {
 
-    @Override
-    public Set<Shop> meetCriteria(Set<Shop> shops, Filtering filter) {
-        Set<Shop> shopMeetCriteria = new HashSet<>();
+    Filtering filter;
 
+    public CriteriaFoodCategories(Filtering filter){this.filter = filter;}
+    @Override
+    public Set<Shop> meetCriteria(Set<Shop> shops) {
+        if(filter == null)
+            throw new IllegalArgumentException("No filter Provided in the criteria.");
         if(filter instanceof FilterFoodCategory selected_filter){
-            StoreCategories foodCategory = (StoreCategories) selected_filter.getFilter();
-            for (Shop shop : shops) {
-                if(shop.getFoodCategories().contains(foodCategory)){
-                    shopMeetCriteria.add(shop);
-                }
-            }
+            ProductCategory foodCategory = (ProductCategory) selected_filter.getFilter();
+            shops.removeIf(shop -> !shop.getFoodCategories().contains(foodCategory));
         }
-        return shopMeetCriteria;
+        return shops;
     }
 }
