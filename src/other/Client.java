@@ -365,8 +365,13 @@ public class Client extends User{
                     break;
                 case "0":
                     running = false;
+                    try {
+                        client.closeConnection();
+                        System.out.println("Connection closed.");
+                    } catch (IOException e) {
+                        System.out.println("Error closing connection: " + e.getMessage());
+                    }
                     System.out.println("Exiting Client Console. Goodbye!");
-                    //TODO CLOSE CONNECITON
                     break;
                 default:
                     System.out.println("Invalid option. Please try again.");

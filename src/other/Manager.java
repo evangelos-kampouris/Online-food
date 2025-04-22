@@ -163,6 +163,12 @@ public class Manager extends User{
 
                 case "0":
                     running = false;
+                    try {
+                        manager.closeConnection();
+                        System.out.println("Connection closed.");
+                    } catch (IOException e) {
+                        System.out.println("Error closing connection: " + e.getMessage());
+                    }
                     System.out.println("Exiting Manager...");
                     break;
 
