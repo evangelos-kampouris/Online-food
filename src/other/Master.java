@@ -22,18 +22,19 @@ public class Master extends Entity{
     //Workers
     private final String worker_config_filepath = "Worker_config.json";
     private List<WorkerNode> workersList;
-    public HashRing workers;
-    private final int VIRTUAL_NODES_OF_WORKER = 2;
+    public HashRing workers;  //Ο Master χρησιμοποιεί έναν HashRing για να κάνει κατανομή καταστημάτων στους Workers
+    private final int VIRTUAL_NODES_OF_WORKER = 2;  /*Για κάθε Worker, ο HashRing βάζει δύο αντίγραφα του worker στο δαχτυλίδι,
+                                                      για να έχουμε καλύτερη κατανομή φορτίου.*/
 
     //stats
-    Map<StoreCategories, Integer> storeCategoryStat = new HashMap<>();
-    Map<ProductCategory, Integer> productCategoryStat = new HashMap<>();
+    Map<StoreCategories, Integer> storeCategoryStat = new HashMap<>();       //Κρατάει πόσες πωλήσεις έγιναν ανά τύπο καταστήματος (π.χ. "Pizzeria" → 100 πωλήσεις).
+    Map<ProductCategory, Integer> productCategoryStat = new HashMap<>();     //Κρατάει πόσες πωλήσεις έγιναν ανά τύπο προϊόντος (π.χ. "Pizza" → 300 πωλήσεις).
 
 
 
     //Constructor
     public Master() throws IOException {
-        this.serverSocket = new ServerSocket(PORT); //TODO NEEDS REWORK
+        this.serverSocket = new ServerSocket(PORT);
         System.out.println("Server started - Listening on port " + PORT); //logging.
         initiateWorkers();
         workers = new HashRing(workersList, VIRTUAL_NODES_OF_WORKER);
@@ -46,11 +47,12 @@ public class Master extends Entity{
     private void acceptConnections() throws IOException {
         while(!serverSocket.isClosed()) {
             Socket connectionSocket = serverSocket.accept();
-            System.out.println("Accepted connection from " + connectionSocket.getRemoteSocketAddress());
+            System.out.println("Accepted connection from " + connectionSocket.getRemoteSocketAddress());  //Τυπώνει ποιος συνδέθηκε (IP address και port του client)
 
             //handle the connection
-            Runnable handler = new Handler(this, connectionSocket);
-            Thread thread = new Thread(handler);
+            Runnable handler = new Handler(this, connectionSocket);  //this = Master
+            Thread thread = new Thread(handler);                           /*καινούργιο νήμα για να τρέξει αυτόν τον Handler
+                                                                             Έτσι κάθε πελάτης εξυπηρετείται σε δικό του thread*/
             thread.start();
         }
     }
@@ -59,10 +61,9 @@ public class Master extends Entity{
      */
     private void initiateWorkers() {
         try (FileReader reader = new FileReader(worker_config_filepath)) {
-            Gson gson = new Gson();
-            WorkerConfigWrapper wrapper = gson.fromJson(reader, WorkerConfigWrapper.class);
-            this.workersList = wrapper.getWorkers();
-
+            Gson gson = new Gson();                                               //μετατροπή JSON σε Java αντικείμενα
+            WorkerConfigWrapper wrapper = gson.fromJson(reader, WorkerConfigWrapper.class); //τα μετατρέπει σε ένα Java αντικείμενο τύπου WorkerConfigWrapper
+            this.workersList = wrapper.getWorkers();    //Παίρνει από το wrapper τη λίστα των Workers
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

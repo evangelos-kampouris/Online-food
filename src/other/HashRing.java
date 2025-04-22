@@ -13,10 +13,10 @@ import java.util.TreeMap;
  * The class responsible for mapping stores to workers, and vice versa.
  */
 public class HashRing {
-    private final TreeMap<Long, WorkerNode> ring = new TreeMap<>();
+    private final TreeMap<Long, WorkerNode> ring = new TreeMap<>();         //long = hash value
     private final int virtualNodes; //Used to evenly spread the keys among the key ring, helping in fault tolerance, load balancing and reduced impact when nodes are added/removed.
 
-
+    //Ξεχωριστή μεταβλητή για κάθε νήμα
     private static final ThreadLocal<MessageDigest> SHA1_DIGEST = ThreadLocal.withInitial(() -> {
         try {
             return MessageDigest.getInstance("SHA-1");
@@ -25,6 +25,7 @@ public class HashRing {
         }
     });
 
+    //https://chatgpt.com/share/680607e8-9154-8008-b1b6-39bfc767f647
     public HashRing(List<WorkerNode> workers, int virtualNodes){
         this.virtualNodes = virtualNodes;
         for (WorkerNode node : workers) {
@@ -35,8 +36,12 @@ public class HashRing {
     public void addNode(WorkerNode node) {
         for (int i = 0; i < virtualNodes; i++) {
             String virtualId = node.toString() + "#" + i; //We add + "#" + i to create x virtual Nodes per node.
+                                                            //Το toString() του WorkerNode μας δίνει κάτι σαν "localhost:55001".
+                                                            //Προσθέτουμε #i για να φτιάξουμε διαφορετικά IDs:
+                                                            //localhost:55001#0
+                                                            //localhost:55001#1
             long hash = sha1Hash(virtualId);
-            ring.put(hash, node);
+            ring.put(hash, node);                           //Στο TreeMap ring, με κλειδί το hash και τιμή τον WorkerNode
             System.out.println("Added virtual node: " + virtualId + " → hash: " + hash);
         }
     }

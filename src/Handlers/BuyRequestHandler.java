@@ -28,7 +28,7 @@ public class BuyRequestHandler implements Handling {
             ObjectOutputStream handler_out = new ObjectOutputStream(workerConnectionSocket.getOutputStream());
             ObjectInputStream handler_in = new ObjectInputStream(workerConnectionSocket.getInputStream()); //TODO CHECK IF USELESS.
 
-            UpdateBuyDataRequestDTO updateBuyDataRequestDTO = new UpdateBuyDataRequestDTO(buyRequestDTO);
+            UpdateBuyDataRequestDTO updateBuyDataRequestDTO = new UpdateBuyDataRequestDTO(buyRequestDTO);   //Update
             handler_out.writeObject(updateBuyDataRequestDTO);
             handler_out.flush();
 
