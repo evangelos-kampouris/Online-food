@@ -87,15 +87,13 @@ public class Client extends User{
      */
     private void performPurchase(Shop selectedShop) throws IOException {
         BuyRequestDTO buyRequestDTO = new BuyRequestDTO(selectedShop, cart);
-        out.writeObject(buyRequestDTO);
-        out.flush();
+        sendRequest(buyRequestDTO);
         closeConnection(); //close the connection
     }
 
     private void performSearch(List<Filtering> filters) throws IOException{
         SearchRequestDTO searchRequestDTO = new SearchRequestDTO(filters);
-        out.writeObject(searchRequestDTO);
-        out.flush();
+        sendRequest(searchRequestDTO);
         closeConnection(); //close the connection
     }
 
