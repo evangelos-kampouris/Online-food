@@ -2,6 +2,8 @@ package other;
 
 import Node.WorkerNode;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -31,6 +33,11 @@ public class HashRing {
         for (WorkerNode node : workers) {
             addNode(node);
         }
+    }
+
+
+    public Collection<WorkerNode> getAllNodes() {
+        return new HashSet<>(ring.values());
     }
 
     public void addNode(WorkerNode node) {
