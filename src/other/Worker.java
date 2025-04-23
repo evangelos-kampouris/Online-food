@@ -9,8 +9,6 @@ public class Worker extends Entity {
     private static String MASTER_IP;
     private static String MASTER_PORT;
 
-
-
     private ReducerNode REDUCER = new ReducerNode("localhost", 8999); //temporary data information.
 
     private String IP;

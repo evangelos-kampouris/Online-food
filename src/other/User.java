@@ -28,7 +28,7 @@ public abstract class User {
         id = ++idCounter;
     }
 
-    public abstract void establishConnection() throws IOException;
+    public abstract void establishConnection() throws IOException, ClassNotFoundException;
 
     protected abstract void showMenu();
 

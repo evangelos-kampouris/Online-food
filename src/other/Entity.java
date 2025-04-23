@@ -1,4 +1,8 @@
 package other;
 
-public class Entity {
+import java.io.IOException;
+
+public abstract class Entity {
+
+    protected abstract void acceptConnections() throws IOException;
 }

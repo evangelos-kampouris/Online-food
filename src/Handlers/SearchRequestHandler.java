@@ -21,15 +21,14 @@ public class SearchRequestHandler implements Handling{
         SearchRequestDTO dto = (SearchRequestDTO) request;
         List<Filtering> filters = dto.getSelectedFilters();
 
-
         List<WorkerNode> workers = master.getWorkersList();
 
-        //TODO DO IT WITH THREADS
-        //TODO WILL NEED A REQUEST ID TO MATCH SO THAT MASTER MATCHES THE REQUEST FROM THE REDUCER
+        //TODO DO IT WITH THREADS https://chatgpt.com/c/6808fc2c-b11c-8008-9b35-9f8e4dc00705
+
         for(WorkerNode worker : workers){
             try(Socket socket = new Socket(worker.getIp(), worker.getPort())){
                 ObjectOutputStream outTOWorker = new ObjectOutputStream(socket.getOutputStream());
-                FilterMapDTO filterMapDTO = new FilterMapDTO(filters);
+                FilterMapDTO filterMapDTO = new FilterMapDTO(filters, dto.getRequestId());
 
                 outTOWorker.writeObject(filterMapDTO);
                 outTOWorker.flush();

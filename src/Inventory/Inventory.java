@@ -3,10 +3,7 @@ package Inventory;
 import other.*;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public abstract class Inventory implements Serializable {
 
@@ -43,6 +40,10 @@ public abstract class Inventory implements Serializable {
 
     public Map<String, InventoryItem> getInventory() {
         return inventory;
+    }
+
+    public List<InventoryItem> getInventoryItems() {
+        return new ArrayList<InventoryItem>(inventory.values());
     }
 
     public int getItemQuantity(String productName){
@@ -88,6 +89,14 @@ public abstract class Inventory implements Serializable {
         return inventory.get(productName).getProduct();
     }
 
+    public List<Product> getAllProducts() {
+        List<Product> products = new ArrayList<>();
+        for (Map.Entry<String, InventoryItem> entry : inventory.entrySet()) {
+            products.add(entry.getValue().getProduct());
+        }
+        return products;
+    }
+
     /**
      * @param productName
      * @param itemStock
@@ -109,7 +118,6 @@ public abstract class Inventory implements Serializable {
             System.err.println("NULL value in inventory");
         }
     }
-
 
 
     // ====== PRIVATE HELPERS FOR VALUE CHECKING ======
