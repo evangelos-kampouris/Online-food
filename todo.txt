@@ -1,0 +1,4 @@
+* CHECK FOR IDs
+    - Add a data structure to hold active requests ID
+
+* Rate Store Request/handle
