@@ -1,8 +1,8 @@
-package other;
+package Entity;
 
 import Node.ReducerNode;
+import other.Shop;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +21,11 @@ public class Worker extends Entity {
     public Map<String, Shop> getShops() {
         return shops;
     }
+
+    public Shop getShop(String shopName) {
+        return shops.get(shopName);
+    }
+
     public ReducerNode getREDUCER() {
         return REDUCER;
     }
