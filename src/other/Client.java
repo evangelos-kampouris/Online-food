@@ -20,17 +20,20 @@ public class Client extends User{
     //Shop Name, Shop's catalog -- Received upon  initialization - Updated on search.
     Map<String, Shop> shops;
 
+    private Coordinates coordinates;
 
 
-    public Client() {
+
+    public Client(Coordinates coordinates) {
         super();
         this.cart = new InventoryCart();
+        this.coordinates = coordinates;
     }
 
 
     //Networking
     @Override
-    public void establishConnection() throws IOException {
+    public void establishConnection() throws IOException, ClassNotFoundException {
         System.out.println("Initializing connection to Master...");
 
         connectionSocket = new Socket(MASTER_IP, MASTER_PORT);
@@ -39,8 +42,12 @@ public class Client extends User{
         in = new ObjectInputStream(connectionSocket.getInputStream());
 
         System.out.println("Connection to Master Achieved.");
+        System.out.println("Receiving necessary data...");
 
-        //TODO PERFORM A SEARCH FOR SHOPS IN 5KM.
+        //PERFORM A SEARCH FOR SHOPS IN 5KM.
+        FilterCords km5search = new FilterCords(5.0f, coordinates);
+        performSearch(List.of(km5search));
+
     }
 
     private static void searchStores() {
@@ -88,13 +95,39 @@ public class Client extends User{
     private void performPurchase(Shop selectedShop) throws IOException {
         BuyRequestDTO buyRequestDTO = new BuyRequestDTO(selectedShop, cart);
         sendRequest(buyRequestDTO);
-        closeConnection(); //close the connection
     }
 
-    private void performSearch(List<Filtering> filters) throws IOException{
+    private void performSearch(List<Filtering> filters) throws IOException, ClassNotFoundException {
         SearchRequestDTO searchRequestDTO = new SearchRequestDTO(filters);
         sendRequest(searchRequestDTO);
-        closeConnection(); //close the connection
+
+        //Wait and read response from server.
+        List<Shop> receivedShops  = null; //The response forwards the shops in a list.
+        Object receivedObject = in.readObject();
+
+        //Casting Checks
+        if (receivedObject instanceof List<?> rawList) {
+            // Make sure the list contains Shop objects
+            if (!rawList.isEmpty() && rawList.get(0) instanceof Shop) {
+                receivedShops = (List<Shop>) rawList;
+            } else if (rawList.isEmpty()) {
+                // It's safe to cast empty list
+                receivedShops = (List<Shop>) rawList;
+            } else {
+                System.err.println("Received a list, but it doesn't contain Shop objects.");
+            }
+        } else {
+            System.err.println("Received object is not a List.");
+        }
+
+        if (receivedShops != null) {
+            for (Shop shop : receivedShops) {
+                String shopName = shop.getName();
+                System.out.println("Received shop: " + shopName);
+                shops.put(shopName, shop);
+            }
+        }
+
     }
 
 
@@ -145,7 +178,7 @@ public class Client extends User{
         System.out.println("Purchase Completed.");
     }
 
-    private void searchMenuOption() throws IOException{
+    private void searchMenuOption() throws IOException, ClassNotFoundException {
         boolean finished = false;
         List<Filtering> selectedFilters = new ArrayList<>();
 
@@ -316,7 +349,7 @@ public class Client extends User{
                     System.out.println("Invalid Filter. Select either price, rating, or food Category.");
                     break;
             }
-            System.out.println("Select another filter?: ");
+            System.out.println("Select another filter? [Y/N]: ");
             String answer = scanner.nextLine();
             if (answer.equalsIgnoreCase("N")) finished = true;
         } while(!finished);
@@ -328,10 +361,11 @@ public class Client extends User{
 
     public static void main(String[] args) {
         //Create a client object
-        Client client = new Client();
+        Coordinates coordinates = new Coordinates(1.2,1.3);//temporary
+        Client client = new Client(coordinates);
         try {
             client.establishConnection();
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
@@ -347,7 +381,7 @@ public class Client extends User{
                 case "1":
                     try {
                         client.searchMenuOption();
-                    } catch (IOException e) {
+                    } catch (IOException | ClassNotFoundException e) {
                         throw new RuntimeException(e);
                     }
                     break;

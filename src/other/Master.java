@@ -1,6 +1,7 @@
 package other;
 
 import Node.WorkerNode;
+import Wrappers.*;
 import com.google.gson.Gson;
 
 import java.io.FileNotFoundException;
@@ -11,6 +12,7 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 public class Master extends Entity{
 
@@ -51,7 +53,8 @@ public class Master extends Entity{
     /**
      * @throws IOException
      */
-    private void acceptConnections() throws IOException {
+    @Override
+    protected void acceptConnections() throws IOException {
         while(!serverSocket.isClosed()) {
             Socket connectionSocket = serverSocket.accept();
             System.out.println("Accepted connection from " + connectionSocket.getRemoteSocketAddress());  //Τυπώνει ποιος συνδέθηκε (IP address και port του client)

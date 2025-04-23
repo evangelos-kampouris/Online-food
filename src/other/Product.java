@@ -1,15 +1,15 @@
 package other;
 
 public class Product {
-    private int price;
+    private float price;
     private String name;
     private ProductCategory productCategory;
 
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 

@@ -2,6 +2,7 @@ package other;
 
 import Inventory.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,15 +16,39 @@ public class Shop {
     private Rating rating;
     private Price price;
 
-    //Missing products data
     private ShopInventory catalog;
+    private int numberOfProducts;
 
     //product sales
-    private float revenue;
+    private float revenue = 0.0f;
+
+    private Coordinates coordinates;
+
+    private String logoPath;
 
     private static final int PRICE_LOW_TOP_LIMIT = 5;
     private static final int PRICE_MEDIUM_TOP_LIMIT = 10;
     private static final int PRICE_HIGH_TOP_LIMIT = 15;
+
+    public Shop(String name, ShopInventory catalog, Rating rating, int numberOfRatings, Set<ProductCategory> productCategory, StoreCategories storeCategory, Coordinates coordinates) {
+        this.name = name;
+        this.storeCategory = storeCategory;
+        this.numberOfRatings = numberOfRatings;
+        this.productCategory = productCategory;
+        this.catalog = catalog;
+        this.rating = rating;
+        this.coordinates = coordinates;
+
+
+        //Average Price Calculation
+        List<Product> products = catalog.getAllProducts();
+        float total_price = 0.0f;
+        for (Product product : products) {
+            total_price += product.getPrice();
+            numberOfProducts++;
+        }
+        setPrice(total_price/numberOfProducts);
+    }
 
     public synchronized void addRevenue(float revenue){ this.revenue += revenue; }
 
@@ -118,5 +143,12 @@ public class Shop {
         this.storeCategory = storeCategory;
     }
 
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
 
 }
