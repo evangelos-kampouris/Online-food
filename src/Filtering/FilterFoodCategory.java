@@ -1,7 +1,5 @@
 package Filtering;
-
 import other.ProductCategory;
-
 
 public class FilterFoodCategory implements Filtering {
     ProductCategory selectedCategory;

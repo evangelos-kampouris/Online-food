@@ -1,9 +1,10 @@
-package other;
+package User;
 
 import DTO.BuyRequestDTO;
 import DTO.SearchRequestDTO;
 import Filtering.*;
 import Inventory.InventoryCart;
+import other.*;
 
 
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.net.Socket;
 import java.util.*;
 
 
-public class Client extends User{
+public class Client extends User {
 
     //Attributes
     InventoryCart cart;

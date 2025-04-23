@@ -4,8 +4,8 @@ import DTO.FilterMapDTO;
 import DTO.Request;
 import DTO.SearchRequestDTO;
 import Filtering.Filtering;
-import other.Entity;
-import other.Master;
+import Entity.Entity;
+import Entity.Master;
 import Node.WorkerNode;
 
 import java.io.ObjectInputStream;

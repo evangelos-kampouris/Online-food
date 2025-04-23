@@ -1,16 +1,14 @@
-package other;
+package User;
 
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.util.Scanner;
+
 import com.google.gson.Gson;
 import DTO.*;
+import other.ActionType;
 
-public class Manager extends User{
+public class Manager extends User {
 
     @Override
     public void establishConnection() throws IOException {

@@ -1,8 +1,7 @@
 package Handlers;
 
 import DTO.Request;
-import other.Entity;
-import other.Master;
+import Entity.Entity;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -12,7 +11,7 @@ import java.net.Socket;
 
 public interface Handling extends Serializable {
 
-    public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in);
+    void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in);
 
     default void closeConnection(Socket connection, ObjectOutputStream out, ObjectInputStream in){
         // Close resources safely

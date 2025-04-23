@@ -3,8 +3,8 @@ package Handlers;
 import DTO.AddStoreRequestDTO;
 import DTO.Request;
 import Node.WorkerNode;
-import other.Entity;
-import other.Master;
+import Entity.Entity;
+import Entity.Master;
 import other.Shop;
 
 import java.io.IOException;

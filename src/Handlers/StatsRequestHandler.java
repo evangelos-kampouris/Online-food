@@ -2,16 +2,13 @@ package Handlers;
 
 import DTO.Request;
 import DTO.StatsRequestDTO;
-import Node.WorkerNode;
-import other.Entity;
-import other.Master;
+import Entity.Entity;
+import Entity.Master;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 public class StatsRequestHandler implements Handling{

@@ -1,5 +1,6 @@
 package other;
 
+import Entity.Entity;
 import Handlers.*;
 
 import java.io.IOException;

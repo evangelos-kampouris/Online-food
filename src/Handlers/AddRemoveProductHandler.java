@@ -3,8 +3,8 @@ package Handlers;
 import DTO.AddRemoveProductDTO;
 import DTO.Request;
 import Node.WorkerNode;
-import other.Entity;
-import other.Master;
+import Entity.Entity;
+import Entity.Master;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

@@ -3,8 +3,8 @@ package Handlers;
 import DTO.ChangeStockDTO;
 import DTO.Request;
 import Node.WorkerNode;
-import other.Entity;
-import other.Master;
+import Entity.Entity;
+import Entity.Master;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -29,11 +29,12 @@ public class ChangeStockHandler implements Handling{
         }
 
         try (Socket socket = new Socket(worker.getIp(), worker.getPort());
-             ObjectOutputStream handler_out = new ObjectOutputStream(socket.getOutputStream());
-             ObjectInputStream handler_in = new ObjectInputStream(socket.getInputStream())) {
+             ObjectOutputStream handler_out = new ObjectOutputStream(socket.getOutputStream())) {
 
             handler_out.writeObject(dto);
             handler_out.flush();
+
+            //TODO NEED TO CHECK FOR CONNECTION CLOSURE
 
             System.out.println("Stock change for '" + dto.getProductName() + "' sent to worker " + worker.getIp());
 

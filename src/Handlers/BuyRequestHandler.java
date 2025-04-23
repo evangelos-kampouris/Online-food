@@ -3,8 +3,8 @@ package Handlers;
 import DTO.BuyRequestDTO;
 import DTO.Request;
 import DTO.UpdateBuyDataRequestDTO;
-import other.Entity;
-import other.Master;
+import Entity.Entity;
+import Entity.Master;
 import other.ProductCategory;
 import Node.WorkerNode;
 
@@ -24,9 +24,8 @@ public class BuyRequestHandler implements Handling {
         WorkerNode worker = master.workers.getNodeForKey(storeName);
 
         //Initiating connection and forwarding the request to the worker.
-        try(Socket workerConnectionSocket = new Socket(worker.getIp(), worker.getPort());) {
-            ObjectOutputStream handler_out = new ObjectOutputStream(workerConnectionSocket.getOutputStream());
-            ObjectInputStream handler_in = new ObjectInputStream(workerConnectionSocket.getInputStream()); //TODO CHECK IF USELESS.
+        try(Socket workerConnectionSocket = new Socket(worker.getIp(), worker.getPort()) ;
+            ObjectOutputStream handler_out = new ObjectOutputStream(workerConnectionSocket.getOutputStream())){
 
             UpdateBuyDataRequestDTO updateBuyDataRequestDTO = new UpdateBuyDataRequestDTO(buyRequestDTO);   //Update
             handler_out.writeObject(updateBuyDataRequestDTO);

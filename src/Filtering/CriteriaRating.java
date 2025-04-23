@@ -2,7 +2,6 @@ package Filtering;
 
 import other.*;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class CriteriaRating implements Criteria {

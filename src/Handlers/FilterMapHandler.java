@@ -3,12 +3,10 @@ package Handlers;
 import DTO.FilterMapDTO;
 import DTO.MapResultDTO;
 import DTO.Request;
-import DTO.UpdateBuyDataRequestDTO;
 import Filtering.Filtering;
-import Node.ReducerNode;
-import other.Entity;
+import Entity.Entity;
 import other.Shop;
-import other.Worker;
+import Entity.Worker;
 import Filtering.*;
 
 import java.io.IOException;
@@ -93,8 +91,8 @@ public class FilterMapHandler implements Handling{
         }
 
         //Initiating connection and forwarding the request to the reducer.
-        try(Socket ReducerConnectionSocket = new Socket(worker.getREDUCER().getIp(), worker.getREDUCER().getPort());) {
-            ObjectOutputStream handler_out = new ObjectOutputStream(ReducerConnectionSocket.getOutputStream());
+        try(Socket ReducerConnectionSocket = new Socket(worker.getREDUCER().getIp(), worker.getREDUCER().getPort());
+            ObjectOutputStream handler_out = new ObjectOutputStream(ReducerConnectionSocket.getOutputStream())){
 
             MapResultDTO mapResultDTO = new MapResultDTO(results, dto.getRequestId());
             handler_out.writeObject(mapResultDTO);

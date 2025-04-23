@@ -1,7 +1,7 @@
 package Handlers;
 
 import DTO.Request;
-import other.Entity;
+import Entity.Entity;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
