@@ -371,8 +371,6 @@ public class Client extends User{
                     } catch (IOException e) {
                         System.out.println("An error occurred while closing connection.");
                     }
-
-                    //TODO CLOSE CONNECITON
                     break;
                 default:
                     System.out.println("Invalid option. Please try again.");
