@@ -87,15 +87,13 @@ public class Client extends User{
      */
     private void performPurchase(Shop selectedShop) throws IOException {
         BuyRequestDTO buyRequestDTO = new BuyRequestDTO(selectedShop, cart);
-        out.writeObject(buyRequestDTO);
-        out.flush();
+        sendRequest(buyRequestDTO);
         closeConnection(); //close the connection
     }
 
     private void performSearch(List<Filtering> filters) throws IOException{
         SearchRequestDTO searchRequestDTO = new SearchRequestDTO(filters);
-        out.writeObject(searchRequestDTO);
-        out.flush();
+        sendRequest(searchRequestDTO);
         closeConnection(); //close the connection
     }
 
@@ -348,7 +346,7 @@ public class Client extends User{
             switch (choice) {
                 case "1":
                     try {
-                        client.searchMenuOption(); //TODO
+                        client.searchMenuOption();
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -365,13 +363,12 @@ public class Client extends User{
                     break;
                 case "0":
                     running = false;
+                    System.out.println("Exiting Client Console. Goodbye!");
                     try {
                         client.closeConnection();
-                        System.out.println("Connection closed.");
                     } catch (IOException e) {
-                        System.out.println("Error closing connection: " + e.getMessage());
+                        System.out.println("An error occurred while closing connection.");
                     }
-                    System.out.println("Exiting Client Console. Goodbye!");
                     break;
                 default:
                     System.out.println("Invalid option. Please try again.");

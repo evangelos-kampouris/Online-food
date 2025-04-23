@@ -1,5 +1,7 @@
 package other;
 
+import DTO.Request;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -29,6 +31,11 @@ public abstract class User {
     public abstract void establishConnection() throws IOException;
 
     protected abstract void showMenu();
+
+    protected void sendRequest(Request request) throws IOException{
+        out.writeObject(request);
+        out.flush();
+    }
 
     protected void closeConnection() throws IOException {
         if (in != null) in.close();
