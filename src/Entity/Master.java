@@ -4,6 +4,7 @@ import Node.WorkerNode;
 import Wrappers.*;
 import com.google.gson.Gson;
 import other.HashRing;
+import other.PendingRequests;
 import other.ProductCategory;
 import other.StoreCategories;
 
@@ -26,7 +27,7 @@ public class Master extends Entity {
     Map<StoreCategories, Integer> storeCategoryStat = new HashMap<>();       //Κρατάει πόσες πωλήσεις έγιναν ανά τύπο καταστήματος (π.χ. "Pizzeria" → 100 πωλήσεις).
     Map<ProductCategory, Integer> productCategoryStat = new HashMap<>();     //Κρατάει πόσες πωλήσεις έγιναν ανά τύπο προϊόντος (π.χ. "Pizza" → 300 πωλήσεις).
 
-
+    public Map<Integer, PendingRequests> pendingRequests = new HashMap<>(); // <RequestID, ObjectInput/OutputStreams>
 
     //Constructor
     public Master(String IP, int PORT) {

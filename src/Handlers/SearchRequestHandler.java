@@ -7,6 +7,7 @@ import Filtering.Filtering;
 import Entity.Entity;
 import Entity.Master;
 import Node.WorkerNode;
+import other.PendingRequests;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -21,6 +22,7 @@ public class SearchRequestHandler implements Handling{
         SearchRequestDTO dto = (SearchRequestDTO) request;
         List<Filtering> filters = dto.getSelectedFilters();
 
+        master.pendingRequests.put(dto.getRequestId(), new PendingRequests(out, in));
         List<WorkerNode> workers = master.getWorkersList();
 
         //TODO DO IT WITH THREADS https://chatgpt.com/c/6808fc2c-b11c-8008-9b35-9f8e4dc00705

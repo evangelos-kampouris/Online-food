@@ -5,3 +5,5 @@
 
 * Map result Handler Vagg
 * ReducerResultHandler
+
+* Inspect all the handlers for closing connections.

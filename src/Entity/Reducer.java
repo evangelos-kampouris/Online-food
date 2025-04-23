@@ -1,17 +1,57 @@
 package Entity;
 
+import Node.MasterNode;
+import other.ReducerShuffler;
+import other.Shop;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class Reducer extends Entity {
 
-    private final String MASTER_IP;
-    private final int MASTER_PORT;
+    private final MasterNode masterNode;
 
-    public Reducer(String IP, int PORT, String masterIP, int masterPort) {
+    //MapResult Data
+    //private final Object lock_shuffle = new Object(); //Used to lock updates in the data structure used to combine different results from the Workers.
+    private final int totalWorkers; //The total workers in the infrastructure.
+
+
+
+    private final Map<Integer, ReducerShuffler> reducerShufflers = new HashMap<>(); //RequestID - shuffle operation
+
+    public Reducer(String IP, int PORT, MasterNode masterNode, int totalWorkers) {
         super(IP, PORT);
-        MASTER_IP = masterIP;
-        MASTER_PORT = masterPort;
+        this.masterNode = masterNode;
+        this.totalWorkers = totalWorkers;
     }
 
-    public int getMASTER_PORT() {return MASTER_PORT;}
+    /**
+     * Called by each MapResultHandler as results come in.
+     */
+    public void shuffle(int requestID, Map<String, Shop> partialResult) {
+        ReducerShuffler shuffler;
+        synchronized (reducerShufflers) {
+            shuffler = reducerShufflers.computeIfAbsent(requestID, id -> {
+                ReducerShuffler rs = new ReducerShuffler(this, requestID, masterNode, totalWorkers);
+                rs.start();                   // explicit start of its waiter thread
+                return rs;
+            });
+        }
+        shuffler.collect(partialResult);
+    }
 
-    public String getMASTER_IP() {return MASTER_IP;}
+    /** Called by a shuffler when it’s completely done. */
+    public void cleanupShuffler(int requestId) {
+        synchronized (reducerShufflers) {
+            reducerShufflers.remove(requestId);
+        }
+    }
+
+    public int getMASTER_PORT() {return masterNode.getPort();}
+
+    public String getMASTER_IP() {return masterNode.getIp();}
+
+    public int getTotalWorkers() {
+        return totalWorkers;
+    }
 }
