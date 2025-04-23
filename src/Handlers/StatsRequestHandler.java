@@ -24,37 +24,20 @@ public class StatsRequestHandler implements Handling{
 
         String type = dto.getType(); // "store" or "product"
 
-        Map<String, Integer> aggregatedStats = new HashMap<>();
-
-        Collection<WorkerNode> workers = master.workers.getAllNodes();
-        for(WorkerNode worker : master.workers.getAllNodes()){
-            try (Socket socket = new Socket(worker.getIp(), worker.getPort());
-                 ObjectOutputStream handler_out = new ObjectOutputStream(socket.getOutputStream());
-                 ObjectInputStream handler_in = new ObjectInputStream(socket.getInputStream())) {
-
-                handler_out.writeObject(dto);
-                handler_out.flush();
-
-                Object response = handler_in.readObject();
-                if(response instanceof Map<?, ?> workerStats){
-                    for(Map.Entry<?, ?> entry : workerStats.entrySet()){
-                        String key = (String) entry.getKey();
-                        Integer value = (Integer) entry.getValue();
-                        if (aggregatedStats.containsKey(key)) {
-                            aggregatedStats.put(key, aggregatedStats.get(key) + value);
-                        } else {
-                            aggregatedStats.put(key, value);
-                        }
-                    }
-                }
-            }catch(IOException | ClassNotFoundException e){
-                System.out.println("Failed to get stats from worker: " + worker.getIp() + " - " + e.getMessage());
+        try{
+            if("store".equalsIgnoreCase(type)){
+                Map<?, Integer> storeStats = master.getStoreCategoryStats();
+                out.writeObject(storeStats);
             }
-        }
-        try {
-            out.writeObject(aggregatedStats);
-        } catch (IOException e) {
-            System.out.println("Failed to send aggregated stats to manager: " + e.getMessage());
+            else if("product".equalsIgnoreCase(type)){
+                Map<?, Integer> productStats = master.getProductCategoryStats();
+                out.writeObject(productStats);
+            }
+            else{
+                out.writeObject("Invalid stats type: " + type);
+            }
+        }catch(IOException e){
+            System.out.println("Failed to send stats to Manager: " + e.getMessage());
         }
     }
 }
