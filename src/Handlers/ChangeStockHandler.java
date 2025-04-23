@@ -25,11 +25,6 @@ public class ChangeStockHandler implements Handling{
 
         if (worker == null) {
             System.out.println("No available worker for store: " + storeName);
-            try {
-                out.writeObject("Worker not found for store: " + storeName);
-            } catch (IOException e) {
-                System.out.println("Failed to send error response: " + e.getMessage());
-            }
             return;
         }
 
@@ -41,15 +36,9 @@ public class ChangeStockHandler implements Handling{
             handler_out.flush();
 
             System.out.println("Stock change for '" + dto.getProductName() + "' sent to worker " + worker.getIp());
-            out.writeObject("Stock change request sent successfully for store: " + storeName);
 
         } catch (IOException e) {
             System.out.println("Failed to send stock change to worker: " + e.getMessage());
-            try {
-                out.writeObject("Error sending stock change to worker: " + e.getMessage());
-            } catch (IOException ioException) {
-                System.out.println("Failed to send error response: " + ioException.getMessage());
-            }
         }
     }
 }

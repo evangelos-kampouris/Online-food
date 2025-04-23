@@ -40,6 +40,13 @@ public class Master extends Entity{
         workers = new HashRing(workersList, VIRTUAL_NODES_OF_WORKER);
     }
 
+    public Map<StoreCategories, Integer> getStoreCategoryStats() {
+        return storeCategoryStat;
+    }
+
+    public Map<ProductCategory, Integer> getProductCategoryStats() {
+        return productCategoryStat;
+    }
 
     /**
      * @throws IOException
