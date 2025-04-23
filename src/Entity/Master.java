@@ -1,20 +1,20 @@
-package other;
+package Entity;
 
 import Node.WorkerNode;
 import Wrappers.*;
 import com.google.gson.Gson;
+import other.HashRing;
+import other.ProductCategory;
+import other.StoreCategories;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
-public class Master extends Entity{
+public class Master extends Entity {
     //Workers
     private final String worker_config_filepath = "Worker_config.json";
     private List<WorkerNode> workersList;

@@ -1,4 +1,6 @@
-package other;
+package Entity;
+
+import other.Handler;
 
 import java.io.IOException;
 import java.net.ServerSocket;

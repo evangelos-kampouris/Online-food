@@ -1,6 +1,4 @@
-package other;
-
-import Node.ReducerNode;
+package Entity;
 
 public class Reducer extends Entity {
 
