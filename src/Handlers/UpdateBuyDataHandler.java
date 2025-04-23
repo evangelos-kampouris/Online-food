@@ -2,9 +2,9 @@ package Handlers;
 
 import DTO.Request;
 import DTO.UpdateBuyDataRequestDTO;
-import other.Entity;
+import Entity.Entity;
 import other.Shop;
-import other.Worker;
+import Entity.Worker;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -16,10 +16,9 @@ public class UpdateBuyDataHandler implements Handling{
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
         Worker worker = (Worker) entity;
         UpdateBuyDataRequestDTO DTO = (UpdateBuyDataRequestDTO) request;
-        Shop shop = DTO.data.getShop();
-        String storeName = shop.getName();
+        String storeName = DTO.data.getShop().getName();
 
-        shop.sell(DTO.data.getCart()); //sell
+        worker.getShop(storeName).sell(DTO.data.getCart()); //sell
 
         //Close connection
         closeConnection(connection, out, in);
