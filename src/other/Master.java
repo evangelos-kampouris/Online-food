@@ -15,12 +15,6 @@ import java.util.Map;
 
 
 public class Master extends Entity{
-
-    //Networking
-    private final String IP = "localhost";
-    private final int PORT = 55000;
-    private final ServerSocket serverSocket;
-
     //Workers
     private final String worker_config_filepath = "Worker_config.json";
     private List<WorkerNode> workersList;
@@ -35,9 +29,8 @@ public class Master extends Entity{
 
 
     //Constructor
-    public Master() throws IOException {
-        this.serverSocket = new ServerSocket(PORT);
-        System.out.println("Server started - Listening on port " + PORT); //logging.
+    public Master(String IP, int PORT) {
+        super(IP, PORT);
         initiateWorkers();
         workers = new HashRing(workersList, VIRTUAL_NODES_OF_WORKER);
     }
@@ -45,27 +38,10 @@ public class Master extends Entity{
     public Map<StoreCategories, Integer> getStoreCategoryStats() {
         return storeCategoryStat;
     }
-
     public Map<ProductCategory, Integer> getProductCategoryStats() {
         return productCategoryStat;
     }
 
-    /**
-     * @throws IOException
-     */
-    @Override
-    protected void acceptConnections() throws IOException {
-        while(!serverSocket.isClosed()) {
-            Socket connectionSocket = serverSocket.accept();
-            System.out.println("Accepted connection from " + connectionSocket.getRemoteSocketAddress());  //Τυπώνει ποιος συνδέθηκε (IP address και port του client)
-
-            //handle the connection
-            Runnable handler = new Handler(this, connectionSocket);  //this = Master
-            Thread thread = new Thread(handler);                           /*καινούργιο νήμα για να τρέξει αυτόν τον Handler
-                                                                             Έτσι κάθε πελάτης εξυπηρετείται σε δικό του thread*/
-            thread.start();
-        }
-    }
     /**
      * Reads who the workers are from the file
      */
@@ -74,8 +50,9 @@ public class Master extends Entity{
             Gson gson = new Gson();                                               //μετατροπή JSON σε Java αντικείμενα
             WorkerConfigWrapper wrapper = gson.fromJson(reader, WorkerConfigWrapper.class); //τα μετατρέπει σε ένα Java αντικείμενο τύπου WorkerConfigWrapper
             this.workersList = wrapper.getWorkers();    //Παίρνει από το wrapper τη λίστα των Workers
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            for(WorkerNode worker : workersList) { //Adds the workers to the Hashring
+                workers.addNode(worker);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
