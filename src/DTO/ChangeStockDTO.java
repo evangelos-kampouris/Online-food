@@ -1,6 +1,8 @@
 package DTO;
 
-public class ChangeStockDTO extends Request{
+import java.io.Serializable;
+
+public class ChangeStockDTO extends Request implements Serializable {
 
     private String storeName;
     private String productName;
