@@ -13,6 +13,15 @@ public enum Rating {
 
     private final double value;
 
+    public static Rating fromValue(double value) {
+        for (Rating rating : Rating.values()) {
+            if (rating.getValue() == value) {
+                return rating;
+            }
+        }
+        throw new IllegalArgumentException("Invalid rating value: " + value);
+    }
+
     Rating(double value) {
         this.value = value;
     }

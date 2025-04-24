@@ -1,22 +1,24 @@
 package DTO;
 
+import other.Rating;
+
 import java.io.Serializable;
 
 public class RateStoreRequestDTO extends Request implements Serializable{
 
     private String storeName;
-    private int stars;
+    private Rating rating;
 
-    public RateStoreRequestDTO(String storeName, int stars) {
+    public RateStoreRequestDTO(String storeName, Rating rating) {
         this.storeName = storeName;
-        this.stars = stars;
+        this.rating = rating;
     }
 
     public String getStoreName() {
         return storeName;
     }
 
-    public int getStars(){
-        return stars;
+    public Rating getRating(){
+        return rating;
     }
 }

@@ -29,17 +29,25 @@ public class ChangeStockHandler implements Handling{
         }
 
         try (Socket socket = new Socket(worker.getIp(), worker.getPort());
-             ObjectOutputStream handler_out = new ObjectOutputStream(socket.getOutputStream())) {
+             ObjectOutputStream handler_out = new ObjectOutputStream(socket.getOutputStream());
+             ObjectInputStream handler_in = new ObjectInputStream(socket.getInputStream())) {
 
             handler_out.writeObject(dto);
             handler_out.flush();
 
-            //TODO NEED TO CHECK FOR CONNECTION CLOSURE
+            Object response = handler_in.readObject();
+
+            //out.writeObject(response);
 
             System.out.println("Stock change for '" + dto.getProductName() + "' sent to worker " + worker.getIp());
 
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             System.out.println("Failed to send stock change to worker: " + e.getMessage());
+            try {
+                //out.writeObject("Error: " + e.getMessage());
+            } catch (IOException ex) {
+                System.out.println("Failed to notify client.");
+            }
         }
     }
 }

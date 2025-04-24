@@ -31,7 +31,7 @@ public class StatsRequestHandler implements Handling{
                 out.writeObject(productStats);
             }
             else{
-                out.writeObject("Invalid stats type: " + type);
+                //out.writeObject("Invalid stats type: " + type);
             }
         }catch(IOException e){
             System.out.println("Failed to send stats to Manager: " + e.getMessage());

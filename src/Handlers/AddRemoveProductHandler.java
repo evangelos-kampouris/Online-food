@@ -31,7 +31,7 @@ public class AddRemoveProductHandler implements Handling{
 
                 if(worker == null){
                     System.out.println("No Worker found for store: " + storeName);
-                    out.writeObject("No worker found for store: " + storeName);
+                    //out.writeObject("No worker found for store: " + storeName);
                     return;
                 }
 
@@ -43,11 +43,11 @@ public class AddRemoveProductHandler implements Handling{
                     handler_out.flush();
 
                     System.out.println("Forwarded Add/Remove product request to worker " + worker.getIp());
-                    out.writeObject("Request forwarded to worker.");
+                    //out.writeObject("Request forwarded to worker.");
 
                 }catch (IOException e){
                     System.out.println("Error forwarding to worker: " + e.getMessage());
-                    out.writeObject("Error forwarding to worker: " + e.getMessage());
+                    //out.writeObject("Error forwarding to worker: " + e.getMessage());
                 }
             }
             else if(entity instanceof Worker worker){
@@ -55,7 +55,7 @@ public class AddRemoveProductHandler implements Handling{
 
                 if(shop == null){
                     System.out.println("Store not found: " + storeName);
-                    out.writeObject("Store not found: " + storeName);
+                    //out.writeObject("Store not found: " + storeName);
                     return;
                 }
 
@@ -65,15 +65,15 @@ public class AddRemoveProductHandler implements Handling{
                     shop.getCatalog().addProduct(product.getName(), product, 100);
 
                     System.out.println("Added product to store: " + dto.getProductName());
-                    out.writeObject("Product added successfully: " + dto.getProductName());
+                    //out.writeObject("Product added successfully: " + dto.getProductName());
                 }
                 else if(dto.getAction() == ActionType.REMOVE){
                     shop.getCatalog().setItemEnableStatus(dto.getProductName(), false);
                     System.out.println("Removed product from store: " + dto.getProductName());
-                    out.writeObject("Product removed successfully: " + dto.getProductName());
+                    //out.writeObject("Product removed successfully: " + dto.getProductName());
                 }
                 else{
-                    out.writeObject("Invalid action type.");
+                    //out.writeObject("Invalid action type.");
                 }
             }
         }catch (IOException e){

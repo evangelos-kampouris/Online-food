@@ -27,7 +27,7 @@ public class AddStoreRequestHandler implements Handling{
         if (worker == null) {
             System.out.println("No available worker for store: " + storeName);
             try {
-                out.writeObject("Worker not found for store: " + storeName);
+                //out.writeObject("Worker not found for store: " + storeName);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -41,12 +41,12 @@ public class AddStoreRequestHandler implements Handling{
             handler_out.flush();
 
             System.out.println("Store '" + storeName + "' sent to worker at " + worker.getIp() + ":" + worker.getPort());
-            out.writeObject("Store added successfully: " + storeName);
+            //out.writeObject("Store added successfully: " + storeName);
 
         } catch (IOException e) {
             System.out.println("Failed to send store to worker: " + e.getMessage());
             try {
-                out.writeObject("Error sending store to worker: " + e.getMessage());
+                //out.writeObject("Error sending store to worker: " + e.getMessage());
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }

@@ -61,20 +61,20 @@ public class Client extends User {
         String storeName = scanner.nextLine();
 
         System.out.print("Enter the rate of the store (1 to5): ");
-        int stars = Integer.parseInt(scanner.nextLine());
+        double stars = double.parseDouble(scanner.nextLine());
 
-        if(stars < 1 || stars > 5) {
-            System.out.println("Invalid rating. Must be between 1 and 5.");
-            return;
-        }
 
-        RateStoreRequestDTO rateRequest = new RateStoreRequestDTO(storeName, stars);
+        try {
+            Rating rating = Rating.fromValue(stars);
+            RateStoreRequestDTO rateRequest = new RateStoreRequestDTO(storeName, rating);
 
-        try{
             out.writeObject(rateRequest);
             out.flush();
-            System.out.println("Successfully Rate Store Request.");
-        }catch (IOException e){
+            System.out.println("Successfully sent rating for store.");
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid rating. Please enter one of: 1.0, 1.5, ..., 5.0");
+        } catch (IOException e) {
             System.out.println("Failed to send rating: " + e.getMessage());
         }
     }
@@ -116,7 +116,7 @@ public class Client extends User {
      */
     private void performPurchase(Shop selectedShop) throws IOException {
         BuyRequestDTO buyRequestDTO = new BuyRequestDTO(selectedShop, cart);
-        out.writeObject(buyRequestDTO);
+        //out.writeObject(buyRequestDTO);
         out.flush();
         try{
             closeConnection();
