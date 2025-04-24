@@ -1,6 +1,7 @@
 package User;
 
 import DTO.BuyRequestDTO;
+import DTO.RateStoreRequestDTO;
 import DTO.SearchRequestDTO;
 import Filtering.*;
 import Inventory.InventoryCart;
@@ -19,7 +20,7 @@ public class Client extends User {
     //Attributes
     InventoryCart cart;
     //Shop Name, Shop's catalog -- Received upon  initialization - Updated on search.
-    Map<String, Shop> shops;
+    Map<String, Shop> shops = new HashMap<>();
 
     private Coordinates coordinates;
 
@@ -52,10 +53,30 @@ public class Client extends User {
     }
 
     private static void searchStores() {
-
+        searchMenuOption();
     }
 
-    private static void rateStore(/*String storeName*/) {
+    private static void rateStore() {
+        System.out.print("Enter the name of the store to rate: ");
+        String storeName = scanner.nextLine();
+
+        System.out.print("Enter the rate of the store (1 to5): ");
+        int stars = Integer.parseInt(scanner.nextLine());
+
+        if(stars < 1 || stars > 5) {
+            System.out.println("Invalid rating. Must be between 1 and 5.");
+            return;
+        }
+
+        RateStoreRequestDTO rateRequest = new RateStoreRequestDTO(storeName, stars);
+
+        try{
+            out.writeObject(rateRequest);
+            out.flush();
+            System.out.println("Successfully Rate Store Request.");
+        }catch (IOException e){
+            System.out.println("Failed to send rating: " + e.getMessage());
+        }
     }
 
     private static void buyProducts() {
@@ -95,7 +116,13 @@ public class Client extends User {
      */
     private void performPurchase(Shop selectedShop) throws IOException {
         BuyRequestDTO buyRequestDTO = new BuyRequestDTO(selectedShop, cart);
-        sendRequest(buyRequestDTO);
+        out.writeObject(buyRequestDTO);
+        out.flush();
+        try{
+            closeConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void performSearch(List<Filtering> filters) throws IOException, ClassNotFoundException {
@@ -179,7 +206,7 @@ public class Client extends User {
         System.out.println("Purchase Completed.");
     }
 
-    private void searchMenuOption() throws IOException, ClassNotFoundException {
+    private static void searchMenuOption() throws IOException, ClassNotFoundException {
         boolean finished = false;
         List<Filtering> selectedFilters = new ArrayList<>();
 

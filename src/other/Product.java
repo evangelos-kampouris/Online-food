@@ -5,6 +5,12 @@ public class Product {
     private String name;
     private ProductCategory productCategory;
 
+    public Product(String name, ProductCategory productcategory, double price) {
+        this.name = name;
+        this.productCategory = productcategory;
+        this.price = (float) price;
+
+    }
     public float getPrice() {
         return price;
     }
