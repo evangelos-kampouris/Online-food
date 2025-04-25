@@ -37,7 +37,7 @@ public abstract class Entity {
             System.out.println("Accepted connection from " + connectionSocket.getRemoteSocketAddress());  //Τυπώνει ποιος συνδέθηκε (IP address και port του client)
 
             //handle the connection
-            Runnable handler = new Handler(this, connectionSocket);  //this = Master
+            Runnable handler = new Handler(this, connectionSocket);  //
             Thread thread = new Thread(handler);                           /*καινούργιο νήμα για να τρέξει αυτόν τον Handler
                                                                              Έτσι κάθε πελάτης εξυπηρετείται σε δικό του thread*/
             thread.start();
