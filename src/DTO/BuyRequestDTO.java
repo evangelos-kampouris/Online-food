@@ -9,7 +9,7 @@ import other.Shop;
  */
 public class BuyRequestDTO extends Request{
 
-    private InventoryCart cart; //TODO CONSIDER CHANGING VISIBILITY TO PUBLIC
+    private final InventoryCart cart;
     private Shop shop;
 
     public BuyRequestDTO(Shop shop, InventoryCart cart) {

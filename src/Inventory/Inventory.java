@@ -1,5 +1,6 @@
 package Inventory;
 
+import Exceptions.NoValidStockInput;
 import other.*;
 
 import java.io.Serializable;
@@ -11,33 +12,75 @@ public abstract class Inventory implements Serializable {
 
     public abstract void addProduct(String productName, Product product, int quantity);
 
-    public void removeProduct(String productName, Integer quantity){
-        //Name format check
-        if (!isValidName(productName)) {
-            System.err.println("Invalid Product Name");
-            return;
+    /**
+     * Removes a specified quantity of a product from the inventory.
+     * <p>
+     * If the quantity to remove is not specified (i.e., {@code null}), it defaults to 1.
+     * If the quantity equals the current stock, the product is removed entirely from the inventory.
+     * If the quantity is less than the current stock, the quantity is reduced accordingly.
+     * </p>
+     *
+     * @param productName the name of the product to remove; must be valid and exist in the inventory
+     * @param quantity the number of units to remove; if {@code null}, defaults to 1
+     * @throws IllegalArgumentException if the product name is invalid or the product is not found in inventory
+     * @throws NoValidStockInput if the quantity is less than or equal to 0, or greater than the available stock
+     */
+    public void removeProduct(String productName, Integer quantity) throws NoValidStockInput, IllegalArgumentException {
+        // Validate product name
+        if (productName == null || !isValidName(productName)) {
+            throw new IllegalArgumentException("Invalid product name.");
         }
-        //Existence check
-        if(!inventory.containsKey(productName)){
-            System.err.println("Product not in cart");
-            return;
+        // Check if product exists in inventory
+        if (!inventory.containsKey(productName)) {
+            throw new IllegalArgumentException("Product not found in inventory.");
         }
-        //Removals
+
         InventoryItem item = inventory.get(productName);
-        int existanceQuantity = item.getQuantity();
+        int existingQuantity = item.getQuantity();
 
-        int quantityToReduce;
+        // Default to removing 1 if quantity is not provided
+        int quantityToReduce = (quantity != null) ? quantity : 1;
 
-        if(existanceQuantity > 1) {
-            if (quantity != null) quantityToReduce = quantity;
-            else quantityToReduce = 1;
-
-            item.setQuantity(existanceQuantity - quantityToReduce);
+        // Check if quantity to remove is valid
+        if (quantityToReduce <= 0) {
+            throw new NoValidStockInput("Quantity must be greater than 0.");
         }
-        else
+
+        if (quantityToReduce > existingQuantity) {
+            throw new NoValidStockInput("Quantity exceeds the available stock.");
+        }
+
+        // Remove or update quantity
+        if (quantityToReduce == existingQuantity) {
             inventory.remove(productName);
+        } else {
+            item.setQuantity(existingQuantity - quantityToReduce);
+        }
     }
 
+    /**
+     * Removes a product completely from the Inventory.
+     * @param productName
+     * @throws IllegalArgumentException
+     */
+    public void removeProductCompletely(String productName) throws IllegalArgumentException {
+        // Validate product name
+        if (productName == null || !isValidName(productName)) {
+            throw new IllegalArgumentException("Invalid product name.");
+        }
+        // Check if product exists in inventory
+        if (!inventory.containsKey(productName)) {
+            throw new IllegalArgumentException("Product not found in inventory.");
+        }
+        inventory.remove(productName);
+    }
+
+    /**
+     * Clears the inventory
+     */
+    public void clearInventory() {
+        inventory.clear();
+    }
     public Map<String, InventoryItem> getInventory() {
         return inventory;
     }
