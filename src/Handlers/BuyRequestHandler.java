@@ -5,6 +5,7 @@ import DTO.Request;
 import DTO.UpdateBuyDataRequestDTO;
 import Entity.Entity;
 import Entity.Master;
+import Responses.ResponseDTO;
 import other.ProductCategory;
 import Node.WorkerNode;
 
@@ -25,21 +26,30 @@ public class BuyRequestHandler implements Handling {
 
         //Initiating connection and forwarding the request to the worker.
         try(Socket workerConnectionSocket = new Socket(worker.getIp(), worker.getPort()) ;
-            ObjectOutputStream handler_out = new ObjectOutputStream(workerConnectionSocket.getOutputStream())){
+            ObjectOutputStream handler_out = new ObjectOutputStream(workerConnectionSocket.getOutputStream());
+            ObjectInputStream handler_in = new ObjectInputStream(workerConnectionSocket.getInputStream())){
 
             UpdateBuyDataRequestDTO updateBuyDataRequestDTO = new UpdateBuyDataRequestDTO(buyRequestDTO);   //Update
             handler_out.writeObject(updateBuyDataRequestDTO);
             handler_out.flush();
 
-        } catch (IOException e) {
+            //Wait and receive response
+            ResponseDTO<Request> response = (ResponseDTO<Request>) handler_in.readObject();
+            if(response.isSuccess()){
+                //Add statistics
+                master.addStatsStoreCategory(buyRequestDTO.getShop().getStoreCategory()); //Store
+
+                for(ProductCategory category : buyRequestDTO.getCart().getProductCategories()){ //Product
+                    master.addStatsProductCategory(category);
+                }
+            }
+            request_out.writeObject(response);
+            handler_out.flush();
+
+        } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
-        //statistics
-        master.addStatsStoreCategory(buyRequestDTO.getShop().getStoreCategory()); //Store
 
-        for(ProductCategory category : buyRequestDTO.getCart().getProductCategories()){ //Product
-            master.addStatsProductCategory(category);
-        }
     }
 }

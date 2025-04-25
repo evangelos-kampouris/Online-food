@@ -1,5 +1,6 @@
 package other;
 
+import Exceptions.NoValidStockInput;
 import Inventory.*;
 
 import java.util.List;
@@ -52,7 +53,7 @@ public class Shop {
 
     public synchronized void addRevenue(float revenue){ this.revenue += revenue; }
 
-    public synchronized void sell(InventoryCart cart){
+    public synchronized void sell(InventoryCart cart) throws IllegalArgumentException, NoValidStockInput {
         //Add the revenue from the cart
         float profit = cart.getCost();
         addRevenue(profit);

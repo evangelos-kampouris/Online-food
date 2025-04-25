@@ -2,9 +2,11 @@ package User;
 
 import DTO.BuyRequestDTO;
 import DTO.RateStoreRequestDTO;
+import DTO.Request;
 import DTO.SearchRequestDTO;
 import Filtering.*;
 import Inventory.InventoryCart;
+import Responses.ResponseDTO;
 import other.*;
 
 
@@ -23,8 +25,6 @@ public class Client extends User {
     Map<String, Shop> shops = new HashMap<>();
 
     private final Coordinates coordinates;
-
-
 
     public Client(Coordinates coordinates) {
         super();
@@ -49,7 +49,6 @@ public class Client extends User {
         //PERFORM A SEARCH FOR SHOPS IN 5KM.
         FilterCords km5search = new FilterCords(5.0f, coordinates);
         performSearch(List.of(km5search));
-
     }
 
     public void addToCart(Product product, int quantity) {
@@ -59,35 +58,22 @@ public class Client extends User {
         addToCart(product, 1);
     }
 
-    //TODO NEEDS FIXING
-//    /**
-//     * @param product
-//     *
-//     * Removes the product from the cart COMPLETELY.
-//     */
-    public void removeFromCart(Product product) {
-        cart.removeProduct(product.getName(), null);
-    }
-
-//    /**
-//     * @param product
-//     *
-//     * Removes the product from the cart COMPLETELY.
-//     */
-//    public void removeFromCart(Product product, int quantity) {
-//        cart.removeProduct(product.getName());
-//    }
-
     /**
-     * @throws IOException
-     *
-     * Send the buy request.
+     * Sends the buy request, logs the results, clears the inventory if successfull.
      */
-    private void performPurchase(Shop selectedShop) throws IOException {
+    private void performPurchase(Shop selectedShop){
         BuyRequestDTO buyRequestDTO = new BuyRequestDTO(selectedShop, cart);
-        sendRequest(buyRequestDTO);
+        try {
+            sendRequest(buyRequestDTO);
+            ResponseDTO<Request> response = (ResponseDTO<Request>) in.readObject();
+            System.out.println(response.getMessage());
+            if(response.isSuccess()) {
+                cart.clearInventory();
+            }
 
-        //TODO Empty the cart
+        } catch (ClassNotFoundException | IOException e) {
+            System.out.println("Something went wrong: \n" + e.getMessage());
+        }
     }
 
     private void performSearch(List<Filtering> filters) throws IOException, ClassNotFoundException {
@@ -114,6 +100,7 @@ public class Client extends User {
         }
 
         if (receivedShops != null) {
+            shops.clear();
             for (Shop shop : receivedShops) {
                 String shopName = shop.getName();
                 System.out.println("Received shop: " + shopName);
