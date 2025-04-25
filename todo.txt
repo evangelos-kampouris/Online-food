@@ -22,4 +22,4 @@
 
 * when an addition of a store happens client and manager must get updated.
 
-*
+* Update the handler
