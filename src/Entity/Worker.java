@@ -11,7 +11,7 @@ public class Worker extends Entity {
     private ReducerNode REDUCER = null;
 
     //Shop Name, Shop -- The shops the worker holds.  Received from Master.
-    public Map<String, Shop> shops = new HashMap<>();
+    private Map<String, Shop> shops = new HashMap<>();
 
     public Worker(String IP, int PORT, String reducerIP, int reducerPort) {
         super(IP, PORT);
@@ -28,6 +28,10 @@ public class Worker extends Entity {
 
     public ReducerNode getREDUCER() {
         return REDUCER;
+    }
+
+    public synchronized void addShop(String shopName, Shop shop) {
+        shops.put(shopName, shop);
     }
 
 

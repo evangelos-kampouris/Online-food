@@ -102,5 +102,4 @@ public class AddRemoveProductHandler implements Handling{
         else
             System.err.println("Request forwarded  to wrong entity, Entity is not a Master or Worker");
     }
-
 }

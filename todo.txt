@@ -18,3 +18,8 @@
 
 
 * AFTER MANAGER CHANGE TO LOOK LIKE CLIENT, NEED TO UPDATE CHANGE STOCK REQUEST TO RECEIVE BACK THE UPDATED SHOP.
+
+
+* when an addition of a store happens client and manager must get updated.
+
+*

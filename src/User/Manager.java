@@ -29,8 +29,9 @@ public class Manager extends User {
         System.out.println("1. Add Store");
         System.out.println("2. Add/Remove Product");
         System.out.println("3. Change Stock");
-        System.out.println("4. View Sales by Store Category");
-        System.out.println("5. View Sales by Product Category");
+        System.out.println("4. Updates stores"); //TODO
+        System.out.println("5. View Sales by Store Category");
+        System.out.println("6. View Sales by Product Category");
         System.out.println("0. Exit");
         System.out.print("Select an option: ");
     }
@@ -57,7 +58,7 @@ public class Manager extends User {
 
                     try (FileReader reader = new FileReader(jsonPath)) {
                         Gson gson = new Gson();
-                        AddStoreRequestDTO addStoreRequestDTO = gson.fromJson(reader, AddStoreRequestDTO.class);
+                        AddStoreRequestDTO addStoreRequestDTO = gson.fromJson(reader, AddStoreRequestDTO.class); //TODO WILL NEED A WRAPPER IMPLEMMENTATION IS POSSIBLE WRONG
 
                         manager.sendRequest(addStoreRequestDTO);
 
@@ -150,7 +151,7 @@ public class Manager extends User {
 
                     break;
 
-                case "4":
+                case "5":
                     StatsRequestDTO statsRequestByStore = new StatsRequestDTO("store");
 
                     try {
@@ -161,7 +162,7 @@ public class Manager extends User {
                     }
                     break;
 
-                case "5":
+                case "6":
                     StatsRequestDTO statsRequestByProduct = new StatsRequestDTO("product");
 
                     try {
