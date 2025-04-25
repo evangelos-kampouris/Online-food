@@ -365,17 +365,21 @@ public class Client extends User {
         System.out.print("Enter the name of the store to rate: ");
         String storeName = scanner.nextLine();
 
-        System.out.print("Enter the rate of the store (1 to5): ");
-        double stars = scanner.nextDouble();
-        scanner.nextLine();
+        Rating rating = null;
+        while (true) {
+            System.out.print("Enter the rate of the store (1 to 5): ");
+            double stars = scanner.nextDouble();
+            scanner.nextLine(); // consume newline
 
-        try {
-            Rating rating = Rating.fromValue(stars);
-            performRating(storeName, rating);
+            try {
+                rating = Rating.fromValue(stars); // assuming this throws IllegalArgumentException if invalid
+                break; // input is valid, exit loop
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid rating. Please enter one of: 1.0, 1.5, ..., 5.0");
+            }
         }
-        catch (IllegalArgumentException e) {
-            System.out.println("Invalid rating. Please enter one of: 1.0, 1.5, ..., 5.0");
-        }
+
+        performRating(storeName, rating); // safe to use rating here since it's guaranteed to be valid
     }
 
     public static void main(String[] args) {
