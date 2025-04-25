@@ -1,9 +1,20 @@
-* CHECK FOR IDs
-    - Add a data structure to hold active requests ID
 
 * Rate Store Request/handle Giorgos
 
-* Map result Handler Vagg
-* ReducerResultHandler
+* update handler
 
 * Inspect all the handlers for closing connections.
+
+
+* AddRemoveProductHandler is wrong. George
+
+* Check further requests that need to update users data.
+
+
+* Stats need to wait for results.
+
+* Rating, change stock errors
+
+
+
+* AFTER MANAGER CHANGE TO LOOK LIKE CLIENT, NEED TO UPDATE CHANGE STOCK REQUEST TO RECEIVE BACK THE UPDATED SHOP.

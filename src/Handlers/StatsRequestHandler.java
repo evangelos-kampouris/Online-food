@@ -25,13 +25,16 @@ public class StatsRequestHandler implements Handling{
             if("store".equalsIgnoreCase(type)){
                 Map<?, Integer> storeStats = master.getStoreCategoryStats();
                 out.writeObject(storeStats);
+                out.flush();
             }
             else if("product".equalsIgnoreCase(type)){
                 Map<?, Integer> productStats = master.getProductCategoryStats();
                 out.writeObject(productStats);
+                out.flush();
             }
             else{
                 //out.writeObject("Invalid stats type: " + type);
+                System.out.println("Invalid stats type: " + type);
             }
         }catch(IOException e){
             System.out.println("Failed to send stats to Manager: " + e.getMessage());

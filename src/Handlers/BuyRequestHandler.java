@@ -41,7 +41,5 @@ public class BuyRequestHandler implements Handling {
         for(ProductCategory category : buyRequestDTO.getCart().getProductCategories()){ //Product
             master.addStatsProductCategory(category);
         }
-        //Closing the connection from the client
-        closeConnection(connection, request_out, request_in);
     }
 }

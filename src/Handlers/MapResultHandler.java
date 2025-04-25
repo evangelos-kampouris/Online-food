@@ -19,6 +19,6 @@ public class MapResultHandler implements Handling{
 
         reducer.shuffle(mapResultDTO.getRequestId(), mapResultDTO.getMapResult()); //sending the final result is done by the reducer.
 
-        closeConnection(connection, out, in); //Close the connection from worker to client.
+        closeConnection(connection, out, in); //Close the connection from worker to Reducer.
     }
 }

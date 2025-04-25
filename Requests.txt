@@ -1,13 +1,13 @@
 ALL POSSIBLE REQUESTS:
 
 Client to Master:
-	* Search(filters) - ID GEN TICK
-	* Buy - ID GEN TICK
+	* Search(filters) - ID GEN TICK - CLOSE CONNECTION CHECK
+	* Buy - ID GEN TICK - CLOSE CONNECTION CHECK
 
 Manager to Master:
-	* Addition of store (json format) - ID GEN
-	* Addition of new product - ID GEN
-	* Change of product stock - ID GEN
+	* Addition of store (json format) - ID GEN - CLOSE CONNECTION CHECK
+	* Addition/removal of new product - ID GEN - CLOSE CONNECTION CHECK
+	* Change of product stock - ID GEN - CLOSE CONNECTION CHECK
 	* Stats - ID GEN
 
 Master to Workers:
@@ -15,7 +15,7 @@ Master to Workers:
 	* Updates stocks, revenue etc. after buy -> SAME AS BUY BUT JUST FORWARDED. - ID INHERIT
 	
 Worker to Reducer:
-	* map result ( <StoreName - StoreID, StoreJson> ) - ID INHERIT
+	* map result ( <StoreName - StoreID, StoreJson> ) - ID INHERIT - CLOSE CONNECTION CHECK
 
 Reducer to Master:
-	* Results (list of shops) - ID INHERIT
+	* Results (list of shops) - ID INHERIT - CLOSE CONNECTION CHECK

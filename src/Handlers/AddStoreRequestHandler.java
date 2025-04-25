@@ -26,11 +26,6 @@ public class AddStoreRequestHandler implements Handling{
 
         if (worker == null) {
             System.out.println("No available worker for store: " + storeName);
-            try {
-                //out.writeObject("Worker not found for store: " + storeName);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
             return;
         }
         try (Socket socket = new Socket(worker.getIp(), worker.getPort());
