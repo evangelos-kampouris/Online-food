@@ -3,8 +3,8 @@ package Handlers;
 import DTO.ChangeStockDTO;
 import DTO.Request;
 import Node.WorkerNode;
-import Entity.Entity;
-import Entity.Master;
+import Entity.*;
+import other.Shop;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -16,38 +16,61 @@ public class ChangeStockHandler implements Handling{
 
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
-        Master master = (Master) entity;
         ChangeStockDTO dto = (ChangeStockDTO) request;
-
         String storeName = dto.getStoreName();
 
-        WorkerNode worker = master.workers.getNodeForKey(storeName);
+        if(entity instanceof Master master){
+            WorkerNode worker = master.workers.getNodeForKey(storeName);
 
-        if (worker == null) {
-            System.out.println("No available worker for store: " + storeName);
-            return;
-        }
+            if(worker == null){
+                System.out.println("No Worker found for store: " + storeName);
+                //out.writeObject("No worker found for store: " + storeName);
+                return;
+            }
 
-        try (Socket socket = new Socket(worker.getIp(), worker.getPort());
-             ObjectOutputStream handler_out = new ObjectOutputStream(socket.getOutputStream());
-             ObjectInputStream handler_in = new ObjectInputStream(socket.getInputStream())) {
+            try (Socket socket = new Socket(worker.getIp(), worker.getPort());
+                 ObjectOutputStream handler_out = new ObjectOutputStream(socket.getOutputStream());
+                 ObjectInputStream handler_in = new ObjectInputStream(socket.getInputStream())) {
 
-            handler_out.writeObject(dto);
-            handler_out.flush();
+                handler_out.writeObject(dto);
+                handler_out.flush();
 
-            Object response = handler_in.readObject();
+                System.out.println("Forwarded Add/Remove product request to worker " + worker.getIp() + "Awaiting Response...");
 
-            //out.writeObject(response);
+                //Need to send back the updated shop
+                Shop updateShop = (Shop) handler_in.readObject(); //Receive the update store.
+                out.writeObject(updateShop);
+                out.flush();
+                System.out.println("Updated Shop send.");
 
-            System.out.println("Stock change for '" + dto.getProductName() + "' sent to worker " + worker.getIp());
+                closeConnection(socket,handler_out,handler_in); //Close the connection with the worker.
 
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Failed to send stock change to worker: " + e.getMessage());
-            try {
-                //out.writeObject("Error: " + e.getMessage());
-            } catch (IOException ex) {
-                System.out.println("Failed to notify client.");
+            }catch (IOException e){
+                System.out.println("Error forwarding to worker: " + e.getMessage());
+                //out.writeObject("Error forwarding to worker: " + e.getMessage());
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
         }
+        else if(entity instanceof Worker worker){
+            Shop shop = worker.getShop(storeName);
+
+            if(shop == null){
+                System.out.println("Store not found: " + storeName);
+                //out.writeObject("Store not found: " + storeName);
+                return;
+            }
+            shop.getCatalog().changeStock(dto.getProductName(), dto.getNewStock());
+
+            //Send shop to master
+            try {
+                out.writeObject(shop);
+                out.flush();
+            } catch (IOException e) {
+                System.out.println("Error sending back to master the updated Shop " + e.getMessage());
+            }
+        }
+        else
+            System.err.println("Request forwarded  to wrong entity, Entity is not a Master or Worker");
     }
 }

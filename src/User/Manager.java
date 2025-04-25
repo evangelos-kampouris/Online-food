@@ -7,6 +7,7 @@ import java.io.IOException;
 import com.google.gson.Gson;
 import DTO.*;
 import other.ActionType;
+import other.Shop;
 
 public class Manager extends User {
 
@@ -131,6 +132,9 @@ public class Manager extends User {
                     } catch (IOException e) {
                         System.out.println("Failed to send stock change request: " + e.getMessage());
                     }
+
+                    //Shop updatedShop = (Shop) in.readObject(); //TODO UPDATE TO WAIT AND RECEIVE THE NEW OBJECT
+
                     break;
 
                 case "4":

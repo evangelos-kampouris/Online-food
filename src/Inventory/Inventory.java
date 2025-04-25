@@ -103,7 +103,7 @@ public abstract class Inventory implements Serializable {
      *
      * Edits the stock of an EXISTING product.
      */
-    public void setItemStock(String productName, int itemStock) {
+    public void changeStock(String productName, int itemStock) {
         if (!isValidName(productName)) return;
 
         if (itemStock < 0) {

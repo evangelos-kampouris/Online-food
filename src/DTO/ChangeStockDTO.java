@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 public class ChangeStockDTO extends Request implements Serializable {
 
-    private String storeName;
-    private String productName;
-    private int newStock;
+    private final String storeName;
+    private final String productName;
+    private final int newStock;
 
     public ChangeStockDTO(String storeName, String productName, int newStock){
         this.storeName = storeName;
