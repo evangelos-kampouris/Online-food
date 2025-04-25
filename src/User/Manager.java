@@ -7,6 +7,7 @@ import java.io.IOException;
 import com.google.gson.Gson;
 import DTO.*;
 import other.ActionType;
+import other.ProductCategory;
 import other.Shop;
 
 public class Manager extends User {
@@ -77,9 +78,12 @@ public class Manager extends User {
                     String actionInput = scanner.nextLine().toLowerCase();
 
                     ActionType action;
-
+                    int quantity = 0;
                     if (actionInput.equals("add")) {
                         action = ActionType.ADD;
+                        System.out.println("Select Quantity: ");
+                        quantity = scanner.nextInt();
+                        scanner.nextLine();
                     }
                     else if (actionInput.equals("remove")) {
                         action = ActionType.REMOVE;
@@ -89,27 +93,36 @@ public class Manager extends User {
                         break;
                     }
 
-                    String productCategory = "";
+                    ProductCategory productCategory = null;
                     double price = 0.0;
 
                     if (action == ActionType.ADD) {
-                        System.out.print("Enter Product Category: ");
-                        productCategory = scanner.nextLine();
+                        while (true) {
+                            System.out.print("Enter Product Category: ");
+                            String productCategoryInput = scanner.nextLine().toUpperCase();
+
+                            try {
+                                productCategory = ProductCategory.valueOf(productCategoryInput.toUpperCase()); // Optional: normalize input
+                                break; // valid input, exit loop
+                            } catch (IllegalArgumentException e) {
+                                System.out.println("Invalid product category. Please enter a valid product category.");
+                            }
+                        }
 
                         System.out.print("Enter Product Price: ");
                         price = scanner.nextDouble();
                         scanner.nextLine();
                     }
 
-                    AddRemoveProductDTO addRemoveProductDTO = new AddRemoveProductDTO(storeName2, productName2, action, productCategory, price);
+                    AddRemoveProductDTO addRemoveProductDTO = new AddRemoveProductDTO(storeName2, productName2, action, productCategory, price, quantity);
 
                     try {
                         manager.sendRequest(addRemoveProductDTO);
-
                         System.out.println("Product " + action + " request sent successfully.");
                     } catch (IOException e) {
                         System.out.println("Failed to send product request: " + e.getMessage());
                     }
+                    //Shop updatedShop = (Shop) in.readObject(); //TODO UPDATE TO WAIT AND RECEIVE THE NEW OBJECT
                     break;
 
                 case "3":

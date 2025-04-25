@@ -25,6 +25,21 @@ public enum ProductCategory {
         this.name = name;
     }
 
+    /**
+     *
+     * @param name
+     * @return reting enum value
+     *
+     */
+    public static ProductCategory fromValue(String name) throws IllegalArgumentException {
+        for (ProductCategory category : ProductCategory.values()) {
+            if (category.getName().equals(name)) {
+                return category;
+            }
+        }
+        throw new IllegalArgumentException("Invalid category: " + name);
+    }
+
     public String getName() {
         return name;
     }
