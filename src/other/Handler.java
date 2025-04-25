@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
+
 import DTO.*;
 
 public class Handler implements Runnable{                   //Για να μπορεί να τρέχει σε δικό του thread
@@ -15,7 +18,22 @@ public class Handler implements Runnable{                   //Για να μπο
     ObjectOutputStream out;
     ObjectInputStream in;
 
+    Map<Class<?>, Handling> handlerMap = new HashMap<>();
+
     public Handler(Entity entity, Socket connection){
+        handlerMap.put(AddStoreRequestDTO.class, new AddStoreRequestHandler());
+        handlerMap.put(AddProductDTO.class, new AddProductHandler());
+        handlerMap.put(BuyRequestDTO.class, new BuyRequestHandler());
+        handlerMap.put(ChangeStockDTO.class, new ChangeStockHandler());
+        handlerMap.put(FilterMapDTO.class, new FilterMapHandler());
+        handlerMap.put(MapResultDTO.class, new MapResultHandler());
+        handlerMap.put(RateStoreRequestDTO.class, new RateStoreRequestHandler());
+        handlerMap.put(ReducerResultDTO.class, new ReducerResultHandler());
+        handlerMap.put(RemoveProductDTO.class, new RemoveProductHandler());
+        handlerMap.put(SearchRequestDTO.class, new SearchRequestHandler());
+        handlerMap.put(StatsRequestDTO.class, new StatsRequestHandler());
+        handlerMap.put(UpdateBuyDataRequestDTO.class, new UpdateBuyDataHandler());
+
         this.connection = connection;
         this.entity = entity;
         try {
@@ -32,55 +50,15 @@ public class Handler implements Runnable{                   //Για να μπο
      */
     public void handle(Entity entity, Socket connection) {
         try {
-            Object receivedObject = in.readObject();                 //Ο πελάτης έχει στείλει π.χ. ένα BuyRequestDTO, AddStoreRequestDTO, κτλ.
+            Request receivedObject = (Request) in.readObject();                 //Ο πελάτης έχει στείλει π.χ. ένα BuyRequestDTO, AddStoreRequestDTO, κτλ.
                                                                     //ένα από τις επιλογές του request.txt
+            Handling handler = handlerMap.get(receivedObject.getClass());
 
-            if(receivedObject instanceof BuyRequestDTO DTO){
-                BuyRequestHandler buyRequestHandler = new BuyRequestHandler();
-                buyRequestHandler.handle(entity, connection, DTO, out, in);
-            }
-
-            else if(receivedObject instanceof AddStoreRequestDTO DTO){
-                AddStoreRequestHandler addStoreRequestHandler = new AddStoreRequestHandler();
-                addStoreRequestHandler.handle(entity, connection, DTO, out, in);
-            }
-
-            else if(receivedObject instanceof ChangeStockDTO DTO){
-                ChangeStockHandler changeStockHandler = new ChangeStockHandler();
-                changeStockHandler.handle(entity, connection, DTO, out, in);
-            }
-
-            else if(receivedObject instanceof FilterMapDTO DTO){
-                FilterMapHandler filterMapHandler = new FilterMapHandler();
-                filterMapHandler.handle(entity, connection, DTO, out, in);
-            }
-
-            else if(receivedObject instanceof MapResultDTO DTO){
-                MapResultHandler mapResultHandler = new MapResultHandler();
-                mapResultHandler.handle(entity, connection, DTO, out, in);
-            }
-
-            else if(receivedObject instanceof ReducerResultDTO DTO){
-                ReducerResultHandler reducerResultHandler = new ReducerResultHandler();
-                reducerResultHandler.handle(entity, connection, DTO, out, in);
-            }
-
-            else if(receivedObject instanceof SearchRequestDTO DTO){
-                SearchRequestHandler searchRequestHandler = new SearchRequestHandler();
-                searchRequestHandler.handle(entity, connection, DTO, out, in);
-            }
-
-            else if(receivedObject instanceof StatsRequestDTO DTO){
-                StatsRequestHandler statsRequestHandler = new StatsRequestHandler();
-                statsRequestHandler.handle(entity, connection, DTO, out, in);
-            }
-
-            else if(receivedObject instanceof UpdateBuyDataRequestDTO DTO){
-                UpdateBuyDataHandler updateBuyDataHandler = new UpdateBuyDataHandler();
-                updateBuyDataHandler.handle(entity, connection, DTO, out, in);
-            }
-            else if (receivedObject instanceof RateStoreRequestDTO DTO) {
-                new RateStoreRequestHandler().handle(entity, connection, DTO, out, in);
+            if (handler != null) {
+                handler.handle(entity, connection, receivedObject, out, in);
+            } else {
+                // Handle unknown DTO
+                System.out.println("No handler for: " + receivedObject.getClass());
             }
             //EACH CONNECTION IS TO BE CLOSED IN THE HANDLERS
         } catch (IOException | ClassNotFoundException e) {
