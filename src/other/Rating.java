@@ -13,7 +13,13 @@ public enum Rating {
 
     private final double value;
 
-    public static Rating fromValue(double value) {
+    /**
+     *
+     * @param value
+     * @return reting enum value
+     *
+     */
+    public static Rating fromValue(double value) throws IllegalArgumentException {
         for (Rating rating : Rating.values()) {
             if (rating.getValue() == value) {
                 return rating;

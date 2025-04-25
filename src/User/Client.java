@@ -22,7 +22,7 @@ public class Client extends User {
     //Shop Name, Shop's catalog -- Received upon  initialization - Updated on search.
     Map<String, Shop> shops = new HashMap<>();
 
-    private Coordinates coordinates;
+    private final Coordinates coordinates;
 
 
 
@@ -49,37 +49,6 @@ public class Client extends User {
         //PERFORM A SEARCH FOR SHOPS IN 5KM.
         FilterCords km5search = new FilterCords(5.0f, coordinates);
         performSearch(List.of(km5search));
-
-    }
-
-    private static void searchStores() {
-        searchMenuOption();
-    }
-
-    private static void rateStore() {
-        System.out.print("Enter the name of the store to rate: ");
-        String storeName = scanner.nextLine();
-
-        System.out.print("Enter the rate of the store (1 to5): ");
-        double stars = double.parseDouble(scanner.nextLine());
-
-
-        try {
-            Rating rating = Rating.fromValue(stars);
-            RateStoreRequestDTO rateRequest = new RateStoreRequestDTO(storeName, rating);
-
-            out.writeObject(rateRequest);
-            out.flush();
-            System.out.println("Successfully sent rating for store.");
-
-        } catch (IllegalArgumentException e) {
-            System.out.println("Invalid rating. Please enter one of: 1.0, 1.5, ..., 5.0");
-        } catch (IOException e) {
-            System.out.println("Failed to send rating: " + e.getMessage());
-        }
-    }
-
-    private static void buyProducts() {
 
     }
 
@@ -116,13 +85,9 @@ public class Client extends User {
      */
     private void performPurchase(Shop selectedShop) throws IOException {
         BuyRequestDTO buyRequestDTO = new BuyRequestDTO(selectedShop, cart);
-        //out.writeObject(buyRequestDTO);
-        out.flush();
-        try{
-            closeConnection();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        sendRequest(buyRequestDTO);
+
+        //TODO Empty the cart
     }
 
     private void performSearch(List<Filtering> filters) throws IOException, ClassNotFoundException {
@@ -156,6 +121,16 @@ public class Client extends User {
             }
         }
 
+    }
+
+    private void performRating(String storeName, Rating rating) {
+        RateStoreRequestDTO rateRequest = new RateStoreRequestDTO(storeName, rating);
+        try {
+            sendRequest(rateRequest);
+            System.out.println("Successfully sent rating for store.");
+        } catch (IOException e) {
+            System.out.println("Failed to send rating: " + e.getMessage());
+        }
     }
 
 
@@ -206,7 +181,7 @@ public class Client extends User {
         System.out.println("Purchase Completed.");
     }
 
-    private static void searchMenuOption() throws IOException, ClassNotFoundException {
+    public void searchMenuOption() throws IOException, ClassNotFoundException {
         boolean finished = false;
         List<Filtering> selectedFilters = new ArrayList<>();
 
@@ -386,6 +361,22 @@ public class Client extends User {
 
     }
 
+    public void rateMenuOption() {
+        System.out.print("Enter the name of the store to rate: ");
+        String storeName = scanner.nextLine();
+
+        System.out.print("Enter the rate of the store (1 to5): ");
+        double stars = scanner.nextDouble();
+        scanner.nextLine();
+
+        try {
+            Rating rating = Rating.fromValue(stars);
+            performRating(storeName, rating);
+        }
+        catch (IllegalArgumentException e) {
+            System.out.println("Invalid rating. Please enter one of: 1.0, 1.5, ..., 5.0");
+        }
+    }
 
     public static void main(String[] args) {
         //Create a client object
@@ -420,8 +411,8 @@ public class Client extends User {
                         throw new RuntimeException(e);
                     }
                     break;
-                case "3": //TODO
-                    rateStore();
+                case "3":
+                    client.rateMenuOption();
                     break;
                 case "0":
                     running = false;
