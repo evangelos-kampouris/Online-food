@@ -44,7 +44,9 @@ public class BuyRequestHandler implements Handling {
                 }
             }
             request_out.writeObject(response);
-            handler_out.flush();
+            request_out.flush();
+
+            closeConnection(workerConnectionSocket, handler_out, handler_in);
 
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
