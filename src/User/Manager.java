@@ -78,26 +78,18 @@ public class Manager extends User {
                     System.out.print("Enter Action (add/remove): ");
                     String actionInput = scanner.nextLine().toLowerCase();
 
-                    ActionType action;
+
                     int quantity = 0;
-                    if (actionInput.equals("add")) {
-                        action = ActionType.ADD;
+                    Request request = null;
+
+                    if (actionInput.equalsIgnoreCase("add")) {
                         System.out.println("Select Quantity: ");
                         quantity = scanner.nextInt();
                         scanner.nextLine();
-                    }
-                    else if (actionInput.equals("remove")) {
-                        action = ActionType.REMOVE;
-                    }
-                    else {
-                        System.out.println("Invalid action. Please enter 'add' or 'remove'.");
-                        break;
-                    }
 
-                    ProductCategory productCategory = null;
-                    double price = 0.0;
+                        ProductCategory productCategory = null;
+                        double price = 0.0;
 
-                    if (action == ActionType.ADD) {
                         while (true) {
                             System.out.print("Enter Product Category: ");
                             String productCategoryInput = scanner.nextLine().toUpperCase();
@@ -113,18 +105,28 @@ public class Manager extends User {
                         System.out.print("Enter Product Price: ");
                         price = scanner.nextDouble();
                         scanner.nextLine();
+
+                        request = new AddProductDTO(storeName2, productName2, productCategory, price, quantity);
+                    }
+                    else if (actionInput.equalsIgnoreCase("remove")) {
+                        request = new RemoveProductDTO(storeName2,productName2);
+                    }
+                    else {
+                        System.out.println("Invalid action. Please enter 'add' or 'remove'.");
+                        break;
                     }
 
-                    AddRemoveProductDTO addRemoveProductDTO = new AddRemoveProductDTO(storeName2, productName2, action, productCategory, price, quantity);
-
-                    try {
-                        manager.sendRequest(addRemoveProductDTO);
-                        System.out.println("Product " + action + " request sent successfully.");
-                    } catch (IOException e) {
-                        System.out.println("Failed to send product request: " + e.getMessage());
+                    if(request != null) {
+                        try {
+                            manager.sendRequest(request);
+                            System.out.println("Product addition/removal request sent successfully.");
+                        } catch (IOException e) {
+                            System.out.println("Failed to send product request: " + e.getMessage());
+                        }
+                        //Shop updatedShop = (Shop) in.readObject(); //TODO UPDATE TO WAIT AND RECEIVE THE NEW OBJECT
+                        break;
                     }
-                    //Shop updatedShop = (Shop) in.readObject(); //TODO UPDATE TO WAIT AND RECEIVE THE NEW OBJECT
-                    break;
+
 
                 case "3":
                     System.out.print("Enter Store Name: ");
