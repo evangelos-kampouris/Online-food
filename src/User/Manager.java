@@ -36,6 +36,116 @@ public class Manager extends User {
         System.out.print("Select an option: ");
     }
 
+    private void addStoreOption() {
+        System.out.print("Enter path to Store JSON file: ");
+        String jsonPath = scanner.nextLine();
+
+        try (FileReader reader = new FileReader(jsonPath)) {
+            Gson gson = new Gson();
+            AddStoreRequestDTO addStoreRequestDTO = gson.fromJson(reader, AddStoreRequestDTO.class);
+
+            sendRequest(addStoreRequestDTO);
+            System.out.println("Store sent successfully.");
+        } catch (IOException e) {
+            System.out.println("Failed to send store: " + e.getMessage());
+        }
+    }
+
+    private void addRemoveProductOption() {
+        System.out.print("Enter Store Name: ");
+        String storeName = scanner.nextLine();
+
+        System.out.print("Enter Product Name: ");
+        String productName = scanner.nextLine();
+
+        System.out.print("Enter Action (add/remove): ");
+        String actionInput = scanner.nextLine().toLowerCase();
+
+        Request request = null;
+
+        if (actionInput.equals("add")) {
+            System.out.print("Select Quantity: ");
+            int quantity = scanner.nextInt();
+            scanner.nextLine();
+
+            ProductCategory productCategory = null;
+            double price;
+
+            while (true) {
+                System.out.print("Enter Product Category: ");
+                String categoryInput = scanner.nextLine().toUpperCase();
+                try {
+                    productCategory = ProductCategory.valueOf(categoryInput);
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Invalid product category. Try again.");
+                }
+            }
+
+            System.out.print("Enter Product Price: ");
+            price = scanner.nextDouble();
+            scanner.nextLine();
+
+            request = new AddProductDTO(storeName, productName, productCategory, price, quantity);
+
+        } else if (actionInput.equals("remove")) {
+            request = new RemoveProductDTO(storeName, productName);
+        } else {
+            System.out.println("Invalid action. Please enter 'add' or 'remove'.");
+            return;
+        }
+
+        if (request != null) {
+            try {
+                sendRequest(request);
+                System.out.println("Product addition/removal request sent successfully.");
+            } catch (IOException e) {
+                System.out.println("Failed to send product request: " + e.getMessage());
+            }
+        }
+    }
+
+    private void changeStockOption() {
+        System.out.print("Enter Store Name: ");
+        String storeName = scanner.nextLine();
+
+        System.out.print("Enter Product Name: ");
+        String productName = scanner.nextLine();
+
+        System.out.print("Enter New Stock Quantity: ");
+        int newStock = scanner.nextInt();
+        scanner.nextLine();
+
+        ChangeStockDTO changeStockDTO = new ChangeStockDTO(storeName, productName, newStock);
+
+        try {
+            sendRequest(changeStockDTO);
+            System.out.println("Stock change request sent successfully.");
+        } catch (IOException e) {
+            System.out.println("Failed to send stock change request: " + e.getMessage());
+        }
+    }
+
+    private void viewSalesByStoreOption() {
+        StatsRequestDTO request = new StatsRequestDTO("store");
+        try {
+            sendRequest(request);
+            System.out.println("Request to view sales by store category sent successfully.");
+        } catch (IOException e) {
+            System.out.println("Failed to send stats request: " + e.getMessage());
+        }
+    }
+
+    private void viewSalesByProductOption() {
+        StatsRequestDTO request = new StatsRequestDTO("product");
+        try {
+            sendRequest(request);
+            System.out.println("Request to view sales by product category sent successfully.");
+        } catch (IOException e) {
+            System.out.println("Failed to send stats request: " + e.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
         Manager manager = new Manager();
 
@@ -53,128 +163,22 @@ public class Manager extends User {
 
             switch (choice) {
                 case "1":
-                    System.out.print("Enter path to Store JSON file: ");
-                    String jsonPath = scanner.nextLine();
-
-                    try (FileReader reader = new FileReader(jsonPath)) {
-                        Gson gson = new Gson();
-                        AddStoreRequestDTO addStoreRequestDTO = gson.fromJson(reader, AddStoreRequestDTO.class); //TODO WILL NEED A WRAPPER IMPLEMMENTATION IS POSSIBLE WRONG
-
-                        manager.sendRequest(addStoreRequestDTO);
-
-                        System.out.println("Store sent successfully.");
-                    } catch (IOException e) {
-                        System.out.println("Failed to send store: " + e.getMessage());
-                    }
+                    manager.addStoreOption();
                     break;
-
                 case "2":
-                    System.out.print("Enter Store Name: ");
-                    String storeName2 = scanner.nextLine();
-
-                    System.out.print("Enter Product Name: ");
-                    String productName2 = scanner.nextLine();
-
-                    System.out.print("Enter Action (add/remove): ");
-                    String actionInput = scanner.nextLine().toLowerCase();
-
-
-                    int quantity = 0;
-                    Request request = null;
-
-                    if (actionInput.equalsIgnoreCase("add")) {
-                        System.out.println("Select Quantity: ");
-                        quantity = scanner.nextInt();
-                        scanner.nextLine();
-
-                        ProductCategory productCategory = null;
-                        double price = 0.0;
-
-                        while (true) {
-                            System.out.print("Enter Product Category: ");
-                            String productCategoryInput = scanner.nextLine().toUpperCase();
-
-                            try {
-                                productCategory = ProductCategory.valueOf(productCategoryInput.toUpperCase()); // Optional: normalize input
-                                break; // valid input, exit loop
-                            } catch (IllegalArgumentException e) {
-                                System.out.println("Invalid product category. Please enter a valid product category.");
-                            }
-                        }
-
-                        System.out.print("Enter Product Price: ");
-                        price = scanner.nextDouble();
-                        scanner.nextLine();
-
-                        request = new AddProductDTO(storeName2, productName2, productCategory, price, quantity);
-                    }
-                    else if (actionInput.equalsIgnoreCase("remove")) {
-                        request = new RemoveProductDTO(storeName2,productName2);
-                    }
-                    else {
-                        System.out.println("Invalid action. Please enter 'add' or 'remove'.");
-                        break;
-                    }
-
-                    if(request != null) {
-                        try {
-                            manager.sendRequest(request);
-                            System.out.println("Product addition/removal request sent successfully.");
-                        } catch (IOException e) {
-                            System.out.println("Failed to send product request: " + e.getMessage());
-                        }
-                        //Shop updatedShop = (Shop) in.readObject(); //TODO UPDATE TO WAIT AND RECEIVE THE NEW OBJECT
-                        break;
-                    }
-
-
+                    manager.addRemoveProductOption();
+                    break;
                 case "3":
-                    System.out.print("Enter Store Name: ");
-                    String storeName3 = scanner.nextLine();
-
-                    System.out.print("Enter Product Name: ");
-                    String productName3 = scanner.nextLine();
-
-                    System.out.print("Enter New Stock Quantity: ");
-                    int newStock = scanner.nextInt();
-
-                    scanner.nextLine();
-
-                    ChangeStockDTO changeStockDTO = new ChangeStockDTO(storeName3, productName3, newStock);
-
-                    try {
-                        manager.sendRequest(changeStockDTO);
-                        System.out.println("Stock change request sent successfully.");
-                    } catch (IOException e) {
-                        System.out.println("Failed to send stock change request: " + e.getMessage());
-                    }
-
-                    //Shop updatedShop = (Shop) in.readObject(); //TODO UPDATE TO WAIT AND RECEIVE THE NEW OBJECT
-
+                    manager.changeStockOption();
                     break;
-
+                case "4":
+                    break;
                 case "5":
-                    StatsRequestDTO statsRequestByStore = new StatsRequestDTO("store");
-
-                    try {
-                        manager.sendRequest(statsRequestByStore);
-                        System.out.println("Request to view sales by store category sent successfully.");
-                    } catch (IOException e) {
-                        System.out.println("Failed to send stats request: " + e.getMessage());
-                    }
+                    manager.viewSalesByStoreOption();
                     break;
-
                 case "6":
-                    StatsRequestDTO statsRequestByProduct = new StatsRequestDTO("product");
-
-                    try {
-                        manager.sendRequest(statsRequestByProduct);
-                        System.out.println("Request to view sales by product category sent successfully.");
-                    } catch (IOException e) {
-                        System.out.println("Failed to send stats request: " + e.getMessage());
-                    }
+                    manager.viewSalesByProductOption();
                     break;
-
                 case "0":
                     running = false;
                     try {
@@ -185,7 +189,6 @@ public class Manager extends User {
                     }
                     System.out.println("Exiting Manager...");
                     break;
-
                 default:
                     System.out.println("Invalid option. Please try again.");
             }
