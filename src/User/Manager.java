@@ -4,6 +4,7 @@ package User;
 import java.io.FileReader;
 import java.io.IOException;
 
+import Responses.ResponseDTO;
 import com.google.gson.Gson;
 import DTO.*;
 import other.ActionType;
@@ -43,10 +44,10 @@ public class Manager extends User {
         try (FileReader reader = new FileReader(jsonPath)) {
             Gson gson = new Gson();
             AddStoreRequestDTO addStoreRequestDTO = gson.fromJson(reader, AddStoreRequestDTO.class);
-
             sendRequest(addStoreRequestDTO);
-            System.out.println("Store sent successfully.");
-        } catch (IOException e) {
+            ResponseDTO<Request> response = (ResponseDTO<Request>) in.readObject();
+            System.out.println(response.getMessage());
+        } catch (IOException | ClassNotFoundException e) {
             System.out.println("Failed to send store: " + e.getMessage());
         }
     }

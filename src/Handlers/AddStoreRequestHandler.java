@@ -4,6 +4,7 @@ import DTO.AddStoreRequestDTO;
 import DTO.Request;
 import Node.WorkerNode;
 import Entity.*;
+import Responses.ResponseDTO;
 import other.Shop;
 
 import java.io.IOException;
@@ -17,70 +18,68 @@ public class AddStoreRequestHandler implements Handling{
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
         AddStoreRequestDTO dto = (AddStoreRequestDTO) request;
         String storeName = dto.getShop().getName();
+        ResponseDTO<Request> responseDTO = null;
 
         if(entity instanceof Master master){
             WorkerNode worker = master.workers.getNodeForKey(storeName);
 
             if(worker == null){
                 System.out.println("No Worker found for store: " + storeName);
-                //out.writeObject("No worker found for store: " + storeName);
+                responseDTO = new ResponseDTO<>(false, "No Worker found for store:");
+                try {
+                    out.writeObject(responseDTO);
+                    out.flush();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 return;
             }
 
             try (Socket socket = new Socket(worker.getIp(), worker.getPort());
-                 ObjectOutputStream handler_out = new ObjectOutputStream(socket.getOutputStream())){
+                 ObjectOutputStream handler_out = new ObjectOutputStream(socket.getOutputStream());
+                 ObjectInputStream handler_in = new ObjectInputStream(socket.getInputStream())){
 
                 handler_out.writeObject(dto);
                 handler_out.flush();
 
                 System.out.println("New Shop send.");
+                //Wait and receive response
+                ResponseDTO<Request> response = (ResponseDTO<Request>) handler_in.readObject();
+                if(response.isSuccess())
+                    responseDTO = response;
+                else
+                    responseDTO = new ResponseDTO<>(false, response.getMessage());
 
+                out.writeObject(responseDTO);
+                out.flush();
                 closeConnection(socket,handler_out,null); //Close the connection with the worker.
 
             }catch (IOException e){
                 System.out.println("Error forwarding to worker: " + e.getMessage());
                 //out.writeObject("Error forwarding to worker: " + e.getMessage());
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
-
         }
         else if(entity instanceof Worker worker){
             worker.addShop(storeName, dto.getShop());
+            responseDTO = new ResponseDTO<>(true, "Successfully added shop: " + storeName);
+            try {
+                out.writeObject(responseDTO);
+                out.flush();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
         else{
-            //out.writeObject("Invalid action type.");
             System.out.println("Wrong entity type.");
+            responseDTO = new ResponseDTO<>(false, "Wrong entity type");
+            try {
+                out.writeObject(responseDTO);
+                out.flush();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
-
-
-
-
-
-
-
-
-
-
-//        if (worker == null) {
-//            System.out.println("No available worker for store: " + storeName);
-//            return;
-//        }
-//        try (Socket socket = new Socket(worker.getIp(), worker.getPort());
-//             ObjectOutputStream handler_out = new ObjectOutputStream(socket.getOutputStream());
-//             ObjectInputStream handler_in = new ObjectInputStream(socket.getInputStream())) {
-//
-//            handler_out.writeObject(shop);
-//            handler_out.flush();
-//
-//            System.out.println("Store '" + storeName + "' sent to worker at " + worker.getIp() + ":" + worker.getPort());
-//            //out.writeObject("Store added successfully: " + storeName);
-//
-//        } catch (IOException e) {
-//            System.out.println("Failed to send store to worker: " + e.getMessage());
-//            try {
-//                //out.writeObject("Error sending store to worker: " + e.getMessage());
-//            } catch (IOException ex) {
-//                throw new RuntimeException(ex);
-//            }
-//        }
     }
 }

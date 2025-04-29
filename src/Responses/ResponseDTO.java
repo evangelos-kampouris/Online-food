@@ -14,6 +14,7 @@ public class ResponseDTO<T> {
     public ResponseDTO(boolean success, String message) {
         this(success, message, null);
     }
+
     public boolean isSuccess() {
         return success;
     }
