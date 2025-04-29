@@ -3,7 +3,9 @@ package User;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Map;
 
+import Responses.ResponseDTO;
 import com.google.gson.Gson;
 import DTO.*;
 import other.ActionType;
@@ -127,11 +129,29 @@ public class Manager extends User {
     }
 
     private void viewSalesOption(String actionType) {
+
         StatsRequestDTO request = new StatsRequestDTO(actionType);
+
         try {
             sendRequest(request);
-            System.out.println("Request to view sales by " + actionType + "store category sent successfully.");
-        } catch (IOException e) {
+
+            ResponseDTO<Map<?, Integer>> response = (ResponseDTO<Map<?, Integer>>) in.readObject();
+            System.out.println(response.getMessage());
+
+            if (response.isSuccess()) {
+                Map<?, Integer> data = response.getData();
+
+                if(data == null || data.isEmpty()) {
+                    System.out.println("No sales data found for: " + actionType);
+                    return;
+                }
+
+                System.out.println("Sales breakdown:");
+                for (Map.Entry<?, Integer> entry : data.entrySet()) {
+                    System.out.println(entry.getKey() + ": " + entry.getValue());
+                }
+            }
+        } catch (IOException | ClassNotFoundException e) {
             System.out.println("Failed to send stats request: " + e.getMessage());
         }
     }
@@ -164,10 +184,10 @@ public class Manager extends User {
                 case "4":
                     break;
                 case "5":
-                    manager.viewSalesOption("Store");
+                    manager.viewSalesOption("StoreCategories");
                     break;
                 case "6":
-                    manager.viewSalesOption("Product");
+                    manager.viewSalesOption("ProductCategories");
                     break;
                 case "0":
                     running = false;

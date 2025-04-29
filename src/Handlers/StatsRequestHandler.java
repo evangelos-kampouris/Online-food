@@ -4,6 +4,9 @@ import DTO.Request;
 import DTO.StatsRequestDTO;
 import Entity.Entity;
 import Entity.Master;
+import Responses.ResponseDTO;
+import other.ProductCategory;
+import other.StoreCategories;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -22,19 +25,22 @@ public class StatsRequestHandler implements Handling{
         String type = dto.getType(); // "store" or "product"
 
         try{
-            if("store".equalsIgnoreCase(type)){
-                Map<?, Integer> storeStats = master.getStoreCategoryStats();
-                out.writeObject(storeStats);
+            if("storeCategories".equalsIgnoreCase(type)){
+                Map<StoreCategories, Integer> storeStats = master.getStoreCategoryStats();
+                ResponseDTO<Map<StoreCategories, Integer>> response = new ResponseDTO<>(true, "Store sales retrieved successfully.", storeStats);
+                out.writeObject(response);
                 out.flush();
             }
-            else if("product".equalsIgnoreCase(type)){
-                Map<?, Integer> productStats = master.getProductCategoryStats();
-                out.writeObject(productStats);
+            else if("productCategories".equalsIgnoreCase(type)){
+                Map<ProductCategory, Integer> productCategories = master.getProductCategoryStats();
+                ResponseDTO<Map<ProductCategory, Integer>> response = new ResponseDTO<>(true, "Product category sales retrieved successfully.", productCategories);
+                out.writeObject(response);
                 out.flush();
             }
             else{
-                //out.writeObject("Invalid stats type: " + type);
-                System.out.println("Invalid stats type: " + type);
+                ResponseDTO<Object> response = new ResponseDTO<>(false, "Invalid stats type: " + type);
+                out.writeObject(response);
+                out.flush();
             }
         }catch(IOException e){
             System.out.println("Failed to send stats to Manager: " + e.getMessage());
