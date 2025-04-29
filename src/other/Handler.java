@@ -64,9 +64,7 @@ public class Handler implements Runnable{                   //Για να μπο
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-
     }
-
 
     @Override
     public void run() {                                         //θα τρέξει το νήμα εδώ

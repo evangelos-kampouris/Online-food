@@ -1,8 +1,8 @@
 ALL POSSIBLE REQUESTS:
 
 Client to Master:
-	* Search(filters) - ID GEN TICK - CLOSE CONNECTION CHECK
-	* Buy - ID GEN TICK - CLOSE CONNECTION CHECK
+	* Search(filters) - ID GEN TICK - CLOSE CONNECTION CHECK - RESPONSE check DONE no implementation needed.
+	* Buy - ID GEN TICK - CLOSE CONNECTION CHECK - RESPONSE DONE
 
 Manager to Master:
 	* Addition of store (json format) - ID GEN - CLOSE CONNECTION CHECK
@@ -12,10 +12,10 @@ Manager to Master:
 
 Master to Workers:
 	* Filters -> θα γίνει map (το map γινεται αυτοματα στελνοντας απλα το request σε ολους τους workers καθως καθε worker εχει μοναδικα μαγαζια) - ID INHERIT
-	* Updates stocks, revenue etc. after buy -> SAME AS BUY BUT JUST FORWARDED. - ID INHERIT
+	* Updates stocks, revenue etc. after buy -> SAME AS BUY BUT JUST FORWARDED. - ID INHERIT - RESPONSE DONE
 	
 Worker to Reducer:
-	* map result ( <StoreName - StoreID, StoreJson> ) - ID INHERIT - CLOSE CONNECTION CHECK
+	* map result ( <StoreName - StoreID, StoreJson> ) - ID INHERIT - CLOSE CONNECTION CHECK - RESPONSE check DONE no implementation needed.
 
 Reducer to Master:
-	* Results (list of shops) - ID INHERIT - CLOSE CONNECTION CHECK
+	* Results (list of shops) - ID INHERIT - CLOSE CONNECTION CHECK - RESPONSE DONE

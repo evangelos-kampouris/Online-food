@@ -16,7 +16,7 @@ public abstract class Inventory implements Serializable {
      * Removes a specified quantity of a product from the inventory.
      * <p>
      * If the quantity to remove is not specified (i.e., {@code null}), it defaults to 1.
-     * If the quantity equals the current stock, the product is removed entirely from the inventory.
+     * If the quantity equals the current stock, the product is removed entirely from the inventory. //TODO CHECK FOR SHOPINVENTORY NO REMOVAL STOCK EQUALS JUST TO ZERO.
      * If the quantity is less than the current stock, the quantity is reduced accordingly.
      * </p>
      *

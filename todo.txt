@@ -1,25 +1,10 @@
 
-* Rate Store Request/handle Giorgos
-
-* update handler
-
-* Inspect all the handlers for closing connections.
-
-
-* AddRemoveProductHandler is wrong. George
-
 * Check further requests that need to update users data.
 
-
 * Stats need to wait for results.
-
-* Rating, change stock errors
-
-
 
 * AFTER MANAGER CHANGE TO LOOK LIKE CLIENT, NEED TO UPDATE CHANGE STOCK REQUEST TO RECEIVE BACK THE UPDATED SHOP.
 
 
 * when an addition of a store happens client and manager must get updated.
 
-* Update the handler
