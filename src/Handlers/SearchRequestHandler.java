@@ -12,6 +12,7 @@ import other.PendingRequests;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchRequestHandler implements Handling{
@@ -24,24 +25,34 @@ public class SearchRequestHandler implements Handling{
 
         master.pendingRequests.put(dto.getRequestId(), new PendingRequests(out, in));
         List<WorkerNode> workers = master.getWorkersList();
+        List<Thread> threads = new ArrayList<>();
 
-        //TODO DO IT WITH THREADS https://chatgpt.com/c/6808fc2c-b11c-8008-9b35-9f8e4dc00705
+        for (WorkerNode worker : workers) {
+            Thread thread = new Thread(() -> {
+                try (Socket socket = new Socket(worker.getIp(), worker.getPort());
+                     ObjectOutputStream outTOWorker = new ObjectOutputStream(socket.getOutputStream())) {
 
-        for(WorkerNode worker : workers){
-            try(Socket socket = new Socket(worker.getIp(), worker.getPort())){
-                ObjectOutputStream outTOWorker = new ObjectOutputStream(socket.getOutputStream());
-                FilterMapDTO filterMapDTO = new FilterMapDTO(filters, dto.getRequestId());
+                    FilterMapDTO filterMapDTO = new FilterMapDTO(filters);
+                    outTOWorker.writeObject(filterMapDTO);
+                    outTOWorker.flush();
 
-                outTOWorker.writeObject(filterMapDTO);
-                outTOWorker.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
 
-                closeConnection(socket,outTOWorker,null);
-            }
-            catch(Exception e){
-                e.printStackTrace();
-            }
+            threads.add(thread);
+            thread.start();
         }
 
-
+        // Wait for all threads to complete
+        for (Thread thread : threads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                Thread.currentThread().interrupt(); // Restore interrupt flag
+            }
+        }
     }
 }
