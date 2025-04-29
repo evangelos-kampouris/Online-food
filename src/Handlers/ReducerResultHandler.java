@@ -3,6 +3,7 @@ package Handlers;
 import DTO.ReducerResultDTO;
 import DTO.Request;
 import Entity.*;
+import Responses.ResponseDTO;
 
 
 import java.io.IOException;
@@ -19,7 +20,8 @@ public class ReducerResultHandler implements Handling{
 
         ObjectOutputStream handler_out = master.pendingRequests.get(reducerResultDTO.getRequestId()).getOut();
         try {
-            handler_out.writeObject(reducerResultDTO.getResults());
+            ResponseDTO<Request> response = new ResponseDTO<>(true, "Search Completed", reducerResultDTO);
+            handler_out.writeObject(response);
             handler_out.flush();
             master.pendingRequests.remove(reducerResultDTO.getRequestId());
 

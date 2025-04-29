@@ -1,9 +1,6 @@
 package User;
 
-import DTO.BuyRequestDTO;
-import DTO.RateStoreRequestDTO;
-import DTO.Request;
-import DTO.SearchRequestDTO;
+import DTO.*;
 import Filtering.*;
 import Inventory.InventoryCart;
 import Responses.ResponseDTO;
@@ -84,19 +81,9 @@ public class Client extends User {
         List<Shop> receivedShops  = null; //The response forwards the shops in a list.
         Object receivedObject = in.readObject();
 
-        //Casting Checks
-        if (receivedObject instanceof List<?> rawList) {
-            // Make sure the list contains Shop objects
-            if (!rawList.isEmpty() && rawList.get(0) instanceof Shop) {
-                receivedShops = (List<Shop>) rawList;
-            } else if (rawList.isEmpty()) {
-                // It's safe to cast empty list
-                receivedShops = (List<Shop>) rawList;
-            } else {
-                System.err.println("Received a list, but it doesn't contain Shop objects.");
-            }
-        } else {
-            System.err.println("Received object is not a List.");
+        if (receivedObject instanceof ResponseDTO searchResponse) {
+            ReducerResultDTO dto = (ReducerResultDTO) searchResponse.getData();
+            receivedShops = dto.getResults();
         }
 
         if (receivedShops != null) {
@@ -107,7 +94,6 @@ public class Client extends User {
                 shops.put(shopName, shop);
             }
         }
-
     }
 
     private void performRating(String storeName, Rating rating) {
@@ -131,7 +117,6 @@ public class Client extends User {
         System.out.println("0. Exit");
         System.out.print("Select an option: ");
     }
-
 
     /**
      * @throws IOException
@@ -395,7 +380,7 @@ public class Client extends User {
                         throw new RuntimeException(e);
                     }
                     break;
-                case "2": //Implemented
+                case "2":
                     try {
                         client.buyMenuOption();
                     } catch (IOException e) {
