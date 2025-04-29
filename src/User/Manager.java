@@ -126,21 +126,11 @@ public class Manager extends User {
         }
     }
 
-    private void viewSalesByStoreOption() {
-        StatsRequestDTO request = new StatsRequestDTO("store");
+    private void viewSalesOption(String actionType) {
+        StatsRequestDTO request = new StatsRequestDTO(actionType);
         try {
             sendRequest(request);
-            System.out.println("Request to view sales by store category sent successfully.");
-        } catch (IOException e) {
-            System.out.println("Failed to send stats request: " + e.getMessage());
-        }
-    }
-
-    private void viewSalesByProductOption() {
-        StatsRequestDTO request = new StatsRequestDTO("product");
-        try {
-            sendRequest(request);
-            System.out.println("Request to view sales by product category sent successfully.");
+            System.out.println("Request to view sales by " + actionType + "store category sent successfully.");
         } catch (IOException e) {
             System.out.println("Failed to send stats request: " + e.getMessage());
         }
@@ -174,10 +164,10 @@ public class Manager extends User {
                 case "4":
                     break;
                 case "5":
-                    manager.viewSalesByStoreOption();
+                    manager.viewSalesOption("Store");
                     break;
                 case "6":
-                    manager.viewSalesByProductOption();
+                    manager.viewSalesOption("Product");
                     break;
                 case "0":
                     running = false;

@@ -11,7 +11,7 @@ Manager to Master:
 	* Stats - ID GEN
 
 Master to Workers:
-	* Filters -> θα γίνει map (το map γινεται αυτοματα στελνοντας απλα το request σε ολους τους workers καθως καθε worker εχει μοναδικα μαγαζια) - ID INHERIT
+	* Filters -> θα γίνει map (το map γινεται αυτοματα στελνοντας απλα το request σε ολους τους workers καθως καθε worker εχει μοναδικα μαγαζια) - ID INHERIT - RESPONSE DONE
 	* Updates stocks, revenue etc. after buy -> SAME AS BUY BUT JUST FORWARDED. - ID INHERIT - RESPONSE DONE
 	
 Worker to Reducer:
