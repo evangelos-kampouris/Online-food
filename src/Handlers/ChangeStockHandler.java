@@ -4,6 +4,7 @@ import DTO.ChangeStockDTO;
 import DTO.Request;
 import Node.WorkerNode;
 import Entity.*;
+import Responses.ResponseDTO;
 import other.Shop;
 
 import java.io.IOException;
@@ -19,12 +20,20 @@ public class ChangeStockHandler implements Handling{
         ChangeStockDTO dto = (ChangeStockDTO) request;
         String storeName = dto.getStoreName();
 
+        ResponseDTO<Shop> responseDTO = null;
+
         if(entity instanceof Master master){
             WorkerNode worker = master.workers.getNodeForKey(storeName);
 
-            if(worker == null){
+            if (worker == null) {
                 System.out.println("No Worker found for store: " + storeName);
-                //out.writeObject("No worker found for store: " + storeName);
+                responseDTO = new ResponseDTO<>(false, "No Worker found for store: " + storeName);
+                try {
+                    out.writeObject(responseDTO);
+                    out.flush();
+                } catch (IOException e) {
+                    System.out.println(responseDTO.getMessage());
+                }
                 return;
             }
 
@@ -35,13 +44,13 @@ public class ChangeStockHandler implements Handling{
                 handler_out.writeObject(dto);
                 handler_out.flush();
 
-                System.out.println("Forwarded Add/Remove product request to worker " + worker.getIp() + "Awaiting Response...");
+                System.out.println("Forwarded change request to worker " + worker.getIp() + "Awaiting Response...");
 
-                //Need to send back the updated shop
-                Shop updateShop = (Shop) handler_in.readObject(); //Receive the update store.
-                out.writeObject(updateShop);
+                // Receive the response containing the updated shop
+                responseDTO = (ResponseDTO) handler_in.readObject();
+                out.writeObject(responseDTO);
                 out.flush();
-                System.out.println("Updated Shop send.");
+                System.out.println("Respond sent.");
 
                 closeConnection(socket,handler_out,handler_in); //Close the connection with the worker.
 
@@ -55,22 +64,30 @@ public class ChangeStockHandler implements Handling{
         else if(entity instanceof Worker worker){
             Shop shop = worker.getShop(storeName);
 
-            if(shop == null){
+            if (shop == null) {
                 System.out.println("Store not found: " + storeName);
-                //out.writeObject("Store not found: " + storeName);
-                return;
+                responseDTO = new ResponseDTO<>(false, "Store not found", null);
             }
-            shop.getCatalog().changeStock(dto.getProductName(), dto.getNewStock());
-
+            else {
+                shop.getCatalog().changeStock(dto.getProductName(), dto.getNewStock());
+                responseDTO = new ResponseDTO<>(true, "Stock updated successfully", shop);
+            }
             //Send shop to master
             try {
-                out.writeObject(shop);
+                out.writeObject(responseDTO);
                 out.flush();
             } catch (IOException e) {
                 System.out.println("Error sending back to master the updated Shop " + e.getMessage());
             }
         }
-        else
-            System.err.println("Request forwarded  to wrong entity, Entity is not a Master or Worker");
+        else{
+            responseDTO = new ResponseDTO<>(false, "Request forwarded to wrong entity, Entity is not a Master or Worker but is: " + entity.getClass().getName());
+            try {
+                out.writeObject(responseDTO);
+                out.flush();
+            } catch (IOException e) {
+                System.err.println(responseDTO.getMessage());
+            }
+        }
     }
 }

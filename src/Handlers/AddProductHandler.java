@@ -79,7 +79,8 @@ public class AddProductHandler implements Handling {
             } catch (IOException e) {
                 System.out.println("Error sending back to master the updated Shop " + e.getMessage());
             }
-        } else {
+        }
+        else {
             responseDTO = new ResponseDTO<>(false, "Request forwarded to wrong entity, Entity is not a Master or Worker but is: " + entity.getClass().getName());
             try {
                 out.writeObject(responseDTO);
@@ -87,7 +88,6 @@ public class AddProductHandler implements Handling {
             } catch (IOException e) {
                 System.err.println(responseDTO.getMessage());
             }
-
         }
     }
 }

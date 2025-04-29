@@ -60,6 +60,8 @@ public class Manager extends User {
             if(response.isSuccess()) { //if successful update the store list
                 shops = response.getData();
             }
+            else
+                System.out.println(response.getMessage());
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Failed to send store: " + e.getMessage());
         }
@@ -114,8 +116,16 @@ public class Manager extends User {
                 sendRequest(request);
 
                 //Wait and read response from server.
-                ResponseDTO<Request> response = (ResponseDTO<Request>) in.readObject();
+                ResponseDTO<Shop> response = (ResponseDTO<Shop>) in.readObject();
                 System.out.println(response.getMessage());
+
+                if(response.isSuccess()) {
+                    Shop updatedShop = response.getData(); //Update the store
+                    shops.put(updatedShop.getName(), updatedShop);
+                }
+                else
+                    System.out.println(response.getMessage());
+
 
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println("Failed product request: \n" + e.getMessage());
@@ -138,16 +148,18 @@ public class Manager extends User {
 
         try {
             sendRequest(changeStockDTO);
-            ResponseDTO<Request> response = (ResponseDTO<Request>) in.readObject();
+            ResponseDTO<Shop> response = (ResponseDTO<Shop>) in.readObject();
             System.out.println(response.getMessage());
 
             if(response.isSuccess()) {
                 System.out.println("Stock updated successfully.");
+                Shop updatedShop = response.getData(); //Update the store
+                shops.put(updatedShop.getName(), updatedShop);
             }
             else{
                 System.out.println("Failed to update stock.");
             }
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             System.out.println("Failed to send stock change request: " + e.getMessage());
         }
     }
@@ -175,6 +187,8 @@ public class Manager extends User {
                     System.out.println(entry.getKey() + ": " + entry.getValue());
                 }
             }
+            else
+                System.out.println(response.getMessage());
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Failed to send stats request: " + e.getMessage());
         }
