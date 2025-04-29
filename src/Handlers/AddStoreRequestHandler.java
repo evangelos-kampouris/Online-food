@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Map;
 
 public class AddStoreRequestHandler implements Handling{
 
@@ -18,7 +19,7 @@ public class AddStoreRequestHandler implements Handling{
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
         AddStoreRequestDTO dto = (AddStoreRequestDTO) request;
         String storeName = dto.getShop().getName();
-        ResponseDTO<Request> responseDTO = null;
+        ResponseDTO<Map<String, Shop>> responseDTO = null;
 
         if(entity instanceof Master master){
             WorkerNode worker = master.workers.getNodeForKey(storeName);
@@ -44,7 +45,7 @@ public class AddStoreRequestHandler implements Handling{
 
                 System.out.println("New Shop send.");
                 //Wait and receive response
-                ResponseDTO<Request> response = (ResponseDTO<Request>) handler_in.readObject();
+                ResponseDTO<Map<String, Shop>> response = (ResponseDTO<Map<String, Shop>>) handler_in.readObject();
                 if(response.isSuccess())
                     responseDTO = response;
                 else
@@ -63,7 +64,7 @@ public class AddStoreRequestHandler implements Handling{
         }
         else if(entity instanceof Worker worker){
             worker.addShop(storeName, dto.getShop());
-            responseDTO = new ResponseDTO<>(true, "Successfully added shop: " + storeName);
+            responseDTO = new ResponseDTO<>(true, "Successfully added shop: " + storeName, worker.getShops());
             try {
                 out.writeObject(responseDTO);
                 out.flush();
