@@ -1,11 +1,14 @@
 package User;
 
 import DTO.Request;
+import other.Shop;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public abstract class User {
@@ -23,6 +26,8 @@ public abstract class User {
     //Attributes
     private static int idCounter = 0;
     protected int id;
+    //Shop Name, Shop -- Received upon  initialization - Updated on search.
+    Map<String, Shop> shops = new HashMap<>();
 
     public User() {
         id = ++idCounter;

@@ -18,8 +18,6 @@ public class Client extends User {
 
     //Attributes
     InventoryCart cart;
-    //Shop Name, Shop's catalog -- Received upon  initialization - Updated on search.
-    Map<String, Shop> shops = new HashMap<>();
 
     private final Coordinates coordinates;
 
@@ -62,6 +60,8 @@ public class Client extends User {
         BuyRequestDTO buyRequestDTO = new BuyRequestDTO(selectedShop, cart);
         try {
             sendRequest(buyRequestDTO);
+
+            //Wait and read response from server.
             ResponseDTO<Request> response = (ResponseDTO<Request>) in.readObject();
             System.out.println(response.getMessage());
             if(response.isSuccess()) {
