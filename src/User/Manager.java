@@ -3,6 +3,7 @@ package User;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Map;
 
 import Responses.ResponseDTO;
 import com.google.gson.Gson;
@@ -13,6 +14,10 @@ import other.Shop;
 
 public class Manager extends User {
 
+    public Manager() {
+        super();
+    }
+
     @Override
     public void establishConnection() throws IOException {
         System.out.println("Initializing connection to Master...");
@@ -22,6 +27,9 @@ public class Manager extends User {
         in = new java.io.ObjectInputStream(connectionSocket.getInputStream());
 
         System.out.println("Connection to Master Achieved.");
+
+        //PERFORM A SEARCH to Get all the stores
+
     }
 
     @Override
@@ -45,8 +53,13 @@ public class Manager extends User {
             Gson gson = new Gson();
             AddStoreRequestDTO addStoreRequestDTO = gson.fromJson(reader, AddStoreRequestDTO.class);
             sendRequest(addStoreRequestDTO);
-            ResponseDTO<Request> response = (ResponseDTO<Request>) in.readObject();
+
+            //Wait and read response from server.
+            ResponseDTO<Map<String, Shop>> response = (ResponseDTO<Map<String, Shop>>) in.readObject();
             System.out.println(response.getMessage());
+            if(response.isSuccess()) { //if successful update the store list
+                shops = response.getData();
+            }
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Failed to send store: " + e.getMessage());
         }
@@ -99,9 +112,13 @@ public class Manager extends User {
         if (request != null) {
             try {
                 sendRequest(request);
-                System.out.println("Product addition/removal request sent successfully.");
-            } catch (IOException e) {
-                System.out.println("Failed to send product request: " + e.getMessage());
+
+                //Wait and read response from server.
+                ResponseDTO<Request> response = (ResponseDTO<Request>) in.readObject();
+                System.out.println(response.getMessage());
+
+            } catch (IOException | ClassNotFoundException e) {
+                System.out.println("Failed product request: \n" + e.getMessage());
             }
         }
     }
