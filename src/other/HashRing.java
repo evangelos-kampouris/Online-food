@@ -30,8 +30,10 @@ public class HashRing {
     //https://chatgpt.com/share/680607e8-9154-8008-b1b6-39bfc767f647
     public HashRing(List<WorkerNode> workers, int virtualNodes){
         this.virtualNodes = virtualNodes;
-        for (WorkerNode node : workers) {
-            addNode(node);
+        if(workers != null && !workers.isEmpty()){
+            for (WorkerNode node : workers) {
+                addNode(node);
+            }
         }
     }
 

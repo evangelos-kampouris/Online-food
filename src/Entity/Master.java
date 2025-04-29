@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class Master extends Entity {
     //Workers
-    private final String worker_config_filepath = "Worker_config.json";
+    private final String worker_config_filepath = "Resources/WorkerConfig.json";
     private List<WorkerNode> workersList;
     public HashRing workers;  //Ο Master χρησιμοποιεί έναν HashRing για να κάνει κατανομή καταστημάτων στους Workers
     private final int VIRTUAL_NODES_OF_WORKER = 2;  /*Για κάθε Worker, ο HashRing βάζει δύο αντίγραφα του worker στο δαχτυλίδι,
