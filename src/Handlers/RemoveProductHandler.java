@@ -6,6 +6,7 @@ import Node.WorkerNode;
 import Entity.Entity;
 import Entity.Master;
 import Entity.Worker;
+import Responses.ResponseDTO;
 import other.Shop;
 
 import java.io.IOException;
@@ -20,11 +21,20 @@ public class RemoveProductHandler implements Handling {
         RemoveProductDTO dto = (RemoveProductDTO) request;
         String storeName = dto.getStoreName();
 
+        ResponseDTO<Shop> responseDTO = null;
+
         if (entity instanceof Master master) {
             WorkerNode worker = master.workers.getNodeForKey(storeName);
 
             if (worker == null) {
                 System.out.println("No Worker found for store: " + storeName);
+                responseDTO = new ResponseDTO<>(false, "No Worker found for store: " + storeName);
+                try {
+                    out.writeObject(responseDTO);
+                    out.flush();
+                } catch (IOException e) {
+                    System.out.println(responseDTO.getMessage());
+                }
                 return;
             }
 
@@ -37,11 +47,11 @@ public class RemoveProductHandler implements Handling {
 
                 System.out.println("Forwarded Remove product request to worker " + worker.getIp());
 
-                // Receive the updated shop
-                Shop updatedShop = (Shop) handler_in.readObject();
-                out.writeObject(updatedShop);
+                // Receive the response containing the updated shop
+                responseDTO = (ResponseDTO) handler_in.readObject();
+                out.writeObject(responseDTO);
                 out.flush();
-                System.out.println("Updated Shop sent.");
+                System.out.println("Respond sent.");
 
                 closeConnection(socket, handler_out, handler_in);
 
@@ -53,14 +63,15 @@ public class RemoveProductHandler implements Handling {
 
             if (shop == null) {
                 System.out.println("Store not found: " + storeName);
-                return;
+                responseDTO = new ResponseDTO<>(false, "Store not found", null);
             }
-
-            shop.getCatalog().setItemEnableStatus(dto.getProductName(), false);
-            System.out.println("Removed product from store: " + dto.getProductName());
-
+            else{
+                shop.getCatalog().setItemEnableStatus(dto.getProductName(), false);
+                System.out.println("Removed product from store: " + dto.getProductName());
+                responseDTO = new ResponseDTO<>(true, "successfully removed product from the store", shop);
+            }
             try {
-                out.writeObject(shop);
+                out.writeObject(responseDTO);
                 out.flush();
             } catch (IOException e) {
                 System.out.println("Error sending back to master the updated Shop " + e.getMessage());
