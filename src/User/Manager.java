@@ -138,7 +138,15 @@ public class Manager extends User {
 
         try {
             sendRequest(changeStockDTO);
-            System.out.println("Stock change request sent successfully.");
+            ResponseDTO<Request> response = (ResponseDTO<Request>) in.readObject();
+            System.out.println(response.getMessage());
+
+            if(response.isSuccess()) {
+                System.out.println("Stock updated successfully.");
+            }
+            else{
+                System.out.println("Failed to update stock.");
+            }
         } catch (IOException e) {
             System.out.println("Failed to send stock change request: " + e.getMessage());
         }
