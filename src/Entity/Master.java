@@ -100,4 +100,13 @@ public class Master extends Entity {
     public void addStatsProductCategory(ProductCategory productCategory){addStatsProductCategory(productCategory, 1);}
 
     public List<WorkerNode> getWorkersList() {return workersList;}
+
+    public static void main(String[] args) {
+        Master master = new Master("127.0.0.1", 9999);
+        try {
+            master.acceptConnections();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

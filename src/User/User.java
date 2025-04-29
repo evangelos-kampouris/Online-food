@@ -18,7 +18,7 @@ public abstract class User {
 
     //networking
     protected static final String MASTER_IP = "localhost";
-    protected static final int MASTER_PORT = 55000;
+    protected static final int MASTER_PORT = 9999;
     protected Socket connectionSocket;
     protected static ObjectOutputStream out;
     protected ObjectInputStream in;

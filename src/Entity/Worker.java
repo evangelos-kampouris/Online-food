@@ -3,6 +3,7 @@ package Entity;
 import Node.ReducerNode;
 import other.Shop;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,5 +35,12 @@ public class Worker extends Entity {
         shops.put(shopName, shop);
     }
 
-
+    public static void main(String[] args) {
+        Worker worker = new Worker(args[0], Integer.parseInt(args[1]), args[2], Integer.parseInt(args[3]));
+        try {
+            worker.acceptConnections();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

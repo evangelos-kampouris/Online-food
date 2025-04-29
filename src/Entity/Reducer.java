@@ -4,6 +4,7 @@ import Node.MasterNode;
 import other.ReducerShuffler;
 import other.Shop;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,5 +54,15 @@ public class Reducer extends Entity {
 
     public int getTotalWorkers() {
         return totalWorkers;
+    }
+
+    public static void main(String[] args) {
+        MasterNode masterNode = new MasterNode("localhost", 9999);
+        Reducer reducer = new Reducer("localhost", 9004, masterNode, 3);
+        try {
+            reducer.acceptConnections();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
