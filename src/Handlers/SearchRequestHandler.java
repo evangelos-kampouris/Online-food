@@ -27,36 +27,20 @@ public class SearchRequestHandler implements Handling{
             master.pendingRequests.put(dto.getRequestId(), new PendingRequests(out, in));
         }
         List<WorkerNode> workers = master.getWorkersList();
-        List<Thread> threads = new ArrayList<>();
 
-        for (WorkerNode worker : workers) {
-            Thread thread = new Thread(() -> {
-                try (Socket socket = new Socket(worker.getIp(), worker.getPort());
-                     ObjectOutputStream outTOWorker = new ObjectOutputStream(socket.getOutputStream())) {
 
-                    FilterMapDTO filterMapDTO = new FilterMapDTO(filters);
-                    outTOWorker.writeObject(filterMapDTO);
-                    outTOWorker.flush();
-                    System.out.println("Sending filter request to " + worker.getIp() + ":" + worker.getPort());//debug
+        for(WorkerNode worker : workers){
+            System.out.println(worker.toString());
+            try(Socket socket = new Socket(worker.getIp(), worker.getPort())){
+                ObjectOutputStream outTOWorker = new ObjectOutputStream(socket.getOutputStream());
+                FilterMapDTO filterMapDTO = new FilterMapDTO(filters, dto.getRequestId());
 
-                    closeConnection(socket, outTOWorker, null);
+                outTOWorker.writeObject(filterMapDTO);
+                outTOWorker.flush();
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-
-            threads.add(thread);
-            thread.start();
-        }
-
-        // Wait for all threads to complete
-        for (Thread thread : threads) {
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                Thread.currentThread().interrupt(); // Restore interrupt flag
+            }
+            catch(Exception e){
+                System.out.println("an error occured on searchRequestHandler");
             }
         }
     }
