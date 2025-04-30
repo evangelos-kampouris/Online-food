@@ -94,13 +94,14 @@ public class FilterMapHandler implements Handling{
         }
 
         //Initiating connection and forwarding the request to the reducer.
-        try(Socket ReducerConnectionSocket = new Socket(worker.getREDUCER().getIp(), worker.getREDUCER().getPort());
-            ObjectOutputStream handler_out = new ObjectOutputStream(ReducerConnectionSocket.getOutputStream())){
+        try{
+            Socket ReducerConnectionSocket = new Socket(worker.getREDUCER().getIp(), worker.getREDUCER().getPort());
+            ObjectOutputStream handler_out = new ObjectOutputStream(ReducerConnectionSocket.getOutputStream());
 
             mapResultDTO = new MapResultDTO(results, dto.getRequestId());
             handler_out.writeObject(mapResultDTO);
             handler_out.flush();
-            closeConnection(ReducerConnectionSocket,handler_out,null);
+            //closeConnection(ReducerConnectionSocket,handler_out,null);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
