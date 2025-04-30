@@ -3,11 +3,13 @@ package Inventory;
 import Exceptions.NoValidStockInput;
 import other.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
 public abstract class Inventory implements Serializable {
-
+    @Serial
+    private static final long serialVersionUID = 1L;
     Map<String, InventoryItem> inventory = new HashMap<String, InventoryItem>(); // Selected DataStructure <name, product>
 
     public abstract void addProduct(String productName, Product product, int quantity);

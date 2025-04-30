@@ -23,7 +23,9 @@ public class SearchRequestHandler implements Handling{
         SearchRequestDTO dto = (SearchRequestDTO) request;
         List<Filtering> filters = dto.getSelectedFilters();
 
-        master.pendingRequests.put(dto.getRequestId(), new PendingRequests(out, in));
+        synchronized (master.pendingRequests) {
+            master.pendingRequests.put(dto.getRequestId(), new PendingRequests(out, in));
+        }
         List<WorkerNode> workers = master.getWorkersList();
         List<Thread> threads = new ArrayList<>();
 
@@ -35,6 +37,9 @@ public class SearchRequestHandler implements Handling{
                     FilterMapDTO filterMapDTO = new FilterMapDTO(filters);
                     outTOWorker.writeObject(filterMapDTO);
                     outTOWorker.flush();
+                    System.out.println("Sending filter request to " + worker.getIp() + ":" + worker.getPort());//debug
+
+                    closeConnection(socket, outTOWorker, null);
 
                 } catch (Exception e) {
                     e.printStackTrace();

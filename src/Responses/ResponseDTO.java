@@ -1,6 +1,11 @@
 package Responses;
 
-public class ResponseDTO<T> {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class ResponseDTO<T> implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     public boolean success;
     public String message;
     public T data; // optional payload

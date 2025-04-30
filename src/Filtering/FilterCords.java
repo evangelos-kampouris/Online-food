@@ -1,9 +1,13 @@
 package Filtering;
 import other.Coordinates;
+
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FilterCords implements Filtering {
+    @Serial
+    private static final long serialVersionUID = 1L;
     float distance;
     Coordinates userCoordinates;
 

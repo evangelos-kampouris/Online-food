@@ -28,7 +28,7 @@ public class Manager extends User {
 
         System.out.println("Connection to Master Achieved.");
 
-        //PERFORM A SEARCH to Get all the stores
+        //TODO PERFORM A SEARCH to Get all the stores
 
     }
 
@@ -196,11 +196,12 @@ public class Manager extends User {
 
     public static void main(String[] args) {
         Manager manager = new Manager();
-
+        //Let some time pass to initialize the Server Entities
         try {
+            Thread.sleep(1100);
             manager.establishConnection();
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to connect to Master", e);
+        } catch (InterruptedException | IOException e) {
+            throw new RuntimeException(e);
         }
 
         boolean running = true;

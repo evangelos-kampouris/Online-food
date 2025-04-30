@@ -1,6 +1,10 @@
 package Node;
 
+import java.io.Serial;
+
 public class MasterNode extends Node {
+    @Serial
+    private static final long serialVersionUID = 1L;
     public MasterNode(String IP, int port) {
         super(IP, port);
     }

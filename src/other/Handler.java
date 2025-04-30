@@ -40,7 +40,7 @@ public class Handler implements Runnable{                   //Για να μπο
             out = new ObjectOutputStream(connection.getOutputStream());
             in = new ObjectInputStream(connection.getInputStream());
         } catch (IOException e) {
-            System.out.println(e);
+            System.err.println("Stream initialization failed: " + e.getMessage());
         }
     }
 

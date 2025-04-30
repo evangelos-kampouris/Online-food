@@ -355,6 +355,12 @@ public class Client extends User {
     }
 
     public static void main(String[] args) {
+        //Let some time pass to initialize the Server Entities
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         //Create a client object
         Coordinates coordinates = new Coordinates(1.2,1.3);//temporary
         Client client = new Client(coordinates);

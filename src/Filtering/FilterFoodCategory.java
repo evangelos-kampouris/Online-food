@@ -1,7 +1,11 @@
 package Filtering;
 import other.ProductCategory;
 
+import java.io.Serial;
+
 public class FilterFoodCategory implements Filtering {
+    @Serial
+    private static final long serialVersionUID = 1L;
     ProductCategory selectedCategory;
 
     public FilterFoodCategory(ProductCategory selectedCategory) {

@@ -1,7 +1,11 @@
 package Inventory;
 import other.Product;
 
+import java.io.Serial;
+
 public class ShopInventoryItem extends InventoryItem{
+    @Serial
+    private static final long serialVersionUID = 1L;
     private boolean enabled;
 
     public ShopInventoryItem(Product product, int quantity) {

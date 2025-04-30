@@ -2,7 +2,11 @@ package Filtering;
 
 import other.*;
 
+import java.io.Serial;
+
 public class FilterPrice implements Filtering {
+    @Serial
+    private static final long serialVersionUID = 1L;
     Price price;
 
     public FilterPrice(Price price) {
