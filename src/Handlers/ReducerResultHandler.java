@@ -24,10 +24,8 @@ public class ReducerResultHandler implements Handling{
             handler_out.writeObject(response);
             handler_out.flush();
             master.pendingRequests.remove(reducerResultDTO.getRequestId());
-
-            closeConnection(connection,out,in);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.err.println("An error occured while handling the SEARCH request. Master to Client.");
         }
     }
 }
