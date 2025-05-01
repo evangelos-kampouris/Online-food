@@ -57,14 +57,7 @@ public class Manager extends User {
 
     @Override
     public void establishConnection() throws IOException {
-        System.out.println("Initializing connection to Master...");
-
-        connectionSocket = new java.net.Socket(MASTER_IP, MASTER_PORT);
-        out = new java.io.ObjectOutputStream(connectionSocket.getOutputStream());
-        in = new java.io.ObjectInputStream(connectionSocket.getInputStream());
-
-        System.out.println("Connection to Master Achieved.");
-        System.out.println("Sending all saved stores...");
+        System.out.println("Connecting to Master and sending necessary data....");
         performAddStoreRequest(shops);
     }
 
@@ -102,39 +95,17 @@ public class Manager extends User {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
-//            Gson gson = new Gson();
-//            AddStoreRequestDTO addStoreRequestDTO = gson.fromJson(reader, AddStoreRequestDTO.class);
-//            sendRequest(addStoreRequestDTO);
-//
-//            //Wait and read response from server.
-//            ResponseDTO<Map<String, Shop>> response = (ResponseDTO<Map<String, Shop>>) in.readObject();
-//            System.out.println(response.getMessage());
-//            if(response.isSuccess()) { //if successful update the store list
-//                shops = response.getData();
-//            }
-//            else
-//                System.out.println(response.getMessage());
-
     }
 
     private void performAddStoreRequest(Shop shop) {
         AddStoreRequestDTO request = new AddStoreRequestDTO(shop);
-        try {
-            sendRequest(request);
-            System.out.println("Sending new store to Master: " + shop.getName());
-            //Wait and read response from server.
-            ResponseDTO<Map<String, Shop>> response = (ResponseDTO<Map<String, Shop>>) in.readObject();
-            if(!response.isSuccess()){
-                System.out.println("Failed to add shop: " + shop.getName() + "\n\t Reason: " + response.getMessage());
-            }
-            else{
-                System.out.println("Successfully added shop: " + shop.getName());
-            }
-
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+        System.out.println("Sending new store to Master: " + shop.getName()); //debug
+        ResponseDTO<Map<String, Shop>> response = (ResponseDTO<Map<String, Shop>>) sendAndReceiveRequest(request);
+        if(!response.isSuccess()){
+            System.out.println("Failed to add shop: " + shop.getName() + "\n\t Reason: " + response.getMessage());
+        }
+        else{
+            System.out.println("Successfully added shop: " + shop.getName());
         }
     }
 
@@ -142,20 +113,13 @@ public class Manager extends User {
         boolean error_flag = false;
         for (Shop shop : shopsFromInitialization.values()) {
             AddStoreRequestDTO request = new AddStoreRequestDTO(shop);
-            try {
-                System.out.println("Sending new store to Master: " + shop.getName()); //debug
-                sendRequest(request);
-                //Wait and read response from server.
-                System.out.println("Awaiting response..."); //debug
-                ResponseDTO<Map<String, Shop>> response = (ResponseDTO<Map<String, Shop>>) in.readObject();
-                System.out.println("Response: " + response.isSuccess() + " " + response.getMessage()); //debug
-                if(!response.isSuccess()){
-                    System.out.println("Failed to add shop: " + shop.getName() + "\n\t Reason: " + response.getMessage() + "\nEnding request");
-                    error_flag = true;
-                    break;
-                }
-            } catch (IOException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
+
+            System.out.println("Sending new store to Master: " + shop.getName()); //debug
+            ResponseDTO<Map<String, Shop>> response = (ResponseDTO<Map<String, Shop>>) sendAndReceiveRequest(request);
+            if(!response.isSuccess()){
+                System.out.println("Failed to add shop: " + shop.getName() + "\n\t Reason: " + response.getMessage() + "\nEnding request");
+                error_flag = true;
+                break;
             }
         }
         if(!error_flag){
@@ -208,24 +172,16 @@ public class Manager extends User {
         }
 
         if (request != null) {
-            try {
-                sendRequest(request);
+            ResponseDTO<Shop> response = (ResponseDTO<Shop>) sendAndReceiveRequest(request);
 
-                //Wait and read response from server.
-                ResponseDTO<Shop> response = (ResponseDTO<Shop>) in.readObject();
+            System.out.println(response.getMessage());
+            if(response.isSuccess()) {
+                Shop updatedShop = response.getData(); //Update the store
+                shops.put(updatedShop.getName(), updatedShop);
+            }
+            else
                 System.out.println(response.getMessage());
 
-                if(response.isSuccess()) {
-                    Shop updatedShop = response.getData(); //Update the store
-                    shops.put(updatedShop.getName(), updatedShop);
-                }
-                else
-                    System.out.println(response.getMessage());
-
-
-            } catch (IOException | ClassNotFoundException e) {
-                System.out.println("Failed product request: \n" + e.getMessage());
-            }
         }
     }
 
@@ -241,53 +197,39 @@ public class Manager extends User {
         scanner.nextLine();
 
         ChangeStockDTO changeStockDTO = new ChangeStockDTO(storeName, productName, newStock);
+        ResponseDTO<Shop> response = (ResponseDTO<Shop>) sendAndReceiveRequest(changeStockDTO);
 
-        try {
-            sendRequest(changeStockDTO);
-            ResponseDTO<Shop> response = (ResponseDTO<Shop>) in.readObject();
-            System.out.println(response.getMessage());
-
-            if(response.isSuccess()) {
-                System.out.println("Stock updated successfully.");
-                Shop updatedShop = response.getData(); //Update the store
-                shops.put(updatedShop.getName(), updatedShop);
-            }
-            else{
-                System.out.println("Failed to update stock.");
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Failed to send stock change request: " + e.getMessage());
+        System.out.println(response.getMessage());
+        if(response.isSuccess()) {
+            System.out.println("Stock updated successfully.");
+            Shop updatedShop = response.getData(); //Update the store
+            shops.put(updatedShop.getName(), updatedShop);
+        }
+        else{
+            System.out.println("Failed to update stock.");
         }
     }
 
     private void viewSalesOption(String actionType) {
-
         StatsRequestDTO request = new StatsRequestDTO(actionType);
+        ResponseDTO<Map<?, Integer>> response = (ResponseDTO<Map<?, Integer>>) sendAndReceiveRequest(request);
 
-        try {
-            sendRequest(request);
+        System.out.println(response.getMessage());
+        if (response.isSuccess()) {
+            Map<?, Integer> data = response.getData();
 
-            ResponseDTO<Map<?, Integer>> response = (ResponseDTO<Map<?, Integer>>) in.readObject();
-            System.out.println(response.getMessage());
-
-            if (response.isSuccess()) {
-                Map<?, Integer> data = response.getData();
-
-                if(data == null || data.isEmpty()) {
-                    System.out.println("No sales data found for: " + actionType);
-                    return;
-                }
-
-                System.out.println("Sales breakdown:");
-                for (Map.Entry<?, Integer> entry : data.entrySet()) {
-                    System.out.println(entry.getKey() + ": " + entry.getValue());
-                }
+            if(data == null || data.isEmpty()) {
+                System.out.println("No sales data found for: " + actionType);
+                return;
             }
-            else
-                System.out.println(response.getMessage());
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Failed to send stats request: " + e.getMessage());
+
+            System.out.println("Sales breakdown:");
+            for (Map.Entry<?, Integer> entry : data.entrySet()) {
+                System.out.println(entry.getKey() + ": " + entry.getValue());
+            }
         }
+        else
+            System.out.println(response.getMessage());
     }
 
     private static final Gson GSON = new GsonBuilder()

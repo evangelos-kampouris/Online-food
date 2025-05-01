@@ -51,7 +51,7 @@ public class HashRing {
                                                             //localhost:55001#1
             long hash = sha1Hash(virtualId);
             ring.put(hash, node);                           //Στο TreeMap ring, με κλειδί το hash και τιμή τον WorkerNode
-            System.out.println("Added virtual node: " + virtualId + " → hash: " + hash);
+            //System.out.println("Added virtual node: " + virtualId + " → hash: " + hash);
         }
     }
 

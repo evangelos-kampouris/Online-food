@@ -1,6 +1,6 @@
 package other;
 
-import Entity.Entity;
+import Entity.*;
 import Handlers.*;
 
 import java.io.IOException;
@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
 
 import DTO.*;
 
@@ -62,13 +63,15 @@ public class Handler implements Runnable{                   //Για να μπο
                 System.out.println("No handler for: " + receivedObject.getClass());
             }
             //EACH CONNECTION IS TO BE CLOSED IN THE HANDLERS
-        } catch (IOException | ClassNotFoundException e) {
-            System.err.println(entity.getClass()+ " Error handling request " + e.getMessage());
+        } catch (IOException e) {
+            System.err.println(entity.getClass()+ " IO excpection Error handling request " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.err.println(entity.getClass()+ " Class excpection Error handling request " + e.getMessage());
         }
     }
 
     @Override
-    public void run() {                                         //θα τρέξει το νήμα εδώ
+    public void run() {//θα τρέξει το νήμα εδώ
         handle(this.entity, this.connection);
     }
 }

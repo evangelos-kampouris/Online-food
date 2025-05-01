@@ -31,14 +31,7 @@ public class Client extends User {
     //Networking
     @Override
     public void establishConnection() throws IOException, ClassNotFoundException {
-        System.out.println("Initializing connection to Master...");
-
-        connectionSocket = new Socket(MASTER_IP, MASTER_PORT);
-        out = new ObjectOutputStream(connectionSocket.getOutputStream());
-        in = new ObjectInputStream(connectionSocket.getInputStream());
-
-        System.out.println("Connection to Master Achieved.");
-        System.out.println("Receiving necessary data...");
+        System.out.println("Connecting to Master Achieved and Receiving necessary data....");
 
         //PERFORM A SEARCH FOR SHOPS IN 5KM.
         FilterCords km5search = new FilterCords(5.0f, coordinates);
@@ -57,28 +50,18 @@ public class Client extends User {
      */
     private void performPurchase(Shop selectedShop){
         BuyRequestDTO buyRequestDTO = new BuyRequestDTO(selectedShop, cart);
-        try {
-            sendRequest(buyRequestDTO);
-
-            //Wait and read response from server.
-            ResponseDTO<Request> response = (ResponseDTO<Request>) in.readObject();
-            System.out.println(response.getMessage());
-            if(response.isSuccess()) {
-                cart.clearInventory();
-            }
-
-        } catch (ClassNotFoundException | IOException e) {
-            System.out.println("Something went wrong: \n" + e.getMessage());
+        ResponseDTO<Request> response = (ResponseDTO<Request>) sendAndReceiveRequest(buyRequestDTO);
+        System.out.println(response.getMessage());
+        if(response.isSuccess()) {
+            cart.clearInventory();
         }
     }
 
     private void performSearch(List<Filtering> filters) throws IOException, ClassNotFoundException {
         SearchRequestDTO searchRequestDTO = new SearchRequestDTO(filters);
-        sendRequest(searchRequestDTO);
-
-        //Wait and read response from server.
         List<Shop> receivedShops  = null; //The response forwards the shops in a list.
-        Object receivedObject = in.readObject();
+
+        Object receivedObject = sendAndReceiveRequest(searchRequestDTO);
 
         if (receivedObject instanceof ResponseDTO searchResponse) {
             ReducerResultDTO dto = (ReducerResultDTO) searchResponse.getData();
@@ -97,11 +80,13 @@ public class Client extends User {
 
     private void performRating(String storeName, Rating rating) {
         RateStoreRequestDTO rateRequest = new RateStoreRequestDTO(storeName, rating);
-        try {
-            sendRequest(rateRequest);
+
+        ResponseDTO<Request> response = (ResponseDTO<Request>) sendAndReceiveRequest(rateRequest);
+        if(response.isSuccess()) {
             System.out.println("Successfully sent rating for store.");
-        } catch (IOException e) {
-            System.out.println("Failed to send rating: " + e.getMessage());
+        }
+        else{
+            System.out.println(response.getMessage());
         }
     }
 
@@ -424,6 +409,4 @@ public class Client extends User {
             }
         }
     }
-
-
 }

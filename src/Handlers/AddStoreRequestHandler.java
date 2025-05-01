@@ -20,6 +20,8 @@ public class AddStoreRequestHandler implements Handling{
         AddStoreRequestDTO dto = (AddStoreRequestDTO) request;
         String storeName = dto.getShop().getName();
         ResponseDTO<Map<String, Shop>> responseDTO = null;
+
+        Socket workerSocket = null;
         ObjectOutputStream handler_out = null;
         ObjectInputStream handler_in = null;
 
@@ -39,9 +41,9 @@ public class AddStoreRequestHandler implements Handling{
             }
 
             try {
-                Socket socket = new Socket(worker.getIp(), worker.getPort());
-                handler_out = new ObjectOutputStream(socket.getOutputStream());
-                handler_in = new ObjectInputStream(socket.getInputStream());
+                workerSocket = new Socket(worker.getIp(), worker.getPort());
+                handler_out = new ObjectOutputStream(workerSocket.getOutputStream());
+                handler_in = new ObjectInputStream(workerSocket.getInputStream());
 
                 handler_out.writeObject(dto);
                 handler_out.flush();
@@ -69,9 +71,14 @@ public class AddStoreRequestHandler implements Handling{
                 else
                     responseDTO = new ResponseDTO<>(false, response.getMessage());
 
+                System.out.println("Closing connection to worker..."); //debug
+                closeConnection(workerSocket, handler_out, handler_in); //closing the connection with the worker.
+
+                System.out.println("Sending response back to manager."); //debug
                 out.writeObject(responseDTO);
                 out.flush();
-                System.out.println("Sending response back to manager.");
+                System.out.println("Response send back to manager."); //debug
+
                 //closeConnection(socket,handler_out,null); //Close the connection with the worker.
             }catch (IOException| ClassNotFoundException e) {
                 try {
@@ -98,11 +105,9 @@ public class AddStoreRequestHandler implements Handling{
                 System.out.println("Sending response back to Master."); //debug
                 out.writeObject(responseDTO);
                 out.flush();
+                System.out.println("Response send back to Master"); //debug
             } catch (IOException e) {
                 throw new RuntimeException(e);
-            }
-            finally{
-                closeConnection(connection,out,in);
             }
         }
         else{
