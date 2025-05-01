@@ -1,18 +1,16 @@
 package other;
 
-import Entity.*;
+import DTO.*;
+import Entity.Entity;
 import Handlers.*;
+import Responses.ResponseDTO;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
-
-import DTO.*;
 
 public class Handler implements Runnable{                   //Για να μπορεί να τρέχει σε δικό του thread
     Socket connection;
@@ -65,6 +63,15 @@ public class Handler implements Runnable{                   //Για να μπο
             //EACH CONNECTION IS TO BE CLOSED IN THE HANDLERS
         } catch (IOException e) {
             System.err.println(entity.getClass()+ " IO excpection Error handling request " + e.getMessage());
+            e.printStackTrace();
+
+            ResponseDTO responseDTO = new ResponseDTO(false, "Error");
+            try {
+                out.writeObject(responseDTO);
+                out.flush();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         } catch (ClassNotFoundException e) {
             System.err.println(entity.getClass()+ " Class excpection Error handling request " + e.getMessage());
         }
