@@ -265,9 +265,17 @@ public class Manager extends User {
         return GSON.fromJson(reader, Shop.class);
     }
 
+    public void printShopsCords() {
+        for (Shop shop : shops.values()) {
+            System.out.println(shop.getName() + " " + shop.getCoordinates().toString());
+        }
+    }
+
     public static void main(String[] args) {
         Manager manager = new Manager();
         manager.readStore(10);
+        manager.printShopsCords();
+
 
         //Let some time pass to initialize the Server Entities
         try {
