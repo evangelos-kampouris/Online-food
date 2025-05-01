@@ -6,12 +6,9 @@ import Inventory.InventoryCart;
 import Responses.ResponseDTO;
 import other.*;
 
-
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Client extends User {
@@ -159,7 +156,7 @@ public class Client extends User {
             String filter = scanner.nextLine();
             filter = filter.toLowerCase();
 
-            switch (filter){
+            switch (filter) {
                 case "price":
                     System.out.println("Select a price: [$, $$, $$$]");
                     String price_str = scanner.nextLine();
@@ -183,7 +180,7 @@ public class Client extends User {
                     FilterPrice filterPrice = new FilterPrice(selectedPrice);
 
                     //Checking if the same filter has been applied.
-                    if(!selectedFilters.contains(filterPrice))
+                    if (!selectedFilters.contains(filterPrice))
                         selectedFilters.add(filterPrice);
                     else
                         System.out.println("Filter already selected.");
@@ -195,7 +192,7 @@ public class Client extends User {
                     float rating_float = Float.parseFloat(rating_str);
 
                     //Check input
-                    if (rating_float < 1.0 || rating_float > 5.0) {
+                    if (rating_float < 1.0f || rating_float > 5.0f) {
                         System.out.println("Rating must be between 1.0 and 5.0.");
                         return;
                     }
@@ -203,31 +200,31 @@ public class Client extends User {
                     Rating selectedRating;
 
                     switch (rating_str) {
-                        case "1":
+                        case "1.0":
                             selectedRating = Rating.ONE_STAR;
                             break;
                         case "1.5":
                             selectedRating = Rating.ONE_HALF_STAR;
                             break;
-                        case "2":
+                        case "2.0":
                             selectedRating = Rating.TWO_STARS;
                             break;
                         case "2.5":
                             selectedRating = Rating.TWO_HALF_STARS;
                             break;
-                        case "3":
+                        case "3.0":
                             selectedRating = Rating.THREE_STARS;
                             break;
                         case "3.5":
                             selectedRating = Rating.THREE_HALF_STARS;
                             break;
-                        case "4":
+                        case "4.0":
                             selectedRating = Rating.FOUR_STARS;
                             break;
                         case "4.5":
                             selectedRating = Rating.FOUR_HALF_STARS;
                             break;
-                        case "5":
+                        case "5.0":
                             selectedRating = Rating.FIVE_STARS;
                             break;
                         default:
@@ -238,74 +235,82 @@ public class Client extends User {
                     FilterRating rating = new FilterRating(selectedRating);
 
                     //Checking if the same filter has been applied.
-                    if(!selectedFilters.contains(rating))
+                    if (!selectedFilters.contains(rating))
                         selectedFilters.add(rating);
                     else
                         System.out.println("Rating filter already selected.");
                     break;
 
-
                 case "food category":
-                    System.out.println("Select a food Category: ");
-                    String foodCategory = scanner.nextLine();
+                    ProductCategory selectedFoodCategory = null;
 
-                    ProductCategory selectedFoodCategory;
+                    while (selectedFoodCategory == null) {
+                        System.out.println("Select a food Category: ");
+                        String foodCategory = scanner.nextLine().toLowerCase();
 
-                    switch (foodCategory) {
-                        case "souvlaki":
-                            selectedFoodCategory = ProductCategory.SOUVLAKI;
-                            break;
-                        case "burger":
-                            selectedFoodCategory = ProductCategory.BURGER;
-                            break;
-                        case "pizza":
-                            selectedFoodCategory = ProductCategory.PIZZA;
-                            break;
-                        case "crepe":
-                            selectedFoodCategory = ProductCategory.CREPE;
-                            break;
-                        case "coffee":
-                            selectedFoodCategory = ProductCategory.COFFEE;
-                            break;
-                        case "sushi":
-                            selectedFoodCategory = ProductCategory.SUSHI;
-                            break;
-                        case "sandwich":
-                            selectedFoodCategory = ProductCategory.SANDWICH;
-                            break;
-                        case "pasta":
-                            selectedFoodCategory = ProductCategory.PASTA;
-                            break;
-                        case "brunch":
-                            selectedFoodCategory = ProductCategory.BRUNCH;
-                            break;
-                        case "steak":
-                            selectedFoodCategory = ProductCategory.STEAK;
-                            break;
-                        case "soup":
-                            selectedFoodCategory = ProductCategory.SOUP;
-                            break;
-                        case "tea":
-                            selectedFoodCategory = ProductCategory.TEA;
-                            break;
-                        case "waffle":
-                            selectedFoodCategory = ProductCategory.WAFFLE;
-                            break;
-                        case "ice cream":
-                            selectedFoodCategory = ProductCategory.ICE_CREAM;
-                            break;
-                        case "tacos":
-                            selectedFoodCategory = ProductCategory.TACOS;
-                            break;
-                        case "beverage":
-                            selectedFoodCategory = ProductCategory.BEVERAGE;
-                            break;
-                        case "pie":
-                            selectedFoodCategory = ProductCategory.PIE;
-                            break;
-                        default:
-                            System.out.println("Invalid category. Please choose a valid food category.");
-                            return;
+                        switch (foodCategory) {
+                            case "souvlaki":
+                                selectedFoodCategory = ProductCategory.SOUVLAKI;
+                                break;
+                            case "burger":
+                                selectedFoodCategory = ProductCategory.BURGER;
+                                break;
+                            case "pizza":
+                                selectedFoodCategory = ProductCategory.PIZZA;
+                                break;
+                            case "crepe":
+                                selectedFoodCategory = ProductCategory.CREPE;
+                                break;
+                            case "coffee":
+                                selectedFoodCategory = ProductCategory.COFFEE;
+                                break;
+                            case "sushi":
+                                selectedFoodCategory = ProductCategory.SUSHI;
+                                break;
+                            case "sandwich":
+                                selectedFoodCategory = ProductCategory.SANDWICH;
+                                break;
+                            case "pasta":
+                                selectedFoodCategory = ProductCategory.PASTA;
+                                break;
+                            case "brunch":
+                                selectedFoodCategory = ProductCategory.BRUNCH;
+                                break;
+                            case "steak":
+                                selectedFoodCategory = ProductCategory.STEAK;
+                                break;
+                            case "soup":
+                                selectedFoodCategory = ProductCategory.SOUP;
+                                break;
+                            case "tea":
+                                selectedFoodCategory = ProductCategory.TEA;
+                                break;
+                            case "waffle":
+                                selectedFoodCategory = ProductCategory.WAFFLE;
+                                break;
+                            case "ice cream":
+                                selectedFoodCategory = ProductCategory.ICE_CREAM;
+                                break;
+                            case "tacos":
+                                selectedFoodCategory = ProductCategory.TACOS;
+                                break;
+                            case "beverage":
+                                selectedFoodCategory = ProductCategory.BEVERAGE;
+                                break;
+                            case "pie":
+                                selectedFoodCategory = ProductCategory.PIE;
+                                break;
+                            case "salad":
+                                selectedFoodCategory = ProductCategory.SALAD;
+                                break;
+                            case "side":
+                                selectedFoodCategory = ProductCategory.SIDE;
+                                break;
+                            default:
+                                System.out.println("Invalid category. Please choose a valid food category Among: \n");
+                                ProductCategory.listCategories(true);
+                                break;
+                        }
                     }
 
                     FilterFoodCategory filterCategory = new FilterFoodCategory(selectedFoodCategory);
@@ -381,6 +386,8 @@ public class Client extends User {
                         client.searchMenuOption();
                     } catch (IOException | ClassNotFoundException e) {
                         System.out.println("Something went wrong: " + e.getMessage()+  "\n Please try again.");
+                    }catch (NumberFormatException e) {
+                        System.out.println("Wrong input. Please try again.");
                     }
                     break;
                 case "2":
