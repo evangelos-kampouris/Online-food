@@ -20,6 +20,8 @@ public class AddStoreRequestHandler implements Handling{
         AddStoreRequestDTO dto = (AddStoreRequestDTO) request;
         String storeName = dto.getShop().getName();
         ResponseDTO<Map<String, Shop>> responseDTO = null;
+        ObjectOutputStream handler_out = null;
+        ObjectInputStream handler_in = null;
 
         if(entity instanceof Master master){
             WorkerNode worker = master.workers.getNodeForKey(storeName);
@@ -36,16 +38,32 @@ public class AddStoreRequestHandler implements Handling{
                 return;
             }
 
-            try (Socket socket = new Socket(worker.getIp(), worker.getPort());
-                 ObjectOutputStream handler_out = new ObjectOutputStream(socket.getOutputStream());
-                 ObjectInputStream handler_in = new ObjectInputStream(socket.getInputStream())){
+            try {
+                Socket socket = new Socket(worker.getIp(), worker.getPort());
+                handler_out = new ObjectOutputStream(socket.getOutputStream());
+                handler_in = new ObjectInputStream(socket.getInputStream());
 
                 handler_out.writeObject(dto);
                 handler_out.flush();
 
-                System.out.println("New Shop send.");
+                System.out.println("New Shop send."); //debug
+            }
+            catch(IOException e){
+                System.out.println("Error forwarding to worker: " + e.getMessage());
+                responseDTO = new ResponseDTO<>(false, "Error forwarding to worker: " + e.getMessage());
+                try {
+                    out.writeObject(responseDTO);
+                    out.flush();
+                } catch (IOException ex) {
+                    throw new RuntimeException("[MASTER] Something went bad when writing to worker: " + ex.getMessage());
+                }
+            }
+
+            try{
+                System.out.println("Pending Response from Worker."); //debug
                 //Wait and receive response
                 ResponseDTO<Map<String, Shop>> response = (ResponseDTO<Map<String, Shop>>) handler_in.readObject();
+                System.out.println("Response from the worker: " + response.isSuccess() + " " + response.getMessage()); //debug
                 if(response.isSuccess())
                     responseDTO = response;
                 else
@@ -53,12 +71,18 @@ public class AddStoreRequestHandler implements Handling{
 
                 out.writeObject(responseDTO);
                 out.flush();
-                closeConnection(socket,handler_out,null); //Close the connection with the worker.
-
-            }catch (IOException e){
-                System.out.println("Error forwarding to worker: " + e.getMessage());
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
+                System.out.println("Sending response back to manager.");
+                //closeConnection(socket,handler_out,null); //Close the connection with the worker.
+            }catch (IOException| ClassNotFoundException e) {
+                try {
+                    System.out.println("Somehting went wrong when expecting a new response. from the worker: " + e.getMessage());
+                    responseDTO = new ResponseDTO<>(false, e.getMessage());
+                    out.writeObject(responseDTO);
+                    out.flush();
+                    closeConnection(connection,out,in);
+                } catch (IOException ex) {
+                    System.out.println("Error sending back the error to the worker: " + ex.getMessage());
+                }
             }
         }
         else if(entity instanceof Worker worker){
@@ -71,10 +95,14 @@ public class AddStoreRequestHandler implements Handling{
             }
 
             try {
+                System.out.println("Sending response back to Master."); //debug
                 out.writeObject(responseDTO);
                 out.flush();
             } catch (IOException e) {
                 throw new RuntimeException(e);
+            }
+            finally{
+                closeConnection(connection,out,in);
             }
         }
         else{
@@ -85,6 +113,9 @@ public class AddStoreRequestHandler implements Handling{
                 out.flush();
             } catch (IOException e) {
                 throw new RuntimeException(e);
+            }
+            finally{
+                closeConnection(connection,out,in);
             }
         }
     }

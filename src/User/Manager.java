@@ -54,25 +54,6 @@ public class Manager extends User {
             }
         }
     }
-//    public Shop readStoreByName(String fileName){
-//        Path path = Paths.get("Eshop","Resources", fileName);
-//        System.out.println("reading file " + path.toString());
-//
-//        try (FileReader fr = new FileReader(path.toFile())) {
-//            Shop shop = readShop(fr);
-//
-//            //Prints the values read
-//            System.out.println("Loaded shop: " + shop.getName());
-//            System.out.println("Products in inventory:");
-//            shop.getCatalog().getInventory().forEach((name, item) ->
-//                    System.out.printf(" - %s: %d units (enabled=%b)%n", name, item.getQuantity(), ((ShopInventoryItem)item).isEnabled()));
-//
-//            addStore(shop.getName(), shop);
-//            return shop;
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 
     @Override
     public void establishConnection() throws IOException {
@@ -85,9 +66,6 @@ public class Manager extends User {
         System.out.println("Connection to Master Achieved.");
         System.out.println("Sending all saved stores...");
         performAddStoreRequest(shops);
-
-
-
     }
 
     @Override
@@ -159,22 +137,30 @@ public class Manager extends User {
             throw new RuntimeException(e);
         }
     }
+
     private void performAddStoreRequest(Map<String, Shop> shopsFromInitialization) {
+        boolean error_flag = false;
         for (Shop shop : shopsFromInitialization.values()) {
             AddStoreRequestDTO request = new AddStoreRequestDTO(shop);
             try {
+                System.out.println("Sending new store to Master: " + shop.getName()); //debug
                 sendRequest(request);
                 //Wait and read response from server.
+                System.out.println("Awaiting response..."); //debug
                 ResponseDTO<Map<String, Shop>> response = (ResponseDTO<Map<String, Shop>>) in.readObject();
+                System.out.println("Response: " + response.isSuccess() + " " + response.getMessage()); //debug
                 if(!response.isSuccess()){
                     System.out.println("Failed to add shop: " + shop.getName() + "\n\t Reason: " + response.getMessage() + "\nEnding request");
+                    error_flag = true;
                     break;
                 }
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
         }
-        System.out.println("All stores have been added.");
+        if(!error_flag){
+            System.out.println("All stores have been added.");
+        }
     }
 
     private void addRemoveProductOption() {
@@ -343,7 +329,7 @@ public class Manager extends User {
 
         //Let some time pass to initialize the Server Entities
         try {
-            Thread.sleep(1100);
+            Thread.sleep(5100);
             manager.establishConnection();
         } catch (InterruptedException | IOException e) {
             throw new RuntimeException(e);
@@ -351,41 +337,41 @@ public class Manager extends User {
 
         boolean running = true;
 
-//        while (running) {
-//            manager.showMenu();
-//            String choice = scanner.nextLine();
-//
-//            switch (choice) {
-//                case "1":
-//                    manager.addStoreOption();
-//                    break;
-//                case "2":
-//                    manager.addRemoveProductOption();
-//                    break;
-//                case "3":
-//                    manager.changeStockOption();
-//                    break;
-//                case "4":
-//                    break;
-//                case "5":
-//                    manager.viewSalesOption("StoreCategories");
-//                    break;
-//                case "6":
-//                    manager.viewSalesOption("ProductCategories");
-//                    break;
-//                case "0":
-//                    running = false;
-//                    try {
-//                        manager.closeConnection();
-//                        System.out.println("Connection closed.");
-//                    } catch (IOException e) {
-//                        System.out.println("Error closing connection: " + e.getMessage());
-//                    }
-//                    System.out.println("Exiting Manager...");
-//                    break;
-//                default:
-//                    System.out.println("Invalid option. Please try again.");
-//            }
-//        }
+        while (running) {
+            manager.showMenu();
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1":
+                    manager.addStoreOption();
+                    break;
+                case "2":
+                    manager.addRemoveProductOption();
+                    break;
+                case "3":
+                    manager.changeStockOption();
+                    break;
+                case "4":
+                    break;
+                case "5":
+                    manager.viewSalesOption("StoreCategories");
+                    break;
+                case "6":
+                    manager.viewSalesOption("ProductCategories");
+                    break;
+                case "0":
+                    running = false;
+                    try {
+                        manager.closeConnection();
+                        System.out.println("Connection closed.");
+                    } catch (IOException e) {
+                        System.out.println("Error closing connection: " + e.getMessage());
+                    }
+                    System.out.println("Exiting Manager...");
+                    break;
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+        }
     }
 }
