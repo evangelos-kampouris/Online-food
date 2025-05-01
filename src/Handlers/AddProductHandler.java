@@ -58,6 +58,14 @@ public class AddProductHandler implements Handling {
 
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println("Error forwarding to worker: " + e.getMessage());
+                responseDTO = new ResponseDTO<>(false, "Error forwarding to worker: " + e.getMessage());
+                try {
+                    out.writeObject(responseDTO);
+                    out.flush();
+                    closeConnection(connection,out,in);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         } else if (entity instanceof Worker worker) {
             Shop shop = worker.getShop(storeName);
