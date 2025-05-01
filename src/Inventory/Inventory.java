@@ -164,6 +164,32 @@ public abstract class Inventory implements Serializable {
         }
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Inventory{");
+        sb.append("items=[");
+        boolean first = true;
+        for (Map.Entry<String, InventoryItem> entry : inventory.entrySet()) {
+            if (!first) sb.append(", ");
+            first = false;
+            String key = entry.getKey();
+            InventoryItem item = entry.getValue();
+
+            sb.append("{name=").append(key)
+                    .append(", quantity=").append(item.getQuantity())
+                    .append(", product=").append(item.getProduct());
+
+            // If it's a ShopInventoryItem, append the enabled flag:
+            if (item instanceof ShopInventoryItem) {
+                boolean enabled = ((ShopInventoryItem) item).isEnabled();
+                sb.append(", enabled=").append(enabled);
+            }
+
+            sb.append("}");
+        }
+        sb.append("]}");
+        return sb.toString();
+    }
 
     // ====== PRIVATE HELPERS FOR VALUE CHECKING ======
     protected boolean isValidProductInput(String productName, Product product, int quantity) {
