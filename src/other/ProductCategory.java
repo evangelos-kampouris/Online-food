@@ -17,7 +17,8 @@ public enum ProductCategory {
     ICE_CREAM("Ice Cream"),
     TACOS("Tacos"),
     BEVERAGE("Beverage"),
-    PIE("Pie");
+    PIE("Pie"),
+    SIDE("Side"),;
 
     private final String name;
 

@@ -1,21 +1,58 @@
 package User;
 
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+import Inventory.InventoryItem;
+import Inventory.ShopInventoryItem;
 import Responses.ResponseDTO;
 import com.google.gson.Gson;
 import DTO.*;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonObject;
 import other.ActionType;
+import other.Product;
 import other.ProductCategory;
 import other.Shop;
 
 public class Manager extends User {
 
+    public final List<Shop> shopsReceivedOnInitialaziation = new ArrayList<Shop>();
+
     public Manager() {
         super();
+
+    }
+
+    public void readStore(int numberOfFilesToRead){
+        for(int i = 1; i <= numberOfFilesToRead; i++){
+            String filename = "store_" + i + ".json";
+            Path path = Paths.get("Eshop","Resources", filename);
+            System.out.println("reading file " + path.toString());
+
+            try (FileReader fr = new FileReader(path.toFile())) {
+                Shop shop = readShop(fr);
+
+                //Prints the values read
+                System.out.println("Loaded shop: " + shop.getName());
+                System.out.println("Products in inventory:");
+                shop.getCatalog().getInventory().forEach((name, item) ->
+                        System.out.printf(" - %s: %d units (enabled=%b)%n", name, item.getQuantity(), ((ShopInventoryItem)item).isEnabled()));
+
+                shops.put(shop.getName(), shop);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     @Override
@@ -194,53 +231,106 @@ public class Manager extends User {
         }
     }
 
+    private static final Gson GSON = new GsonBuilder()
+            // ensure every InventoryItem becomes a ShopInventoryItem
+            .registerTypeAdapter(InventoryItem.class,
+                    (JsonDeserializer<InventoryItem>)(json, type, ctx) -> {
+                        JsonObject obj = json.getAsJsonObject();
+                        Product p   = ctx.deserialize(obj.get("product"), Product.class);
+                        int qty     = obj.get("quantity").getAsInt();
+                        boolean en  = obj.get("enabled").getAsBoolean();
+                        return new ShopInventoryItem(p, qty, en);
+                    })
+            .create();
+
+    /**
+     * Reads a Shop from JSON.
+     *
+     * @param reader a Reader over JSON of the form:
+     *   {
+     *     "name": ...,
+     *     "productCategory": [...],
+     *     "storeCategory": ...,
+     *     "numberOfRatings": ...,
+     *     "rating": "...",
+     *     "coordinates": {"lat":..., "lng":...},
+     *     "logoPath": ...,
+     *     "numberOfProducts": ...,
+     *     "catalog": { "inventory": { ... } }
+     *   }
+     * @return a fully populated Shop, with ShopInventoryItems
+     */
+    public static Shop readShop(Reader reader) {
+        return GSON.fromJson(reader, Shop.class);
+    }
+
     public static void main(String[] args) {
         Manager manager = new Manager();
-        //Let some time pass to initialize the Server Entities
-        try {
-            Thread.sleep(1100);
-            manager.establishConnection();
-        } catch (InterruptedException | IOException e) {
+        Path path = Paths.get("Eshop","Resources", "store_1.json");
+        try (FileReader fr = new FileReader(path.toFile())) {
+            Shop shop = readShop(fr);
+            manager.shops.put(shop.getName(), shop);
+            System.out.println("Loaded shop: " + shop.getName());
+            System.out.println("Products in inventory:");
+            shop.getCatalog().getInventory().forEach((name, item) ->
+                    System.out.printf(" - %s: %d units (enabled=%b)%n",
+                            name, item.getQuantity(),
+                            ((ShopInventoryItem)item).isEnabled())
+            );
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
+        //Let some time pass to initialize the Server Entities
+//        try {
+//            Thread.sleep(1100);
+//            manager.establishConnection();
+//        } catch (InterruptedException | IOException e) {
+//            throw new RuntimeException(e);
+//        }
+
         boolean running = true;
-
-        while (running) {
-            manager.showMenu();
-            String choice = scanner.nextLine();
-
-            switch (choice) {
-                case "1":
-                    manager.addStoreOption();
-                    break;
-                case "2":
-                    manager.addRemoveProductOption();
-                    break;
-                case "3":
-                    manager.changeStockOption();
-                    break;
-                case "4":
-                    break;
-                case "5":
-                    manager.viewSalesOption("StoreCategories");
-                    break;
-                case "6":
-                    manager.viewSalesOption("ProductCategories");
-                    break;
-                case "0":
-                    running = false;
-                    try {
-                        manager.closeConnection();
-                        System.out.println("Connection closed.");
-                    } catch (IOException e) {
-                        System.out.println("Error closing connection: " + e.getMessage());
-                    }
-                    System.out.println("Exiting Manager...");
-                    break;
-                default:
-                    System.out.println("Invalid option. Please try again.");
-            }
+        System.out.println(manager.shops.isEmpty());
+        for(Shop shop: manager.shops.values()) {
+            System.out.println("test");
+            System.out.println(shop.getCatalog().toString());
         }
+
+//        while (running) {
+//            manager.showMenu();
+//            String choice = scanner.nextLine();
+//
+//            switch (choice) {
+//                case "1":
+//                    manager.addStoreOption();
+//                    break;
+//                case "2":
+//                    manager.addRemoveProductOption();
+//                    break;
+//                case "3":
+//                    manager.changeStockOption();
+//                    break;
+//                case "4":
+//                    break;
+//                case "5":
+//                    manager.viewSalesOption("StoreCategories");
+//                    break;
+//                case "6":
+//                    manager.viewSalesOption("ProductCategories");
+//                    break;
+//                case "0":
+//                    running = false;
+//                    try {
+//                        manager.closeConnection();
+//                        System.out.println("Connection closed.");
+//                    } catch (IOException e) {
+//                        System.out.println("Error closing connection: " + e.getMessage());
+//                    }
+//                    System.out.println("Exiting Manager...");
+//                    break;
+//                default:
+//                    System.out.println("Invalid option. Please try again.");
+//            }
+//        }
     }
 }

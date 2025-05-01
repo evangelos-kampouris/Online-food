@@ -2,9 +2,15 @@ package other;
 
 import Exceptions.NoValidStockInput;
 import Inventory.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonObject;
 
+import java.io.Reader;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,21 +24,26 @@ public class Shop implements Serializable {
 
     private int numberOfRatings;
     private Rating rating;
-    private Price price;
 
-    private ShopInventory catalog;
+    private Coordinates coordinates;
+    private String logoPath;
+
     private int numberOfProducts;
+    private ShopInventory catalog;
 
+    private Price price; //Store Expensiveness
     //product sales
     private float revenue = 0.0f;
 
-    private Coordinates coordinates;
 
-    private String logoPath;
 
     private static final int PRICE_LOW_TOP_LIMIT = 5;
     private static final int PRICE_MEDIUM_TOP_LIMIT = 10;
     private static final int PRICE_HIGH_TOP_LIMIT = 15;
+
+
+
+    public Shop() {}//Just the default.
 
     public Shop(String name, ShopInventory catalog, Rating rating, int numberOfRatings, Set<ProductCategory> productCategory, StoreCategories storeCategory, Coordinates coordinates) {
         this.name = name;
@@ -95,6 +106,8 @@ public class Shop implements Serializable {
         }
         else{price = Price.HIGH; }
     }
+
+
 
     /**
      * @return price
