@@ -359,7 +359,7 @@ public class Client extends User {
             throw new RuntimeException(e);
         }
         //Create a client object
-        Coordinates coordinates = new Coordinates(1.2,1.3);//temporary
+        Coordinates coordinates = new Coordinates(37.9755, 23.7348);//Somewhere in Athens
         Client client = new Client(coordinates);
         try {
             client.establishConnection();
