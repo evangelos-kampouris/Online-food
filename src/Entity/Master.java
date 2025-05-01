@@ -10,6 +10,8 @@ import other.StoreCategories;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +19,7 @@ import java.util.Map;
 
 public class Master extends Entity {
     //Workers
-    private final String worker_config_filepath = "Resources/WorkerConfig.json";
+    private String worker_config_filepath;
     private List<WorkerNode> workersList;
     public HashRing workers;  //Ο Master χρησιμοποιεί έναν HashRing για να κάνει κατανομή καταστημάτων στους Workers
     private final int VIRTUAL_NODES_OF_WORKER = 2;  /*Για κάθε Worker, ο HashRing βάζει δύο αντίγραφα του worker στο δαχτυλίδι,
@@ -27,7 +29,7 @@ public class Master extends Entity {
     Map<StoreCategories, Integer> storeCategoryStat = new HashMap<>();       //Κρατάει πόσες πωλήσεις έγιναν ανά τύπο καταστήματος (π.χ. "Pizzeria" → 100 πωλήσεις).
     Map<ProductCategory, Integer> productCategoryStat = new HashMap<>();     //Κρατάει πόσες πωλήσεις έγιναν ανά τύπο προϊόντος (π.χ. "Pizza" → 300 πωλήσεις).
 
-    public Map<Integer, PendingRequests> pendingRequests = new HashMap<>(); // <RequestID, ObjectInput/OutputStreams>
+    public final Map<Integer, PendingRequests> pendingRequests = new HashMap<>(); // <RequestID, ObjectInput/OutputStreams>
 
     //Constructor
     public Master(String IP, int PORT) {
@@ -47,13 +49,13 @@ public class Master extends Entity {
      * Reads who the workers are from the file
      */
     private void initiateWorkers() {
-        try (FileReader reader = new FileReader(worker_config_filepath)) {
+        System.out.println(System.getProperty("user.dir"));//debugging.
+        Path path = Paths.get("Eshop","Resources", "workerConfig.json");
+        System.out.println(path);//debugging.
+        try (FileReader reader = new FileReader(path.toFile())) {
             Gson gson = new Gson();                                               //μετατροπή JSON σε Java αντικείμενα
             WorkerConfigWrapper wrapper = gson.fromJson(reader, WorkerConfigWrapper.class); //τα μετατρέπει σε ένα Java αντικείμενο τύπου WorkerConfigWrapper
             this.workersList = wrapper.getWorkers();    //Παίρνει από το wrapper τη λίστα των Workers
-            for(WorkerNode worker : workersList) { //Adds the workers to the Hashring
-                workers.addNode(worker);
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -102,7 +104,7 @@ public class Master extends Entity {
     public List<WorkerNode> getWorkersList() {return workersList;}
 
     public static void main(String[] args) {
-        Master master = new Master("127.0.0.1", 9999);
+        Master master = new Master(args[0], Integer.parseInt(args[1]));
         try {
             master.acceptConnections();
         } catch (IOException e) {

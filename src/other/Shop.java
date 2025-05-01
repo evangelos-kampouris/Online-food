@@ -3,12 +3,15 @@ package other;
 import Exceptions.NoValidStockInput;
 import Inventory.*;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class Shop {
-
+public class Shop implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private String name;
     private Set<ProductCategory> productCategory;
     private StoreCategories storeCategory;

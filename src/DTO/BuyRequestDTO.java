@@ -1,6 +1,8 @@
 package DTO;
 import Inventory.*;
 import other.Shop;
+
+import java.io.Serial;
 //O client για να κανει buy θα μαζευει οτι δεδομενα χρειαζεται σε ενα αντικειμενο buyrequestDTO
 //και θα στελνει το buyrequestDTO στον master
 
@@ -8,7 +10,8 @@ import other.Shop;
  * Holds the Buy Request logic. Client -> Master
  */
 public class BuyRequestDTO extends Request{
-
+    @Serial
+    private static final long serialVersionUID = 1L;
     private final InventoryCart cart;
     private Shop shop;
 

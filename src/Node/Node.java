@@ -1,8 +1,12 @@
 package Node;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Node {
+public class Node implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     protected final String ip;
     protected final int port;
 

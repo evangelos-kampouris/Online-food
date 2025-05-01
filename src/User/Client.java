@@ -34,7 +34,6 @@ public class Client extends User {
         System.out.println("Initializing connection to Master...");
 
         connectionSocket = new Socket(MASTER_IP, MASTER_PORT);
-
         out = new ObjectOutputStream(connectionSocket.getOutputStream());
         in = new ObjectInputStream(connectionSocket.getInputStream());
 
@@ -130,14 +129,29 @@ public class Client extends User {
         String storeName = scanner.nextLine();
         Shop shop = shops.get(storeName);
 
+        if (shop == null) {
+            System.out.println("Store not found.");
+            return;
+        }
+
         do{
             System.out.println("Select a product to buy: ");
             String productName = scanner.nextLine();
             Product product = shops.get(storeName).getCatalog().getProduct(productName);
 
+            if (product == null) {
+                System.out.println("Product not found.");
+                continue;  // skip rest of loop, ask again
+            }
+
             System.out.println("Select a quantity to buy: ");
             int quantity = scanner.nextInt();
             scanner.nextLine();
+
+            if (quantity <= 0) {
+                System.out.println("Quantity must be positive.");
+                continue;
+            }
 
             addToCart(product, quantity);
 
@@ -189,7 +203,7 @@ public class Client extends User {
                     if(!selectedFilters.contains(filterPrice))
                         selectedFilters.add(filterPrice);
                     else
-                        System.out.println("Rating filter already selected.");
+                        System.out.println("Filter already selected.");
                     break;
 
                 case "rating":
@@ -355,6 +369,12 @@ public class Client extends User {
     }
 
     public static void main(String[] args) {
+        //Let some time pass to initialize the Server Entities
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         //Create a client object
         Coordinates coordinates = new Coordinates(1.2,1.3);//temporary
         Client client = new Client(coordinates);
@@ -377,14 +397,14 @@ public class Client extends User {
                     try {
                         client.searchMenuOption();
                     } catch (IOException | ClassNotFoundException e) {
-                        throw new RuntimeException(e);
+                        System.out.println("Something went wrong: " + e.getMessage()+  "\n Please try again.");
                     }
                     break;
                 case "2":
                     try {
                         client.buyMenuOption();
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        System.out.println("Something went wrong: " + e.getMessage()+  "\n Please try again.");
                     }
                     break;
                 case "3":

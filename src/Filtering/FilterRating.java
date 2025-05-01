@@ -1,8 +1,12 @@
 package Filtering;
 import other.*;
 
+import java.io.Serial;
+
 
 public class FilterRating implements Filtering {
+    @Serial
+    private static final long serialVersionUID = 1L;
     Rating rating;
 
     public FilterRating(Rating rating) {

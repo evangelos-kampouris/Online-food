@@ -1,6 +1,10 @@
 package DTO;
 
+import java.io.Serial;
+
 public class RemoveProductDTO extends Request{
+    @Serial
+    private static final long serialVersionUID = 1L;
     private final String storeName;
     private final String productName;
 

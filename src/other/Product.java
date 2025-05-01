@@ -1,6 +1,11 @@
 package other;
 
-public class Product {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class Product implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private float price;
     private String name;
     private ProductCategory productCategory;

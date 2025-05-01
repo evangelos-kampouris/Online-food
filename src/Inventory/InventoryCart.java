@@ -1,11 +1,14 @@
 package Inventory;
 
 import other.Product;
+
+import java.io.Serial;
 import java.util.Map;
 
 
 public class InventoryCart extends Inventory {
-
+    @Serial
+    private static final long serialVersionUID = 1L;
     private float cost;
 
     @Override

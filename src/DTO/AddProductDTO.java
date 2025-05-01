@@ -3,7 +3,11 @@ package DTO;
 import other.ActionType;
 import other.ProductCategory;
 
+import java.io.Serial;
+
 public class AddProductDTO extends Request{
+    @Serial
+    private static final long serialVersionUID = 1L;
     private final String storeName;
     private final String productName;
     private final ProductCategory productCategory;

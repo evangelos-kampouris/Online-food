@@ -1,9 +1,11 @@
 package Node;
 
+import java.io.Serial;
 import java.util.Objects;
 
 public class WorkerNode extends Node{
-
+    @Serial
+    private static final long serialVersionUID = 1L;
     public WorkerNode(String ip, int port) {
         super(ip, port);
     }

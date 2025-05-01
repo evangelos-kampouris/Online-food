@@ -2,8 +2,12 @@ package Inventory;
 
 import other.*;
 
+import java.io.Serial;
+
 public class ShopInventory extends Inventory{
 
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Override
     public void addProduct(String productName, Product product, int quantity) {

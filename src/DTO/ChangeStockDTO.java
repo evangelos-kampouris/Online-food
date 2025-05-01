@@ -1,9 +1,11 @@
 package DTO;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class ChangeStockDTO extends Request implements Serializable {
-
+    @Serial
+    private static final long serialVersionUID = 1L;
     private final String storeName;
     private final String productName;
     private final int newStock;

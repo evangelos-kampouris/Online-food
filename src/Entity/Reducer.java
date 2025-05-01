@@ -16,8 +16,6 @@ public class Reducer extends Entity {
     //private final Object lock_shuffle = new Object(); //Used to lock updates in the data structure used to combine different results from the Workers.
     private final int totalWorkers; //The total workers in the infrastructure.
 
-
-
     private final Map<Integer, ReducerShuffler> reducerShufflers = new HashMap<>(); //RequestID - shuffle operation
 
     public Reducer(String IP, int PORT, MasterNode masterNode, int totalWorkers) {
@@ -57,8 +55,8 @@ public class Reducer extends Entity {
     }
 
     public static void main(String[] args) {
-        MasterNode masterNode = new MasterNode("localhost", 9999);
-        Reducer reducer = new Reducer("localhost", 9004, masterNode, 3);
+        MasterNode masterNode = new MasterNode(args[2], Integer.parseInt(args[3]));
+        Reducer reducer = new Reducer(args[0], Integer.parseInt(args[1]), masterNode, 3);
         try {
             reducer.acceptConnections();
         } catch (IOException e) {
