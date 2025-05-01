@@ -1,23 +1,37 @@
 {
-  "StoreName": "Sushi Akropolis",
-  "Latitude": 37.9707,
-  "Longitude": 23.7264,
-  "FoodCategory": "sushi",
-  "Stars": 4.6,
-  "NoOfVotes": 98,
-  "StoreLogo": "/usr/bin/images/akropolisushi.png",
-  "Products": [
-    {
-      "ProductName": "Salmon Roll",
-      "ProductType": "sushi",
-      "Available Amount": 300,
-      "Price": 10.5
-    },
-    {
-      "ProductName": "Tuna Roll",
-      "ProductType": "sushi",
-      "Available Amount": 250,
-      "Price": 11.0
+  "name": "Sushi Akropolis",
+  "productCategory": [
+    "SUSHI"
+  ],
+  "storeCategory": "RESTAURANT",
+  "numberOfRatings": 98,
+  "rating": "FOUR_HALF_STARS",
+  "coordinates": {
+    "lat": 37.9707,
+    "lng": 23.7264
+  },
+  "logoPath": "/usr/bin/images/akropolisushi.png",
+  "numberOfProducts": 2,
+  "catalog": {
+    "inventory": {
+      "Salmon Roll": {
+        "product": {
+          "name": "Salmon Roll",
+          "productCategory": "SUSHI",
+          "price": 10.5
+        },
+        "quantity": 300,
+        "enabled": true
+      },
+      "Tuna Roll": {
+        "product": {
+          "name": "Tuna Roll",
+          "productCategory": "SUSHI",
+          "price": 11.0
+        },
+        "quantity": 250,
+        "enabled": true
+      }
     }
-  ]
+  }
 }

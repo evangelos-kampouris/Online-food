@@ -1,23 +1,37 @@
 {
-  "StoreName": "Patras Souvlaki",
-  "Latitude": 38.2466,
-  "Longitude": 21.7346,
-  "FoodCategory": "souvlaki",
-  "Stars": 4.1,
-  "NoOfVotes": 39,
-  "StoreLogo": "/usr/bin/images/patrassouvlaki.png",
-  "Products": [
-    {
-      "ProductName": "Pork Souvlaki",
-      "ProductType": "souvlaki",
-      "Available Amount": 500,
-      "Price": 2.8
-    },
-    {
-      "ProductName": "Chicken Souvlaki",
-      "ProductType": "souvlaki",
-      "Available Amount": 400,
-      "Price": 3.0
+  "name": "Patras Souvlaki",
+  "productCategory": [
+    "SOUVLAKI"
+  ],
+  "storeCategory": "RESTAURANT",
+  "numberOfRatings": 39,
+  "rating": "FOUR_STARS",
+  "coordinates": {
+    "lat": 38.2466,
+    "lng": 21.7346
+  },
+  "logoPath": "/usr/bin/images/patrassouvlaki.png",
+  "numberOfProducts": 2,
+  "catalog": {
+    "inventory": {
+      "Pork Souvlaki": {
+        "product": {
+          "name": "Pork Souvlaki",
+          "productCategory": "SOUVLAKI",
+          "price": 2.8
+        },
+        "quantity": 500,
+        "enabled": true
+      },
+      "Chicken Souvlaki": {
+        "product": {
+          "name": "Chicken Souvlaki",
+          "productCategory": "SOUVLAKI",
+          "price": 3.0
+        },
+        "quantity": 400,
+        "enabled": true
+      }
     }
-  ]
+  }
 }

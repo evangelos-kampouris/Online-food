@@ -1,23 +1,37 @@
 {
-  "StoreName": "Athens Pizza Lovers",
-  "Latitude": 37.9756,
-  "Longitude": 23.7341,
-  "FoodCategory": "pizza",
-  "Stars": 4.8,
-  "NoOfVotes": 102,
-  "StoreLogo": "/usr/bin/images/pizzalovers.png",
-  "Products": [
-    {
-      "ProductName": "Margherita",
-      "ProductType": "pizza",
-      "Available Amount": 200,
-      "Price": 7.2
-    },
-    {
-      "ProductName": "Pepperoni",
-      "ProductType": "pizza",
-      "Available Amount": 200,
-      "Price": 8.9
+  "name": "Athens Pizza Lovers",
+  "productCategory": [
+    "PIZZA"
+  ],
+  "storeCategory": "RESTAURANT",
+  "numberOfRatings": 102,
+  "rating": "FIVE_STARS",
+  "coordinates": {
+    "lat": 37.9756,
+    "lng": 23.7341
+  },
+  "logoPath": "/usr/bin/images/pizzalovers.png",
+  "numberOfProducts": 2,
+  "catalog": {
+    "inventory": {
+      "Margherita": {
+        "product": {
+          "name": "Margherita",
+          "productCategory": "PIZZA",
+          "price": 7.2
+        },
+        "quantity": 200,
+        "enabled": true
+      },
+      "Pepperoni": {
+        "product": {
+          "name": "Pepperoni",
+          "productCategory": "PIZZA",
+          "price": 8.9
+        },
+        "quantity": 200,
+        "enabled": true
+      }
     }
-  ]
+  }
 }

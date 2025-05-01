@@ -1,29 +1,47 @@
 {
-  "StoreName": "Athens Burger House",
-  "Latitude": 37.9761,
-  "Longitude": 23.7366,
-  "FoodCategory": "burger",
-  "Stars": 4.5,
-  "NoOfVotes": 34,
-  "StoreLogo": "/usr/bin/images/athensburger.png",
-  "Products": [
-    {
-      "ProductName": "Classic Burger",
-      "ProductType": "burger",
-      "Available Amount": 300,
-      "Price": 8.5
-    },
-    {
-      "ProductName": "Cheeseburger",
-      "ProductType": "burger",
-      "Available Amount": 250,
-      "Price": 9.0
-    },
-    {
-      "ProductName": "Fries",
-      "ProductType": "side",
-      "Available Amount": 500,
-      "Price": 3.5
+  "name": "Athens Burger House",
+  "productCategory": [
+    "BURGER",
+    "SIDE"
+  ],
+  "storeCategory": "RESTAURANT",
+  "numberOfRatings": 34,
+  "rating": "FOUR_HALF_STARS",
+  "coordinates": {
+    "lat": 37.9761,
+    "lng": 23.7366
+  },
+  "logoPath": "/usr/bin/images/athensburger.png",
+  "numberOfProducts": 3,
+  "catalog": {
+    "inventory": {
+      "Classic Burger": {
+        "product": {
+          "name": "Classic Burger",
+          "productCategory": "BURGER",
+          "price": 8.5
+        },
+        "quantity": 300,
+        "enabled": true
+      },
+      "Cheeseburger": {
+        "product": {
+          "name": "Cheeseburger",
+          "productCategory": "BURGER",
+          "price": 9.0
+        },
+        "quantity": 250,
+        "enabled": true
+      },
+      "Fries": {
+        "product": {
+          "name": "Fries",
+          "productCategory": "SIDE",
+          "price": 3.5
+        },
+        "quantity": 500,
+        "enabled": true
+      }
     }
-  ]
+  }
 }

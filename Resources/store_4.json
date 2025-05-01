@@ -1,23 +1,37 @@
 {
-  "StoreName": "Coffee in Kolonaki",
-  "Latitude": 37.9799,
-  "Longitude": 23.7434,
-  "FoodCategory": "coffee",
-  "Stars": 3.9,
-  "NoOfVotes": 59,
-  "StoreLogo": "/usr/bin/images/kolonakicoffee.png",
-  "Products": [
-    {
-      "ProductName": "Espresso",
-      "ProductType": "coffee",
-      "Available Amount": 1000,
-      "Price": 2.5
-    },
-    {
-      "ProductName": "Latte",
-      "ProductType": "coffee",
-      "Available Amount": 800,
-      "Price": 3.8
+  "name": "Coffee in Kolonaki",
+  "productCategory": [
+    "COFFEE"
+  ],
+  "storeCategory": "CAFE",
+  "numberOfRatings": 59,
+  "rating": "FOUR_STARS",
+  "coordinates": {
+    "lat": 37.9799,
+    "lng": 23.7434
+  },
+  "logoPath": "/usr/bin/images/kolonakicoffee.png",
+  "numberOfProducts": 2,
+  "catalog": {
+    "inventory": {
+      "Espresso": {
+        "product": {
+          "name": "Espresso",
+          "productCategory": "COFFEE",
+          "price": 2.5
+        },
+        "quantity": 1000,
+        "enabled": true
+      },
+      "Latte": {
+        "product": {
+          "name": "Latte",
+          "productCategory": "COFFEE",
+          "price": 3.8
+        },
+        "quantity": 800,
+        "enabled": true
+      }
     }
-  ]
+  }
 }

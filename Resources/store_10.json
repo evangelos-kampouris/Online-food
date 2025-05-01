@@ -1,23 +1,37 @@
 {
-  "StoreName": "Thessaloniki Crepes",
-  "Latitude": 40.6401,
-  "Longitude": 22.9444,
-  "FoodCategory": "crepe",
-  "Stars": 4.4,
-  "NoOfVotes": 76,
-  "StoreLogo": "/usr/bin/images/thesscrepes.png",
-  "Products": [
-    {
-      "ProductName": "Nutella Crepe",
-      "ProductType": "crepe",
-      "Available Amount": 220,
-      "Price": 5.5
-    },
-    {
-      "ProductName": "Ham & Cheese Crepe",
-      "ProductType": "crepe",
-      "Available Amount": 200,
-      "Price": 6.0
+  "name": "Thessaloniki Crepes",
+  "productCategory": [
+    "CREPE"
+  ],
+  "storeCategory": "DESSERT_SHOP",
+  "numberOfRatings": 76,
+  "rating": "FOUR_STARS",
+  "coordinates": {
+    "lat": 40.6401,
+    "lng": 22.9444
+  },
+  "logoPath": "/usr/bin/images/thesscrepes.png",
+  "numberOfProducts": 2,
+  "catalog": {
+    "inventory": {
+      "Nutella Crepe": {
+        "product": {
+          "name": "Nutella Crepe",
+          "productCategory": "CREPE",
+          "price": 5.5
+        },
+        "quantity": 220,
+        "enabled": true
+      },
+      "Ham & Cheese Crepe": {
+        "product": {
+          "name": "Ham & Cheese Crepe",
+          "productCategory": "CREPE",
+          "price": 6.0
+        },
+        "quantity": 200,
+        "enabled": true
+      }
     }
-  ]
+  }
 }
