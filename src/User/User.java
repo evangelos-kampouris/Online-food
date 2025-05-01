@@ -47,4 +47,15 @@ public abstract class User {
         if (in != null) in.close();
         if (connectionSocket != null && !connectionSocket.isClosed()) connectionSocket.close();
     }
+
+    public void addStore(String storeName, Shop shop) {
+        if (shop == null) {
+            System.err.println("Shop is null");
+            return;
+        }
+        if(shops.get(storeName) != null) {
+            System.err.println("Shop already exists: " + storeName);
+        }
+        shops.put(storeName, shop);
+    }
 }
