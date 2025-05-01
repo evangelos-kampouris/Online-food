@@ -4,7 +4,7 @@
     "BURGER",
     "SIDE"
   ],
-  "storeCategory": "RESTAURANT",
+  "storeCategory": "BURGER_STORE",
   "numberOfRatings": 34,
   "rating": "FOUR_HALF_STARS",
   "coordinates": {
