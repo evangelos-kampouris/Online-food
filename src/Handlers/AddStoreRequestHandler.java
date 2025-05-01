@@ -57,7 +57,6 @@ public class AddStoreRequestHandler implements Handling{
 
             }catch (IOException e){
                 System.out.println("Error forwarding to worker: " + e.getMessage());
-                //out.writeObject("Error forwarding to worker: " + e.getMessage());
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
