@@ -16,9 +16,24 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-
+/**
+ * Handles requests to add a product to an existing store's inventory.
+ * Forwards the request from the MasterNode to the responsible WorkerNode,
+ * or directly updates the store if executed on a Worker.
+ */
 public class AddProductHandler implements Handling {
 
+    /**
+     * Processes an AddProductDTO request.
+     * If called on the Master, the request is routed to the appropriate WorkerNode using consistent hashing.
+     * If called on a Worker, the product is added to the specified store if it exists.
+     *
+     * @param entity the entity handling the request (Master or Worker)
+     * @param connection the socket through which the request was received
+     * @param request the request object containing product details
+     * @param out the stream to send a response back to the origin
+     * @param in the stream to receive any additional data (if needed)
+     */
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
         AddProductDTO dto = (AddProductDTO) request;

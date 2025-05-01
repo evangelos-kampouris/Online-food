@@ -14,8 +14,23 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 
+/**
+ * Handles search requests from clients.
+ * Distributes the filtering request to all WorkerNodes and registers the pending request
+ * to associate the final response from the Reducer.
+ */
 public class SearchRequestHandler implements Handling{
 
+    /**
+     * Processes a SearchRequestDTO containing filtering criteria.
+     * Registers the client's request for later response and forwards the filters to all WorkerNodes.
+     *
+     * @param entity the MasterNode receiving the request
+     * @param connection the socket from the client (kept open)
+     * @param request the search request with filters
+     * @param out the client's output stream to be stored for later reply
+     * @param in the client's input stream to be stored for later reply
+     */
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
         Master master = (Master) entity;

@@ -11,7 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * Coordinates the reduction phase in a distributed search.
+ * Collects partial results from workers and sends the combined result to the MasterNode.
+ * Uses a background thread to wait until all workers respond.
+ */
 public class ReducerShuffler {
 
     //Networking
@@ -26,6 +30,14 @@ public class ReducerShuffler {
 
     private Thread senderThread;
 
+    /**
+     * Initializes the shuffler for a specific reducer and request.
+     *
+     * @param reducer the reducer that owns this shuffler
+     * @param requestID the unique identifier for this search request
+     * @param masterNode the master node to send final results to
+     * @param totalWorkers the number of expected worker responses
+     */
     public ReducerShuffler(Reducer reducer, int requestID, MasterNode masterNode, int totalWorkers) {
         this.reducer = reducer;
         this.totalWorkers = totalWorkers;
@@ -35,8 +47,8 @@ public class ReducerShuffler {
     }
 
     /**
-     * Kicks off the background thread that will wait for all workers
-     * and then send the combined results.
+     * Starts a background thread that waits for all worker responses
+     * and sends the combined results to the master.
      */
     public void start() {
         senderThread = new Thread(this::sendResultsRequest,
@@ -46,7 +58,10 @@ public class ReducerShuffler {
     }
 
     /**
-     * Called by worker‐handler threads to merge partial results.
+     * Merges partial results from a worker into the combined result set.
+     * Called by worker handler threads.
+     *
+     * @param partial the partial map of shop results from a worker
      */
     public void collect(Map<String, Shop> partial) {
         synchronized (send_lock) {
@@ -58,6 +73,10 @@ public class ReducerShuffler {
         }
     }
 
+    /**
+     * Waits until all workers have submitted results, then sends the combined list to the master node.
+     * Also instructs the reducer to clean up this shuffler after completion.
+     */
     private void sendResultsRequest() {
         synchronized (send_lock) {
             while (receivedFromWorkersCounter < totalWorkers) {

@@ -14,9 +14,23 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-
+/**
+ * Handles requests to update the stock quantity of a product in a shop's inventory.
+ * Forwards the request from the MasterNode to the correct WorkerNode, or updates stock directly on the Worker.
+ */
 public class ChangeStockHandler implements Handling{
 
+    /**
+     * Processes a ChangeStockDTO request to update the stock of a product in a store.
+     * If the request is received by the Master, it is routed to the appropriate WorkerNode.
+     * If the Worker receives it, the product stock is updated directly.
+     *
+     * @param entity the entity processing the request (Master or Worker)
+     * @param connection the socket connection used for the request
+     * @param request the DTO containing store and stock update data
+     * @param out the output stream for sending responses
+     * @param in the input stream for reading additional data (not used here)
+     */
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
         ChangeStockDTO dto = (ChangeStockDTO) request;

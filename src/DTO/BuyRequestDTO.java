@@ -8,7 +8,9 @@ import java.io.Serial;
 //και θα στελνει το buyrequestDTO στον master
 
 /**
- * Holds the Buy Request logic. Client -> Master
+ * A request DTO used by the client to initiate a purchase.
+ * Contains both the selected shop and the cart contents.
+ * Sent from the client to the MasterNode for processing.
  */
 public class BuyRequestDTO extends Request{
     @Serial
@@ -16,6 +18,12 @@ public class BuyRequestDTO extends Request{
     private final InventoryCart cart;
     private Shop shop;
 
+    /**
+     * Constructs a new buy request containing the shop and the products in the cart.
+     *
+     * @param shop the shop from which the user wants to buy
+     * @param cart the cart with the selected products
+     */
     public BuyRequestDTO(Shop shop, InventoryCart cart) {
         super();
         this.cart = cart;

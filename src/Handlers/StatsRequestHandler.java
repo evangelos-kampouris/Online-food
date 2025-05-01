@@ -14,9 +14,22 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Map;
 
+/**
+ * Handles requests for sales statistics, either by store category or product category.
+ * Executed on the MasterNode and responds directly to the Manager with the relevant data.
+ */
 public class StatsRequestHandler implements Handling{
 
-
+    /**
+     * Processes a StatsRequestDTO and sends back the requested statistics.
+     * Supports store category and product category statistics.
+     *
+     * @param entity the MasterNode handling the request
+     * @param connection the socket used for communication
+     * @param request the request specifying the type of statistics needed
+     * @param out the output stream used to send the response
+     * @param in the input stream (not used)
+     */
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
         Master master = (Master) entity;

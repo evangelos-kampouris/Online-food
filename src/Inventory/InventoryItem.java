@@ -12,6 +12,12 @@ public class InventoryItem implements Serializable {
     private Product product;
     private int quantity;
 
+    /**
+     * Constructs an inventory item with a given product and quantity.
+     *
+     * @param product the product to associate with this inventory item
+     * @param quantity the initial quantity available
+     */
     public InventoryItem(Product product, int quantity) {
         this.product = product;
         this.quantity = quantity;

@@ -9,6 +9,17 @@ public class ShopInventory extends Inventory{
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Adds a new product to the shop's inventory with default enabled status.
+     * <p>
+     * If the product already exists, a warning is printed and the method does not modify the inventory.
+     * </p>
+     *
+     * @param productName the name of the product
+     * @param product the product object to add
+     * @param quantity the quantity to set initially; must be positive
+     * @throws IllegalArgumentException if input is invalid
+     */
     @Override
     public void addProduct(String productName, Product product, int quantity) {
 
@@ -22,6 +33,18 @@ public class ShopInventory extends Inventory{
             inventory.put(productName, new ShopInventoryItem(product, quantity));
     }
 
+    /**
+     * Adds a new product to the shop's inventory with explicit enabled status.
+     * <p>
+     * If the product already exists, a warning is printed and the method does not modify the inventory.
+     * </p>
+     *
+     * @param productName the name of the product
+     * @param product the product object to add
+     * @param quantity the quantity to set initially; must be positive
+     * @param enabled whether the product should be initially enabled
+     * @throws IllegalArgumentException if input is invalid
+     */
     public void addProduct(String productName, Product product, int quantity, boolean enabled) {
         if (!isValidProductInput(productName, product, quantity))
             throw new IllegalArgumentException("Invalid Arguments. Given arguments are:\n\t Product" + product.toString() + ",\n\t Quantity:" + quantity);
@@ -33,6 +56,13 @@ public class ShopInventory extends Inventory{
             inventory.put(productName, new ShopInventoryItem(product, quantity, enabled));
 
     }
+
+    /**
+     * Returns whether a product in the inventory is enabled.
+     *
+     * @param productName the name of the product
+     * @return true if the product is enabled, false otherwise
+     */
 
     public boolean getItemEnableStatus(String productName) {
         if (!isValidName(productName)) {
@@ -53,11 +83,12 @@ public class ShopInventory extends Inventory{
     }
 
     /**
-     * @param productName
-     * @param enable
+     * Sets the enabled status of an existing product in the inventory.
      *
-     * Edits enable of an EXISTING product
-     * */
+     * @param productName the name of the product
+     * @param enable true to enable the product, false to disable it
+     */
+
     public void setItemEnableStatus(String productName, boolean enable) {
         if (!isValidName(productName))
             System.err.println("Invalid Product Name");

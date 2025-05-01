@@ -14,8 +14,24 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/**
+ * Handles requests to remove (disable) a product from a shop's inventory.
+ * Forwards the request from the MasterNode to the appropriate WorkerNode,
+ * or updates the shop directly if executed on a Worker.
+ */
 public class RemoveProductHandler implements Handling {
 
+    /**
+     * Processes a RemoveProductDTO request to disable a product from a store.
+     * If handled by the Master, the request is forwarded to the correct WorkerNode.
+     * If handled by the Worker, the product is marked as disabled in the shop's catalog.
+     *
+     * @param entity the entity processing the request (Master or Worker)
+     * @param connection the socket connection for communication
+     * @param request the request containing the store and product to remove
+     * @param out the output stream to send the response
+     * @param in the input stream to receive additional data (unused)
+     */
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
         RemoveProductDTO dto = (RemoveProductDTO) request;

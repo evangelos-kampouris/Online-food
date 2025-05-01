@@ -10,9 +10,23 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 //Received mapResultDTO from Workers
+/**
+ * Handles the final result sent from a WorkerNode to the ReducerNode.
+ * Passes the result to the reducer's shuffler to complete the reduction phase.
+ */
 public class MapResultHandler implements Handling{
 
 
+    /**
+     * Receives a MapResultDTO containing filtered shop data from a WorkerNode.
+     * Passes the data to the reducer's shuffle logic and closes the connection.
+     *
+     * @param entity the ReducerNode handling the request
+     * @param connection the socket used for the communication
+     * @param request the result map from a worker
+     * @param out the output stream to close
+     * @param in the input stream to close
+     */
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
         Reducer reducer = (Reducer) entity;

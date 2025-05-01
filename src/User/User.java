@@ -12,6 +12,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * Abstract base class for all users in the system, such as clients and managers.
+ * Handles networking, request/response communication, and local shop data management.
+ */
 public abstract class User {
 
     //Console Menu
@@ -30,14 +34,33 @@ public abstract class User {
     //Shop Name, Shop -- Received upon  initialization - Updated on search.
     Map<String, Shop> shops = new HashMap<>();
 
+    /**
+     * Initializes a new user instance and assigns a unique ID.
+     */
     public User() {
         id = ++idCounter;
     }
 
+    /**
+     * Establishes a network connection with the MasterNode.
+     *
+     * @throws IOException if a networking error occurs
+     * @throws ClassNotFoundException if the response cannot be deserialized
+     */
     public abstract void establishConnection() throws IOException, ClassNotFoundException;
 
+    /**
+     * Displays the menu for user interaction.
+     * Each subclass must implement its own menu behavior.
+     */
     protected abstract void showMenu();
 
+    /**
+     * Sends a request to the MasterNode and waits for a response.
+     *
+     * @param request the request to send
+     * @return a response object from the server
+     */
     protected ResponseDTO<?> sendAndReceiveRequest(Request request){
         ResponseDTO<?> response = null;
         try {
@@ -66,12 +89,23 @@ public abstract class User {
         return new ResponseDTO<>(false, getClass() + "] An error occured either while sending or receiving a request.");
     }
 
+    /**
+     * Closes the socket and associated streams used in the connection.
+     *
+     * @throws IOException if an error occurs during closing
+     */
     protected void closeConnection() throws IOException {
         if (out != null) out.close();
         if (in != null) in.close();
         if (connectionSocket != null && !connectionSocket.isClosed()) connectionSocket.close();
     }
 
+    /**
+     * Adds a shop to the local map of known shops.
+     *
+     * @param storeName the name of the shop
+     * @param shop the shop object to add
+     */
     public void addStore(String storeName, Shop shop) {
         if (shop == null) {
             System.err.println("Shop is null");

@@ -13,8 +13,22 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/**
+ * Handles internal updates to a shop's inventory after a successful purchase.
+ * Executed on the WorkerNode upon receiving confirmation from the MasterNode.
+ */
 public class UpdateBuyDataHandler implements Handling{
 
+    /**
+     * Processes an UpdateBuyDataRequestDTO to deduct stock and register the sale on a WorkerNode.
+     * Validates the shop existence and executes the sell operation on the inventory.
+     *
+     * @param entity the WorkerNode executing the inventory update
+     * @param connection the socket used for communication with the Master
+     * @param request the DTO containing cart and shop data
+     * @param out the output stream to send confirmation back to the Master
+     * @param in the input stream (closed after execution)
+     */
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
         Worker worker = (Worker) entity;

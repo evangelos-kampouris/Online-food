@@ -12,6 +12,11 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Handles incoming network requests in a separate thread.
+ * Associates specific DTO types with their corresponding handler implementations.
+ * Responsible for reading the request, delegating it to the correct handler, and managing streams.
+ */
 public class Handler implements Runnable{                   //Για να μπορεί να τρέχει σε δικό του thread
     Socket connection;
     Entity entity;
@@ -20,6 +25,13 @@ public class Handler implements Runnable{                   //Για να μπο
 
     Map<Class<?>, Handling> handlerMap = new HashMap<>();
 
+    /**
+     * Initializes a handler for processing requests from a given entity through a socket connection.
+     * Sets up object streams and maps request types to handlers.
+     *
+     * @param entity the entity (Master, Worker, Reducer) that owns the handler
+     * @param connection the socket connection to the client or peer node
+     */
     public Handler(Entity entity, Socket connection){
         handlerMap.put(AddStoreRequestDTO.class, new AddStoreRequestHandler());
         handlerMap.put(AddProductDTO.class, new AddProductHandler());
@@ -45,8 +57,11 @@ public class Handler implements Runnable{                   //Για να μπο
     }
 
     /**
-     * Holds the handling of different requests. Each handling request is a class.
+     * Processes a single request by identifying its type and dispatching it to the appropriate handler.
+     * Any connection-specific output is written back using the output stream.
      *
+     * @param entity the entity that handles the request
+     * @param connection the socket used for communication
      */
     public void handle(Entity entity, Socket connection) {
         try {
@@ -77,6 +92,9 @@ public class Handler implements Runnable{                   //Για να μπο
         }
     }
 
+    /**
+     * Entry point for the thread. Delegates to the handle method for processing.
+     */
     @Override
     public void run() {//θα τρέξει το νήμα εδώ
         handle(this.entity, this.connection);

@@ -8,6 +8,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Represents the ReducerNode responsible for aggregating filtered results from WorkerNodes.
+ * Maintains a map of active shuffle operations and forwards final results to the MasterNode.
+ */
 public class Reducer extends Entity {
 
     private final MasterNode masterNode;
@@ -18,6 +22,14 @@ public class Reducer extends Entity {
 
     private final Map<Integer, ReducerShuffler> reducerShufflers = new HashMap<>(); //RequestID - shuffle operation
 
+    /**
+     * Initializes the ReducerNode with network settings and reference to the MasterNode.
+     *
+     * @param IP the IP address to bind
+     * @param PORT the port to listen on
+     * @param masterNode the master node to send final reduced results to
+     * @param totalWorkers the number of expected workers contributing to each shuffle
+     */
     public Reducer(String IP, int PORT, MasterNode masterNode, int totalWorkers) {
         super(IP, PORT);
         this.masterNode = masterNode;
@@ -25,7 +37,11 @@ public class Reducer extends Entity {
     }
 
     /**
-     * Called by each MapResultHandler as results come in.
+     * Receives partial results from a WorkerNode and registers them to the appropriate shuffle operation.
+     * Starts a new ReducerShuffler thread if this is the first result for the given request.
+     *
+     * @param requestID the unique ID of the original search request
+     * @param partialResult the filtered shops returned from a WorkerNode
      */
     public void shuffle(int requestID, Map<String, Shop> partialResult) {
         ReducerShuffler shuffler;
@@ -39,7 +55,12 @@ public class Reducer extends Entity {
         shuffler.collect(partialResult);
     }
 
-    /** Called by a shuffler when it’s completely done. */
+    /**
+     * Called by a ReducerShuffler after completing its operation.
+     * Removes the completed shuffle from the active map.
+     *
+     * @param requestId the ID of the completed request
+     */
     public void cleanupShuffler(int requestId) {
         synchronized (reducerShufflers) {
             reducerShufflers.remove(requestId);

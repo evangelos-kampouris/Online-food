@@ -15,8 +15,24 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Map;
 
+/**
+ * Handles incoming requests to add a new store to the system.
+ * Forwards the request from the MasterNode to the appropriate WorkerNode, and relays the response back.
+ * Also allows WorkerNodes to register the shop if the handler is called directly on them.
+ */
 public class AddStoreRequestHandler implements Handling{
 
+    /**
+     * Processes an AddStoreRequestDTO depending on the role of the entity.
+     * If the entity is a Master, the request is forwarded to the correct Worker based on hashing.
+     * If the entity is a Worker, the shop is registered directly if it does not already exist.
+     *
+     * @param entity the entity handling the request (Master or Worker)
+     * @param connection the socket connection used for communication
+     * @param request the request to add a new shop
+     * @param out the output stream to send a response
+     * @param in the input stream to read additional input if needed
+     */
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
         AddStoreRequestDTO dto = (AddStoreRequestDTO) request;

@@ -6,6 +6,10 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * Abstract base class for all server-side entities (Master, Worker, Reducer).
+ * Manages server socket initialization and connection handling.
+ */
 public abstract class Entity {
 
     //Networking
@@ -13,6 +17,13 @@ public abstract class Entity {
     protected final int PORT;
     protected ServerSocket serverSocket;
 
+    /**
+     * Initializes the server entity with IP and port configuration.
+     * Starts a server socket to listen for incoming connections.
+     *
+     * @param IP the IP address of the server
+     * @param PORT the port number on which to listen
+     */
     public Entity(String IP, int PORT) {
         this.IP = IP;
         this.PORT = PORT;
@@ -28,8 +39,10 @@ public abstract class Entity {
     }
 
     /**
-     * Accepts the Inbound connections creating a new thread for each on of them and calls handler.
-     * @throws IOException
+     * Accepts incoming socket connections in a loop.
+     * For each connection, a new thread is created using a Handler instance.
+     *
+     * @throws IOException if the server socket fails to accept a connection
      */
     protected void acceptConnections() throws IOException {
         while(!serverSocket.isClosed()) {

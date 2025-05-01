@@ -41,6 +41,17 @@ public class Shop implements Serializable {
 
     public Shop() {}//Just the default.
 
+    /**
+     * Constructs a Shop instance with all necessary attributes.
+     *
+     * @param name the name of the shop
+     * @param catalog the shop's product catalog
+     * @param rating the average rating of the shop
+     * @param numberOfRatings the total number of ratings the shop has received
+     * @param productCategory the food categories offered by the shop
+     * @param storeCategory the type of store (e.g., Pizzeria, Burger Store)
+     * @param coordinates the geographical location of the shop
+     */
     public Shop(String name, ShopInventory catalog, Rating rating, int numberOfRatings, Set<ProductCategory> productCategory, StoreCategories storeCategory, Coordinates coordinates) {
         this.name = name;
         this.storeCategory = storeCategory;
@@ -53,6 +64,11 @@ public class Shop implements Serializable {
         setPrice(calculateAveragePrice());
     }
 
+    /**
+     * Calculates the average price of all products in the shop's catalog.
+     *
+     * @return the average price as a float
+     */
     public float calculateAveragePrice(){
         List<Product> products = catalog.getAllProducts();
         float total_price = 0.0f;
@@ -62,8 +78,21 @@ public class Shop implements Serializable {
         return total_price/numberOfProducts;
     }
 
+    /**
+     * Adds the specified amount of revenue to the shop's total revenue.
+     *
+     * @param revenue the amount to add
+     */
     public synchronized void addRevenue(float revenue){ this.revenue += revenue; }
 
+    /**
+     * Completes a sale using the given inventory cart.
+     * Adds the cost of the cart to the shop's revenue and deducts stock for each item.
+     *
+     * @param cart the customer's shopping cart
+     * @throws IllegalArgumentException if the cart is invalid
+     * @throws NoValidStockInput if stock deduction fails due to invalid quantity
+     */
     public synchronized void sell(InventoryCart cart) throws IllegalArgumentException, NoValidStockInput {
         //Add the revenue from the cart
         float profit = cart.getCost();
@@ -90,9 +119,9 @@ public class Shop implements Serializable {
 
     // PRICES SET AND GET
     /**
-     * @param averagePrice
+     * Sets the shop's price category (LOW, MEDIUM, HIGH) based on average product price.
      *
-     * Sets the shops price based on the Price enum.
+     * @param averagePrice the calculated average price of the shop's products
      */
     public void setPrice(float averagePrice){
         if(averagePrice < PRICE_LOW_TOP_LIMIT){
@@ -107,16 +136,16 @@ public class Shop implements Serializable {
 
 
     /**
-     * @return price
+     * Returns the price category of the shop.
      *
-     * Returns the Price enum
+     * @return the price category enum
      */
     public Price getPrice(){
         return price;
     }
 
     /**
-     * Prints the Shops Price categorization as such: "The prices are: Cheap/Medium/Expensive".
+     * Prints the shop's price category description to the console.
      */
     public void printPrice(){
         System.out.println("The prices are: " + price.getDescription());

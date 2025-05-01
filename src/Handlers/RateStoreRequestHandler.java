@@ -11,8 +11,22 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/**
+ * Handles requests from clients to rate a specific store.
+ * Forwards the rating request to the appropriate WorkerNode based on store name.
+ */
 public class RateStoreRequestHandler implements Handling{
 
+    /**
+     * Processes a RateStoreRequestDTO to update a store's rating.
+     * Identifies the responsible WorkerNode using the store name and sends the rating there.
+     *
+     * @param entity the MasterNode handling the request
+     * @param connection the socket used for the request (closed immediately)
+     * @param request the rating request from the client
+     * @param out the output stream (not used in this handler)
+     * @param in the input stream (not used in this handler)
+     */
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in){
 

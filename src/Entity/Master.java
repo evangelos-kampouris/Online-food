@@ -16,12 +16,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * Accepts incoming socket connections in a loop.
+ * For each connection, a new thread is created using a Handler instance.
+ *
+ * @throws IOException if the server socket fails to accept a connection
+ */
 public class Master extends Entity {
     //Workers
     private String worker_config_filepath;
     private List<WorkerNode> workersList;
-    public HashRing workers;  //Ο Master χρησιμοποιεί έναν HashRing για να κάνει κατανομή καταστημάτων στους Workers
+    public HashRing workers;                        //Ο Master χρησιμοποιεί έναν HashRing για να κάνει κατανομή καταστημάτων στους Workers
     private final int VIRTUAL_NODES_OF_WORKER = 2;  /*Για κάθε Worker, ο HashRing βάζει δύο αντίγραφα του worker στο δαχτυλίδι,
                                                       για να έχουμε καλύτερη κατανομή φορτίου.*/
 
@@ -32,11 +37,19 @@ public class Master extends Entity {
     public final Map<Integer, PendingRequests> pendingRequests = new HashMap<>(); // <RequestID, ObjectInput/OutputStreams>
 
     //Constructor
+    /**
+     * Initializes the MasterNode with the specified IP and port.
+     * Loads the worker configuration and sets up the hash ring.
+     *
+     * @param IP the IP address of the master
+     * @param PORT the port number to listen on
+     */
     public Master(String IP, int PORT) {
         super(IP, PORT);
         initiateWorkers();
         workers = new HashRing(workersList, VIRTUAL_NODES_OF_WORKER);
     }
+
 
     public Map<StoreCategories, Integer> getStoreCategoryStats() {
         return storeCategoryStat;
@@ -46,12 +59,13 @@ public class Master extends Entity {
     }
 
     /**
-     * Reads who the workers are from the file
+     * Loads worker node configuration from the JSON file and stores it in a list.
+     * Used during initialization to populate the hash ring.
      */
     private void initiateWorkers() {
 
         System.out.println(System.getProperty("user.dir"));//debugging.
-        Path path = Paths.get("Eshop","Resources", "workerConfig.json");
+        Path path = Paths.get("Resources", "WorkerConfig.json");
         System.out.println(path);//debugging.
 
         try (FileReader reader = new FileReader(path.toFile())) {
@@ -62,11 +76,12 @@ public class Master extends Entity {
             e.printStackTrace();
         }
     }
+
     /**
-     * @param storeCategory
-     * @param sales
+     * Updates the store-level sales statistics by adding the given number of sales.
      *
-     * Adds the store related statistics. Sale Should be equal to 1, expect editing in volume.
+     * @param storeCategory the type of store (e.g., PIZZERIA)
+     * @param sales the number of sales to add
      */
     public void addStatsStoreCategory(StoreCategories storeCategory, int sales) {
         if(storeCategoryStat.containsKey(storeCategory)) {
@@ -78,15 +93,17 @@ public class Master extends Entity {
     }
 
     /**
-     * @param storeCategory
-     * Adds the store related statistics.
+     * Increments the sales count for the given store category by one.
+     *
+     * @param storeCategory the store category to update
      */
     public void addStatsStoreCategory(StoreCategories storeCategory){addStatsStoreCategory(storeCategory, 1);}
 
     /**
-     * @param productCategory
-     * @param sales
-     * Adds the product related statistics. Sale Should be equal to 1, expect editing in volume.
+     * Updates the product-level sales statistics by adding the given number of sales.
+     *
+     * @param productCategory the type of product (e.g., PIZZA, SUSHI)
+     * @param sales the number of units sold to add
      */
     public void addStatsProductCategory(ProductCategory productCategory, int sales) {
         if(productCategoryStat.containsKey(productCategory)) {
@@ -98,8 +115,9 @@ public class Master extends Entity {
     }
 
     /**
-     * @param productCategory
-     * Adds the product related statistics.
+     * Increments the sales count for the given product category by one.
+     *
+     * @param productCategory the product category to update
      */
     public void addStatsProductCategory(ProductCategory productCategory){addStatsProductCategory(productCategory, 1);}
 

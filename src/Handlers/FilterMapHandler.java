@@ -15,9 +15,23 @@ import java.net.Socket;
 import java.util.*;
 
 //master to worker
+/**
+ * Handles filtering requests sent from the MasterNode to a WorkerNode.
+ * Applies multiple filters to the local shop data and forwards the filtered results to the ReducerNode.
+ */
 public class FilterMapHandler implements Handling{
 
-
+    /**
+     * Processes a FilterMapDTO request on a WorkerNode.
+     * Groups filters by type and applies OR filtering within groups and AND filtering across groups.
+     * Sends the final filtered shop results to the corresponding ReducerNode.
+     *
+     * @param entity the WorkerNode processing the request
+     * @param connection the socket through which the request was received
+     * @param request the filter map request containing selected filters
+     * @param out the output stream (closed immediately)
+     * @param in the input stream (closed immediately)
+     */
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
 
@@ -110,6 +124,13 @@ public class FilterMapHandler implements Handling{
         }
 
     }
+    /**
+     * Converts a filter object to the corresponding criteria implementation.
+     *
+     * @param filter the filtering condition to convert
+     * @return the matching Criteria instance
+     * @throws IllegalArgumentException if the filter type is not supported
+     */
     private Criteria buildCriteria(Filtering filter) {
         if (filter instanceof FilterPrice) {
             return new CriteriaPrice((FilterPrice) filter);

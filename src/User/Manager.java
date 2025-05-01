@@ -22,19 +22,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Represents the Manager user who can upload shops, manage products, change stock,
+ * and request sales statistics. Communicates with the MasterNode to register and update shop data.
+ */
 public class Manager extends User {
 
     public final List<Shop> shopsReceivedOnInitialaziation = new ArrayList<Shop>();
 
+    /**
+     * Initializes the Manager with an empty list of shops to be loaded from JSON.
+     */
     public Manager() {
         super();
 
     }
 
+    /**
+     * Loads shop data from JSON files in the /Resources directory.
+     * Parses and validates each shop, sets its pricing, and adds it to the local shop map.
+     *
+     * @param numberOfFilesToRead the number of JSON store files to read (e.g., store_1.json to store_n.json)
+     */
     public void readStore(int numberOfFilesToRead){
         for(int i = 1; i <= numberOfFilesToRead; i++){
             String filename = "store_" + i + ".json";
-            Path path = Paths.get("Eshop","Resources", filename);
+            Path path = Paths.get("Resources", filename);
             System.out.println("reading file " + path.toString());
 
             try (FileReader fr = new FileReader(path.toFile())) {
@@ -48,8 +61,7 @@ public class Manager extends User {
                 System.out.println("Price: " + shop.getPrice());//debug
                 System.out.println("Loaded shop: " + shop.getName());//debug
                 System.out.println("Products in inventory:");//debug
-                shop.getCatalog().getInventory().forEach((name, item) ->
-                        System.out.printf(" - %s: %d units (enabled=%b)%n", name, item.getQuantity(), ((ShopInventoryItem)item).isEnabled()));
+                shop.getCatalog().getInventory().forEach((name, item) -> System.out.printf(" - %s: %d units (enabled=%b)%n", name, item.getQuantity(), ((ShopInventoryItem)item).isEnabled()));
 
                 shops.put(shop.getName(), shop);
             } catch (IOException e) {
@@ -58,6 +70,11 @@ public class Manager extends User {
         }
     }
 
+    /**
+     * Establishes connection with the MasterNode and registers all loaded shops.
+     *
+     * @throws IOException if the connection fails
+     */
     @Override
     public void establishConnection() throws IOException {
         System.out.println("Connecting to Master and sending necessary data....");
@@ -77,6 +94,10 @@ public class Manager extends User {
         System.out.print("Select an option: ");
     }
 
+    /**
+     * Prompts the user to provide a JSON filename for a new store,
+     * reads and displays the shop, and sends it to the MasterNode for registration.
+     */
     private void addStoreOption() {
         System.out.print("Enter the file path(fileName) of the json containing the Store: ");
         String fileName = scanner.nextLine();
@@ -100,6 +121,11 @@ public class Manager extends User {
         }
     }
 
+    /**
+     * Sends a single shop registration request to the MasterNode.
+     *
+     * @param shop the shop to be added
+     */
     private void performAddStoreRequest(Shop shop) {
         AddStoreRequestDTO request = new AddStoreRequestDTO(shop);
         System.out.println("Sending new store to Master: " + shop.getName()); //debug
@@ -112,6 +138,11 @@ public class Manager extends User {
         }
     }
 
+    /**
+     * Sends a batch of shop registration requests to the MasterNode.
+     *
+     * @param shops the map of shop names to shop objects
+     */
     private void performAddStoreRequest(Map<String, Shop> shopsFromInitialization) {
         boolean error_flag = false;
         for (Shop shop : shopsFromInitialization.values()) {
@@ -130,6 +161,10 @@ public class Manager extends User {
         }
     }
 
+    /**
+     * Allows the manager to add or remove a product from a selected shop.
+     * Interacts with the user to get all necessary input and sends the request to the server.
+     */
     private void addRemoveProductOption() {
         System.out.print("Enter Store Name: ");
         String storeName = scanner.nextLine();
@@ -188,6 +223,9 @@ public class Manager extends User {
         }
     }
 
+    /**
+     * Allows the manager to change the stock quantity of a specific product in a shop.
+     */
     private void changeStockOption() {
         System.out.print("Enter Store Name: ");
         String storeName = scanner.nextLine();
@@ -213,6 +251,11 @@ public class Manager extends User {
         }
     }
 
+    /**
+     * Requests and displays sales statistics from the server, either by store category or product category.
+     *
+     * @param actionType either "StoreCategories" or "ProductCategories"
+     */
     private void viewSalesOption(String actionType) {
         StatsRequestDTO request = new StatsRequestDTO(actionType);
         ResponseDTO<Map<?, Integer>> response = (ResponseDTO<Map<?, Integer>>) sendAndReceiveRequest(request);
@@ -268,12 +311,21 @@ public class Manager extends User {
         return GSON.fromJson(reader, Shop.class);
     }
 
+    /**
+     * Prints the name and coordinates of all loaded shops to the console.
+     */
     public void printShopsCords() {
         for (Shop shop : shops.values()) {
             System.out.println(shop.getName() + " " + shop.getCoordinates().toString());
         }
     }
 
+    /**
+     * Entry point for launching the Manager interface.
+     * Loads initial shops, establishes connection, and presents a menu for user interaction.
+     *
+     * @param args command-line arguments (not used)
+     */
     public static void main(String[] args) {
         Manager manager = new Manager();
         manager.readStore(10);

@@ -8,7 +8,8 @@ import java.security.MessageDigest;
 import java.util.*;
 
 /**
- * The class responsible for mapping stores to workers, and vice versa.
+ * Implements a consistent hashing mechanism to distribute keys (e.g., store names) among worker nodes.
+ * Uses virtual nodes to improve load balancing and fault tolerance.
  */
 public class HashRing {
     private final TreeMap<Long, WorkerNode> ring = new TreeMap<>();         //long = hash value
@@ -23,7 +24,12 @@ public class HashRing {
         }
     });
 
-    //https://chatgpt.com/share/680607e8-9154-8008-b1b6-39bfc767f647
+    /**
+     * Initializes the hash ring with the given list of worker nodes and number of virtual nodes per physical node.
+     *
+     * @param workers the list of worker nodes to add
+     * @param virtualNodes the number of virtual nodes per worker for better distribution
+     */
     public HashRing(List<WorkerNode> workers, int virtualNodes){
         this.virtualNodes = virtualNodes;
         if(workers != null && !workers.isEmpty()){
@@ -33,11 +39,20 @@ public class HashRing {
         }
     }
 
-
+    /**
+     * Returns all worker nodes currently present in the hash ring.
+     *
+     * @return a collection of unique worker nodes
+     */
     public Collection<WorkerNode> getAllNodes() {
         return new HashSet<>(ring.values());
     }
 
+    /**
+     * Adds a worker node to the hash ring by inserting its virtual nodes.
+     *
+     * @param node the worker node to add
+     */
     public void addNode(WorkerNode node) {
         for (int i = 0; i < virtualNodes; i++) {
             String virtualId = node.toString() + "#" + i; //We add + "#" + i to create x virtual Nodes per node.
@@ -51,6 +66,11 @@ public class HashRing {
         }
     }
 
+    /**
+     * Removes a worker node and all its associated virtual nodes from the hash ring.
+     *
+     * @param node the worker node to remove
+     */
     public void removeNode(WorkerNode node) {
         for (int i = 0; i < virtualNodes; i++) {
             String virtualId = node.toString() + "#" + i;
@@ -61,10 +81,10 @@ public class HashRing {
     }
 
     /**
-     * @param key
-     * @return WorkerNode
+     * Finds the worker node responsible for the given key using consistent hashing.
      *
-     * Returns the WorkerNode object based on the Key(StoreName).
+     * @param key the key to hash (e.g., a store name)
+     * @return the worker node mapped to handle the key
      */
     public WorkerNode getNodeForKey(String key) {
         long hash = sha1Hash(key);
@@ -75,6 +95,12 @@ public class HashRing {
         return entry.getValue();
     }
 
+    /**
+     * Computes a SHA-1 hash of the input string and returns a 64-bit positive long value.
+     *
+     * @param input the string to hash
+     * @return the long representation of the SHA-1 hash
+     */
     public long sha1Hash(String input) {
         try {
             MessageDigest md = SHA1_DIGEST.get();

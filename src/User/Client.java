@@ -10,13 +10,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Represents a client user who can search for shops, rate them, and make purchases.
+ * Handles user interaction, cart management, and communication with the MasterNode.
+ */
 public class Client extends User {
 
     //Attributes
     InventoryCart cart;
     private final Coordinates coordinates;
 
+    /**
+     * Initializes a client with specific coordinates.
+     *
+     * @param coordinates the geographic location of the client
+     */
     public Client(Coordinates coordinates) {
         super();
         this.cart = new InventoryCart();
@@ -41,7 +49,10 @@ public class Client extends User {
     }
 
     /**
-     * Sends the buy request, logs the results, clears the inventory if successfull.
+     * Sends a purchase request to the server for the selected shop.
+     * If the transaction succeeds, the cart is cleared.
+     *
+     * @param selectedShop the shop from which the user wants to buy
      */
     private void performPurchase(Shop selectedShop){
         BuyRequestDTO buyRequestDTO = new BuyRequestDTO(selectedShop, cart);
@@ -52,6 +63,13 @@ public class Client extends User {
         }
     }
 
+    /**
+     * Performs a shop search using the provided filters and updates the local shop map with results.
+     *
+     * @param filters the list of filters to apply (e.g., distance, rating, category)
+     * @throws IOException if communication with the server fails
+     * @throws ClassNotFoundException if the response type is not recognized
+     */
     private void performSearch(List<Filtering> filters) throws IOException, ClassNotFoundException {
         SearchRequestDTO searchRequestDTO = new SearchRequestDTO(filters);
         List<Shop> receivedShops  = null; //The response forwards the shops in a list.
@@ -73,6 +91,12 @@ public class Client extends User {
         }
     }
 
+    /**
+     * Sends a rating for a specific store to the server.
+     *
+     * @param storeName the name of the store to rate
+     * @param rating the rating to assign to the store
+     */
     private void performRating(String storeName, Rating rating) {
         RateStoreRequestDTO rateRequest = new RateStoreRequestDTO(storeName, rating);
 
@@ -98,9 +122,10 @@ public class Client extends User {
     }
 
     /**
-     * @throws IOException
+     * Handles the user flow for purchasing products.
+     * Guides the user through selecting a shop, choosing products and quantities, and completing the transaction.
      *
-     * Holds the logic of the Buy Option of the Menu.
+     * @throws IOException if the purchase request fails
      */
     public void buyMenuOption() throws IOException {
         boolean finished = false;
@@ -147,6 +172,12 @@ public class Client extends User {
         System.out.println("Purchase Completed.");
     }
 
+    /**
+     * Prompts the user to apply filters and performs a filtered shop search.
+     *
+     * @throws IOException if communication with the server fails
+     * @throws ClassNotFoundException if the server response is invalid
+     */
     public void searchMenuOption() throws IOException, ClassNotFoundException {
         boolean finished = false;
         List<Filtering> selectedFilters = new ArrayList<>();
@@ -335,6 +366,10 @@ public class Client extends User {
 
     }
 
+    /**
+     * Handles the user input for rating a specific store.
+     * Validates the rating and sends it to the server.
+     */
     public void rateMenuOption() {
         System.out.print("Enter the name of the store to rate: ");
         String storeName = scanner.nextLine();
@@ -356,6 +391,12 @@ public class Client extends User {
         performRating(storeName, rating); // safe to use rating here since it's guaranteed to be valid
     }
 
+    /**
+     * Entry point for launching the client user interface.
+     * Initializes the client, connects to the server, and presents a menu-driven interface.
+     *
+     * @param args command-line arguments (unused)
+     */
     public static void main(String[] args) {
         //Let some time pass to initialize the Server Entities
         try {

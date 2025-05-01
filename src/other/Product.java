@@ -10,6 +10,13 @@ public class Product implements Serializable {
     private String name;
     private ProductCategory productCategory;
 
+    /**
+     * Constructs a product with a given name, category, and price.
+     *
+     * @param name the product name
+     * @param productcategory the food category of the product
+     * @param price the price of the product
+     */
     public Product(String name, ProductCategory productcategory, double price) {
         this.name = name;
         this.productCategory = productcategory;

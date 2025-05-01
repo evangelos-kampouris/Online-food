@@ -11,8 +11,22 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/**
+ * Handles the final search results sent from a ReducerNode back to the MasterNode.
+ * Forwards the results to the original client that initiated the search request.
+ */
 public class ReducerResultHandler implements Handling{
 
+    /**
+     * Processes a ReducerResultDTO received from a ReducerNode.
+     * Sends the results back to the client through the output stream stored in pending requests.
+     *
+     * @param entity the MasterNode receiving the reduced results
+     * @param connection the socket from the ReducerNode (closed immediately)
+     * @param request the DTO containing the aggregated search results
+     * @param out unused output stream
+     * @param in unused input stream
+     */
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
         //All the information has been sent from the reducer, and it's connection is no longer needed.

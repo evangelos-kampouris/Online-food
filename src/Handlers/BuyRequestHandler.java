@@ -14,8 +14,23 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/**
+ * Handles a buy request initiated by a client.
+ * Forwards the request to the responsible WorkerNode and updates sales statistics upon success.
+ */
 public class BuyRequestHandler implements Handling {
 
+    /**
+     * Processes a BuyRequestDTO from a client.
+     * The request is forwarded to the appropriate WorkerNode based on the store name.
+     * If the purchase is successful, the MasterNode updates product and store sales statistics.
+     *
+     * @param entity the MasterNode handling the request
+     * @param connection the socket connection from the client
+     * @param request the request containing cart and shop data
+     * @param request_out the output stream to send the response back
+     * @param request_in the input stream from the client (not used here)
+     */
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream request_out, ObjectInputStream request_in) {
         Master master = (Master) entity;
