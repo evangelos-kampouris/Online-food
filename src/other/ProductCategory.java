@@ -18,7 +18,8 @@ public enum ProductCategory {
     TACOS("Tacos"),
     BEVERAGE("Beverage"),
     PIE("Pie"),
-    SIDE("Side"),;
+    SALAD("Salad"),
+    SIDE("Side");
 
     private final String name;
 
@@ -34,7 +35,7 @@ public enum ProductCategory {
      */
     public static ProductCategory fromValue(String name) throws IllegalArgumentException {
         for (ProductCategory category : ProductCategory.values()) {
-            if (category.getName().equals(name)) {
+            if (category.getName().equalsIgnoreCase(name)) {
                 return category;
             }
         }
@@ -43,5 +44,14 @@ public enum ProductCategory {
 
     public String getName() {
         return name;
+    }
+
+    public static void listCategories(boolean tabbed) {
+        for (ProductCategory category : ProductCategory.values()) {
+            if (tabbed)
+                System.out.println("\t " + category.getName());
+            else
+                System.out.println(category.getName());
+        }
     }
 }
