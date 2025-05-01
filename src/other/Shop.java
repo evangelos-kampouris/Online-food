@@ -1,16 +1,12 @@
 package other;
 
 import Exceptions.NoValidStockInput;
-import Inventory.*;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonObject;
+import Inventory.InventoryCart;
+import Inventory.InventoryItem;
+import Inventory.ShopInventory;
 
-import java.io.Reader;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -54,15 +50,16 @@ public class Shop implements Serializable {
         this.rating = rating;
         this.coordinates = coordinates;
 
+        setPrice(calculateAveragePrice());
+    }
 
-        //Average Price Calculation
+    public float calculateAveragePrice(){
         List<Product> products = catalog.getAllProducts();
         float total_price = 0.0f;
         for (Product product : products) {
             total_price += product.getPrice();
-            numberOfProducts++;
         }
-        setPrice(total_price/numberOfProducts);
+        return total_price/numberOfProducts;
     }
 
     public synchronized void addRevenue(float revenue){ this.revenue += revenue; }
