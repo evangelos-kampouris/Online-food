@@ -9,8 +9,8 @@
   "numberOfRatings": 58,
   "rating": "FOUR_STARS",
   "coordinates": {
-    "lat": 37.983069,
-    "lng": 23.727681
+    "latitude": 37.983069,
+    "longitude": 23.727681
   },
   "logoPath": "/usr/bin/images/pizzacorner.png",
   "numberOfProducts": 4,

@@ -7,8 +7,8 @@
   "numberOfRatings": 102,
   "rating": "FIVE_STARS",
   "coordinates": {
-    "lat": 37.977422,
-    "lng": 23.729147
+    "latitude": 37.977422,
+    "longitude": 23.729147
   },
   "logoPath": "/usr/bin/images/pizzalovers.png",
   "numberOfProducts": 2,

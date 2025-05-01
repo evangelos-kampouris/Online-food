@@ -7,8 +7,8 @@
   "numberOfRatings": 87,
   "rating": "FOUR_STARS",
   "coordinates": {
-    "lat": 37.980824,
-    "lng": 23.726544
+    "latitude": 37.980824,
+    "longitude": 23.726544
   },
   "logoPath": "/usr/bin/images/psyrri.png",
   "numberOfProducts": 2,

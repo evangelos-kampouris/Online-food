@@ -7,8 +7,8 @@
   "numberOfRatings": 51,
   "rating": "THREE_HALF_STARS",
   "coordinates": {
-    "lat": 37.97312,
-    "lng": 23.729832
+    "latitude": 37.97312,
+    "longitude": 23.729832
   },
   "logoPath": "/usr/bin/images/exarcheiapie.png",
   "numberOfProducts": 2,

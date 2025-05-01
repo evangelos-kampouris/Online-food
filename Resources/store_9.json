@@ -7,8 +7,8 @@
   "numberOfRatings": 39,
   "rating": "FOUR_STARS",
   "coordinates": {
-    "lat": 37.978075,
-    "lng": 23.734827
+    "latitude": 37.978075,
+    "longitude": 23.734827
   },
   "logoPath": "/usr/bin/images/patrassouvlaki.png",
   "numberOfProducts": 2,

@@ -7,8 +7,8 @@
   "numberOfRatings": 59,
   "rating": "FOUR_STARS",
   "coordinates": {
-    "lat": 37.98038,
-    "lng": 23.742974
+    "latitude": 37.98038,
+    "longitude": 23.742974
   },
   "logoPath": "/usr/bin/images/kolonakicoffee.png",
   "numberOfProducts": 2,
