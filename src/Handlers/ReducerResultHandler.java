@@ -15,6 +15,10 @@ public class ReducerResultHandler implements Handling{
 
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
+        //All the information has been sent from the reducer, and it's connection is no longer needed.
+        closeConnection(connection, out, in);
+
+        //Initialize values
         Master master = (Master) entity;
         ReducerResultDTO reducerResultDTO = (ReducerResultDTO) request;
 
