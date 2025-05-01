@@ -18,7 +18,6 @@ public class Client extends User {
 
     //Attributes
     InventoryCart cart;
-
     private final Coordinates coordinates;
 
     public Client(Coordinates coordinates) {
@@ -26,7 +25,6 @@ public class Client extends User {
         this.cart = new InventoryCart();
         this.coordinates = coordinates;
     }
-
 
     //Networking
     @Override
