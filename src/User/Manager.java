@@ -54,6 +54,25 @@ public class Manager extends User {
             }
         }
     }
+//    public Shop readStoreByName(String fileName){
+//        Path path = Paths.get("Eshop","Resources", fileName);
+//        System.out.println("reading file " + path.toString());
+//
+//        try (FileReader fr = new FileReader(path.toFile())) {
+//            Shop shop = readShop(fr);
+//
+//            //Prints the values read
+//            System.out.println("Loaded shop: " + shop.getName());
+//            System.out.println("Products in inventory:");
+//            shop.getCatalog().getInventory().forEach((name, item) ->
+//                    System.out.printf(" - %s: %d units (enabled=%b)%n", name, item.getQuantity(), ((ShopInventoryItem)item).isEnabled()));
+//
+//            addStore(shop.getName(), shop);
+//            return shop;
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     @Override
     public void establishConnection() throws IOException {
@@ -64,8 +83,10 @@ public class Manager extends User {
         in = new java.io.ObjectInputStream(connectionSocket.getInputStream());
 
         System.out.println("Connection to Master Achieved.");
+        System.out.println("Sending all saved stores...");
+        performAddStoreRequest(shops);
 
-        //TODO PERFORM A SEARCH to Get all the stores
+
 
     }
 
@@ -83,25 +104,77 @@ public class Manager extends User {
     }
 
     private void addStoreOption() {
-        System.out.print("Enter path to Store JSON file: ");
-        String jsonPath = scanner.nextLine();
+        System.out.print("Enter the file path(fileName) of the json containing the Store: ");
+        String fileName = scanner.nextLine();
 
-        try (FileReader reader = new FileReader(jsonPath)) {
-            Gson gson = new Gson();
-            AddStoreRequestDTO addStoreRequestDTO = gson.fromJson(reader, AddStoreRequestDTO.class);
-            sendRequest(addStoreRequestDTO);
+        Path path = Paths.get("Eshop","Resources", fileName);
+        System.out.println("reading file " + path.toString());
 
+        try (FileReader fr = new FileReader(path.toFile())) {
+            Shop shop = readShop(fr);
+
+            //Prints the values read
+            System.out.println("Loaded shop: " + shop.getName());
+            System.out.println("Products in inventory:");
+            shop.getCatalog().getInventory().forEach((name, item) ->
+                    System.out.printf(" - %s: %d units (enabled=%b)%n", name, item.getQuantity(), ((ShopInventoryItem)item).isEnabled()));
+
+            addStore(shop.getName(), shop);
+            performAddStoreRequest(shop);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+//            Gson gson = new Gson();
+//            AddStoreRequestDTO addStoreRequestDTO = gson.fromJson(reader, AddStoreRequestDTO.class);
+//            sendRequest(addStoreRequestDTO);
+//
+//            //Wait and read response from server.
+//            ResponseDTO<Map<String, Shop>> response = (ResponseDTO<Map<String, Shop>>) in.readObject();
+//            System.out.println(response.getMessage());
+//            if(response.isSuccess()) { //if successful update the store list
+//                shops = response.getData();
+//            }
+//            else
+//                System.out.println(response.getMessage());
+
+    }
+
+    private void performAddStoreRequest(Shop shop) {
+        AddStoreRequestDTO request = new AddStoreRequestDTO(shop);
+        try {
+            sendRequest(request);
+            System.out.println("Sending new store to Master: " + shop.getName());
             //Wait and read response from server.
             ResponseDTO<Map<String, Shop>> response = (ResponseDTO<Map<String, Shop>>) in.readObject();
-            System.out.println(response.getMessage());
-            if(response.isSuccess()) { //if successful update the store list
-                shops = response.getData();
+            if(!response.isSuccess()){
+                System.out.println("Failed to add shop: " + shop.getName() + "\n\t Reason: " + response.getMessage());
             }
-            else
-                System.out.println(response.getMessage());
+            else{
+                System.out.println("Successfully added shop: " + shop.getName());
+            }
+
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Failed to send store: " + e.getMessage());
+            throw new RuntimeException(e);
         }
+    }
+    private void performAddStoreRequest(Map<String, Shop> shopsFromInitialization) {
+        for (Shop shop : shopsFromInitialization.values()) {
+            AddStoreRequestDTO request = new AddStoreRequestDTO(shop);
+            try {
+                sendRequest(request);
+                //Wait and read response from server.
+                ResponseDTO<Map<String, Shop>> response = (ResponseDTO<Map<String, Shop>>) in.readObject();
+                if(!response.isSuccess()){
+                    System.out.println("Failed to add shop: " + shop.getName() + "\n\t Reason: " + response.getMessage() + "\nEnding request");
+                    break;
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        System.out.println("All stores have been added.");
     }
 
     private void addRemoveProductOption() {
@@ -266,35 +339,17 @@ public class Manager extends User {
 
     public static void main(String[] args) {
         Manager manager = new Manager();
-        Path path = Paths.get("Eshop","Resources", "store_1.json");
-        try (FileReader fr = new FileReader(path.toFile())) {
-            Shop shop = readShop(fr);
-            manager.shops.put(shop.getName(), shop);
-            System.out.println("Loaded shop: " + shop.getName());
-            System.out.println("Products in inventory:");
-            shop.getCatalog().getInventory().forEach((name, item) ->
-                    System.out.printf(" - %s: %d units (enabled=%b)%n",
-                            name, item.getQuantity(),
-                            ((ShopInventoryItem)item).isEnabled())
-            );
-        } catch (IOException e) {
+        manager.readStore(10);
+
+        //Let some time pass to initialize the Server Entities
+        try {
+            Thread.sleep(1100);
+            manager.establishConnection();
+        } catch (InterruptedException | IOException e) {
             throw new RuntimeException(e);
         }
 
-        //Let some time pass to initialize the Server Entities
-//        try {
-//            Thread.sleep(1100);
-//            manager.establishConnection();
-//        } catch (InterruptedException | IOException e) {
-//            throw new RuntimeException(e);
-//        }
-
         boolean running = true;
-        System.out.println(manager.shops.isEmpty());
-        for(Shop shop: manager.shops.values()) {
-            System.out.println("test");
-            System.out.println(shop.getCatalog().toString());
-        }
 
 //        while (running) {
 //            manager.showMenu();
