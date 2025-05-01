@@ -9,6 +9,8 @@ public class Coordinates implements Serializable {
     private double latitude;
     private double longitude;
 
+    public Coordinates() {}
+
     public Coordinates(double Latitude, double Longitude) {
         this.latitude = Latitude;
         this.longitude = Longitude;
@@ -27,6 +29,11 @@ public class Coordinates implements Serializable {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
         return EARTH_RADIUS_KM * c;
+    }
+
+    @Override
+    public String toString() {
+        return "Latitude: " + latitude + "," + " longitude " + longitude;
     }
 
     public double getLatitude() {
