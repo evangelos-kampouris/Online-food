@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,7 +63,7 @@ public class Handler implements Runnable{                   //Για να μπο
             }
             //EACH CONNECTION IS TO BE CLOSED IN THE HANDLERS
         } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            System.err.println(entity.getClass()+ " Error handling request " + e.getMessage());
         }
     }
 
