@@ -1,0 +1,23 @@
+{
+  "StoreName": "Vegan Pie Exarcheia",
+  "Latitude": 37.9902,
+  "Longitude": 23.7339,
+  "FoodCategory": "pie",
+  "Stars": 3.8,
+  "NoOfVotes": 51,
+  "StoreLogo": "/usr/bin/images/exarcheiapie.png",
+  "Products": [
+    {
+      "ProductName": "Spinach Pie",
+      "ProductType": "pie",
+      "Available Amount": 300,
+      "Price": 4.0
+    },
+    {
+      "ProductName": "Pumpkin Pie",
+      "ProductType": "pie",
+      "Available Amount": 200,
+      "Price": 4.5
+    }
+  ]
+}

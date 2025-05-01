@@ -1,0 +1,23 @@
+{
+  "StoreName": "Brunch Koukaki",
+  "Latitude": 37.9645,
+  "Longitude": 23.7288,
+  "FoodCategory": "brunch",
+  "Stars": 4.0,
+  "NoOfVotes": 72,
+  "StoreLogo": "/usr/bin/images/koukakibrunch.png",
+  "Products": [
+    {
+      "ProductName": "Avocado Toast",
+      "ProductType": "brunch",
+      "Available Amount": 180,
+      "Price": 7.5
+    },
+    {
+      "ProductName": "Eggs Benedict",
+      "ProductType": "brunch",
+      "Available Amount": 160,
+      "Price": 9.0
+    }
+  ]
+}

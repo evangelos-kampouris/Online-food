@@ -1,0 +1,29 @@
+{
+  "StoreName": "Athens Burger House",
+  "Latitude": 37.9761,
+  "Longitude": 23.7366,
+  "FoodCategory": "burger",
+  "Stars": 4.5,
+  "NoOfVotes": 34,
+  "StoreLogo": "/usr/bin/images/athensburger.png",
+  "Products": [
+    {
+      "ProductName": "Classic Burger",
+      "ProductType": "burger",
+      "Available Amount": 300,
+      "Price": 8.5
+    },
+    {
+      "ProductName": "Cheeseburger",
+      "ProductType": "burger",
+      "Available Amount": 250,
+      "Price": 9.0
+    },
+    {
+      "ProductName": "Fries",
+      "ProductType": "side",
+      "Available Amount": 500,
+      "Price": 3.5
+    }
+  ]
+}

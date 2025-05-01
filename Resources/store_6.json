@@ -1,0 +1,23 @@
+{
+  "StoreName": "Sushi Akropolis",
+  "Latitude": 37.9707,
+  "Longitude": 23.7264,
+  "FoodCategory": "sushi",
+  "Stars": 4.6,
+  "NoOfVotes": 98,
+  "StoreLogo": "/usr/bin/images/akropolisushi.png",
+  "Products": [
+    {
+      "ProductName": "Salmon Roll",
+      "ProductType": "sushi",
+      "Available Amount": 300,
+      "Price": 10.5
+    },
+    {
+      "ProductName": "Tuna Roll",
+      "ProductType": "sushi",
+      "Available Amount": 250,
+      "Price": 11.0
+    }
+  ]
+}
