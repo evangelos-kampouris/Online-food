@@ -1,0 +1,23 @@
+{
+  "StoreName": "Sweet Waffles Gazi",
+  "Latitude": 37.9771,
+  "Longitude": 23.7116,
+  "FoodCategory": "waffle",
+  "Stars": 4.3,
+  "NoOfVotes": 44,
+  "StoreLogo": "/usr/bin/images/gaziwaffles.png",
+  "Products": [
+    {
+      "ProductName": "Chocolate Waffle",
+      "ProductType": "waffle",
+      "Available Amount": 150,
+      "Price": 6.5
+    },
+    {
+      "ProductName": "Strawberry Waffle",
+      "ProductType": "waffle",
+      "Available Amount": 120,
+      "Price": 6.8
+    }
+  ]
+}
