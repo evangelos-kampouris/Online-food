@@ -5,6 +5,7 @@ import other.ProductCategory;
 import other.Shop;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -25,10 +26,17 @@ public class CriteriaCords implements Criteria {
             float selectedDistance = (float) receivedFilter.get(0);
             Coordinates selectedCoordinates = (Coordinates) receivedFilter.get(1);
 
-            for(Shop shop : shops){
-                double distance = Coordinates.haversine(selectedCoordinates.getLatitude(),selectedCoordinates.getLongitude(), shop.getCoordinates().getLatitude(), shop.getCoordinates().getLongitude());
-                if(distance > selectedDistance){
-                    shops.remove(shop);
+            Iterator<Shop> iterator = shops.iterator();
+            while (iterator.hasNext()) {
+                Shop shop = iterator.next();
+                double distance = Coordinates.haversine(
+                        selectedCoordinates.getLatitude(),
+                        selectedCoordinates.getLongitude(),
+                        shop.getCoordinates().getLatitude(),
+                        shop.getCoordinates().getLongitude()
+                );
+                if (distance > selectedDistance) {
+                    iterator.remove();
                 }
             }
         }
