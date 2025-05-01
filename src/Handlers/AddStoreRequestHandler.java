@@ -63,8 +63,14 @@ public class AddStoreRequestHandler implements Handling{
             }
         }
         else if(entity instanceof Worker worker){
-            worker.addShop(storeName, dto.getShop());
-            responseDTO = new ResponseDTO<>(true, "Successfully added shop: " + storeName, worker.getShops());
+            if(worker.getShop(storeName) != null){
+                responseDTO = new ResponseDTO<>(false, "Shop already exists");
+            }
+            else{
+                worker.addShop(storeName, dto.getShop());
+                responseDTO = new ResponseDTO<>(true, "Successfully added shop: " + storeName, worker.getShops());
+            }
+
             try {
                 out.writeObject(responseDTO);
                 out.flush();
