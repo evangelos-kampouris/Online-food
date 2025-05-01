@@ -74,15 +74,15 @@ public class ReducerShuffler {
             System.err.println("ERROR: received " + receivedFromWorkersCounter + " workers from master");
         }
         List<Shop> resutlsList = results.values().stream().toList();
-        try(Socket socket = new Socket(masterNode.getIP(), masterNode.getPort());
-            ObjectOutputStream handler_out = new ObjectOutputStream(socket.getOutputStream())){
-
+        try{
+            Socket socket = new Socket(masterNode.getIP(), masterNode.getPort());
+            ObjectOutputStream handler_out = new ObjectOutputStream(socket.getOutputStream());
             ReducerResultDTO resultRequest = new ReducerResultDTO(requestID, resutlsList);
             handler_out.writeObject(resultRequest);
             handler_out.flush();
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("ERROR: couldn't send results request" + e.getMessage());
         }
         finally {
             //tell the reducer to drop this shuffler

@@ -17,7 +17,7 @@ public abstract class User {
     protected static final Scanner scanner = new Scanner(System.in);
 
     //networking
-    protected static final String MASTER_IP = "localhost";
+    protected static final String MASTER_IP = "127.0.0.1";
     protected static final int MASTER_PORT = 9999;
     protected Socket connectionSocket;
     protected static ObjectOutputStream out;
@@ -43,8 +43,8 @@ public abstract class User {
     }
 
     protected void closeConnection() throws IOException {
-        if (in != null) in.close();
         if (out != null) out.close();
+        if (in != null) in.close();
         if (connectionSocket != null && !connectionSocket.isClosed()) connectionSocket.close();
     }
 }
