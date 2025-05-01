@@ -30,7 +30,6 @@ public class SearchRequestHandler implements Handling{
 
 
         for(WorkerNode worker : workers){
-            System.out.println(worker.toString());
             try{
                 Socket socket = new Socket(worker.getIp(), worker.getPort());
                 ObjectOutputStream outTOWorker = new ObjectOutputStream(socket.getOutputStream());
@@ -38,7 +37,7 @@ public class SearchRequestHandler implements Handling{
 
                 outTOWorker.writeObject(filterMapDTO);
                 outTOWorker.flush();
-
+                socket.shutdownOutput();
             }
             catch(Exception e){
                 System.out.println("an error occured on searchRequestHandler");
