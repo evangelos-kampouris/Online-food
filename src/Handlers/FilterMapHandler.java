@@ -21,10 +21,14 @@ public class FilterMapHandler implements Handling{
 
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
+
+        //All the information has been sent from the master, and it's connection is no longer needed.
+        closeConnection(connection, out, in);
+
+        //Initialize values
         Worker worker = (Worker) entity;
         FilterMapDTO dto = (FilterMapDTO) request;
         List<Filtering> filters = dto.getSelectedFilters();
-
 
         Map<String, Shop> results = null;   //The holding the final results
         MapResultDTO mapResultDTO = null;
@@ -101,7 +105,6 @@ public class FilterMapHandler implements Handling{
             mapResultDTO = new MapResultDTO(results, dto.getRequestId());
             handler_out.writeObject(mapResultDTO);
             handler_out.flush();
-            //closeConnection(ReducerConnectionSocket,handler_out,null);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
