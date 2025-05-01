@@ -8,8 +8,8 @@
   "numberOfRatings": 34,
   "rating": "FOUR_HALF_STARS",
   "coordinates": {
-    "lat": 37.976557,
-    "lng": 23.735942
+    "latitude": 37.976557,
+    "longitude": 23.735942
   },
   "logoPath": "/usr/bin/images/athensburger.png",
   "numberOfProducts": 3,
