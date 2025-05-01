@@ -24,6 +24,7 @@ public class CriteriaCords implements Criteria {
         if(filter instanceof FilterCords selected_filter){
             List<Object> receivedFilter = (List<Object>) selected_filter.getFilter();
             float selectedDistance = (float) receivedFilter.get(0);
+            System.out.println("receivedFilter: " + receivedFilter);//debug
             Coordinates selectedCoordinates = (Coordinates) receivedFilter.get(1);
 
             Iterator<Shop> iterator = shops.iterator();
@@ -36,6 +37,7 @@ public class CriteriaCords implements Criteria {
                         shop.getCoordinates().getLongitude()
                 );
                 if (distance > selectedDistance) {
+                    System.out.println("Removes shop based on distance" + distance + ", shop: " + iterator);//debug
                     iterator.remove();
                 }
             }
