@@ -3,11 +3,10 @@ package Handlers;
 import DTO.FilterMapDTO;
 import DTO.MapResultDTO;
 import DTO.Request;
-import Filtering.Filtering;
 import Entity.Entity;
-import other.Shop;
 import Entity.Worker;
 import Filtering.*;
+import other.Shop;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

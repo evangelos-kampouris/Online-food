@@ -1,5 +1,6 @@
 package DTO;
-import Inventory.*;
+
+import Inventory.InventoryCart;
 import other.Shop;
 
 import java.io.Serial;

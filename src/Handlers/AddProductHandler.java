@@ -2,7 +2,9 @@ package Handlers;
 
 import DTO.AddProductDTO;
 import DTO.Request;
-import Entity.*;
+import Entity.Entity;
+import Entity.Master;
+import Entity.Worker;
 import Node.WorkerNode;
 import Responses.ResponseDTO;
 import other.Product;

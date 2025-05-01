@@ -3,16 +3,15 @@ package Handlers;
 import DTO.FilterMapDTO;
 import DTO.Request;
 import DTO.SearchRequestDTO;
-import Filtering.Filtering;
 import Entity.Entity;
 import Entity.Master;
+import Filtering.Filtering;
 import Node.WorkerNode;
 import other.PendingRequests;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 
 public class SearchRequestHandler implements Handling{

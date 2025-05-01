@@ -2,14 +2,10 @@ package other;
 
 import Node.WorkerNode;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * The class responsible for mapping stores to workers, and vice versa.

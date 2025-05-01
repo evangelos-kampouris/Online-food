@@ -2,7 +2,8 @@ package Handlers;
 
 import DTO.MapResultDTO;
 import DTO.Request;
-import Entity.*;
+import Entity.Entity;
+import Entity.Reducer;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

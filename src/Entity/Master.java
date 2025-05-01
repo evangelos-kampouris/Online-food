@@ -1,7 +1,7 @@
 package Entity;
 
 import Node.WorkerNode;
-import Wrappers.*;
+import Wrappers.WorkerConfigWrapper;
 import com.google.gson.Gson;
 import other.HashRing;
 import other.PendingRequests;
@@ -49,9 +49,11 @@ public class Master extends Entity {
      * Reads who the workers are from the file
      */
     private void initiateWorkers() {
+
         System.out.println(System.getProperty("user.dir"));//debugging.
         Path path = Paths.get("Eshop","Resources", "workerConfig.json");
         System.out.println(path);//debugging.
+
         try (FileReader reader = new FileReader(path.toFile())) {
             Gson gson = new Gson();                                               //μετατροπή JSON σε Java αντικείμενα
             WorkerConfigWrapper wrapper = gson.fromJson(reader, WorkerConfigWrapper.class); //τα μετατρέπει σε ένα Java αντικείμενο τύπου WorkerConfigWrapper

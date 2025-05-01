@@ -1,10 +1,8 @@
 package Filtering;
 
 import other.ProductCategory;
-import other.StoreCategories;
 import other.Shop;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class CriteriaFoodCategories implements Criteria {

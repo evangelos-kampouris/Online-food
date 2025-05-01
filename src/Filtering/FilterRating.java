@@ -1,5 +1,6 @@
 package Filtering;
-import other.*;
+
+import other.Rating;
 
 import java.io.Serial;
 

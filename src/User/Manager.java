@@ -1,7 +1,18 @@
 package User;
 
 
-import java.io.FileNotFoundException;
+import DTO.*;
+import Inventory.InventoryItem;
+import Inventory.ShopInventoryItem;
+import Responses.ResponseDTO;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonObject;
+import other.Product;
+import other.ProductCategory;
+import other.Shop;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -10,19 +21,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import Inventory.InventoryItem;
-import Inventory.ShopInventoryItem;
-import Responses.ResponseDTO;
-import com.google.gson.Gson;
-import DTO.*;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonObject;
-import other.ActionType;
-import other.Product;
-import other.ProductCategory;
-import other.Shop;
 
 public class Manager extends User {
 
@@ -41,10 +39,15 @@ public class Manager extends User {
 
             try (FileReader fr = new FileReader(path.toFile())) {
                 Shop shop = readShop(fr);
+                float avg_price = shop.calculateAveragePrice();
+                System.out.println("Average price: " + avg_price);//debug
+                shop.setPrice(avg_price);
 
                 //Prints the values read
-                System.out.println("Loaded shop: " + shop.getName());
-                System.out.println("Products in inventory:");
+                System.out.println("Rating: " + shop.getRating()); //debug
+                System.out.println("Price: " + shop.getPrice());//debug
+                System.out.println("Loaded shop: " + shop.getName());//debug
+                System.out.println("Products in inventory:");//debug
                 shop.getCatalog().getInventory().forEach((name, item) ->
                         System.out.printf(" - %s: %d units (enabled=%b)%n", name, item.getQuantity(), ((ShopInventoryItem)item).isEnabled()));
 

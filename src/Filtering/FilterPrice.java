@@ -1,6 +1,6 @@
 package Filtering;
 
-import other.*;
+import other.Price;
 
 import java.io.Serial;
 

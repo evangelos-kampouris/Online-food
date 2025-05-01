@@ -2,8 +2,10 @@ package Handlers;
 
 import DTO.ChangeStockDTO;
 import DTO.Request;
+import Entity.Entity;
+import Entity.Master;
+import Entity.Worker;
 import Node.WorkerNode;
-import Entity.*;
 import Responses.ResponseDTO;
 import other.Shop;
 

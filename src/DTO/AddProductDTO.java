@@ -1,6 +1,5 @@
 package DTO;
 
-import other.ActionType;
 import other.ProductCategory;
 
 import java.io.Serial;

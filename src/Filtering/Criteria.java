@@ -1,5 +1,4 @@
 package Filtering;
-import other.*;
 
 import other.Shop;
 

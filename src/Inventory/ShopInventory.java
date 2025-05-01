@@ -1,6 +1,6 @@
 package Inventory;
 
-import other.*;
+import other.Product;
 
 import java.io.Serial;
 

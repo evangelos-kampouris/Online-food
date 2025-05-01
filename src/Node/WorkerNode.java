@@ -1,7 +1,6 @@
 package Node;
 
 import java.io.Serial;
-import java.util.Objects;
 
 public class WorkerNode extends Node{
     @Serial

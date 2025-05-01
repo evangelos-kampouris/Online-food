@@ -1,8 +1,9 @@
 package DTO;
 
+import other.Shop;
+
 import java.io.Serial;
 import java.io.Serializable;
-import other.Shop;
 
 public class AddStoreRequestDTO extends Request implements Serializable {
     @Serial

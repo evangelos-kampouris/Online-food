@@ -1,10 +1,8 @@
 package Filtering;
 
 import other.Coordinates;
-import other.ProductCategory;
 import other.Shop;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
