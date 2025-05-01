@@ -1,0 +1,57 @@
+{
+  "name": "Thessaloniki Pizza Corner",
+  "productCategory": [
+    "PIZZA",
+    "SALAD",
+    "DRINK"
+  ],
+  "storeCategory": "PIZZERIA",
+  "numberOfRatings": 58,
+  "rating": "FOUR_STARS",
+  "coordinates": {
+    "lat": 37.983069,
+    "lng": 23.727681
+  },
+  "logoPath": "/usr/bin/images/pizzacorner.png",
+  "numberOfProducts": 4,
+  "catalog": {
+    "inventory": {
+      "Margherita": {
+        "product": {
+          "name": "Margherita",
+          "productCategory": "PIZZA",
+          "price": 7.5
+        },
+        "quantity": 200,
+        "enabled": true
+      },
+      "Pepperoni": {
+        "product": {
+          "name": "Pepperoni",
+          "productCategory": "PIZZA",
+          "price": 8.9
+        },
+        "quantity": 180,
+        "enabled": true
+      },
+      "Caesar Salad": {
+        "product": {
+          "name": "Caesar Salad",
+          "productCategory": "SALAD",
+          "price": 5.5
+        },
+        "quantity": 120,
+        "enabled": true
+      },
+      "Coca Cola": {
+        "product": {
+          "name": "Coca Cola",
+          "productCategory": "DRINK",
+          "price": 2.0
+        },
+        "quantity": 300,
+        "enabled": true
+      }
+    }
+  }
+}
