@@ -1,23 +1,37 @@
 {
-  "StoreName": "Souvlaki Stou Psyrri",
-  "Latitude": 37.9788,
-  "Longitude": 23.7235,
-  "FoodCategory": "souvlaki",
-  "Stars": 4.2,
-  "NoOfVotes": 87,
-  "StoreLogo": "/usr/bin/images/psyrri.png",
-  "Products": [
-    {
-      "ProductName": "Pita Souvlaki",
-      "ProductType": "souvlaki",
-      "Available Amount": 600,
-      "Price": 3.0
-    },
-    {
-      "ProductName": "Souvlaki Plate",
-      "ProductType": "souvlaki",
-      "Available Amount": 400,
-      "Price": 6.5
+  "name": "Souvlaki Stou Psyrri",
+  "productCategory": [
+    "SOUVLAKI"
+  ],
+  "storeCategory": "RESTAURANT",
+  "numberOfRatings": 87,
+  "rating": "FOUR_STARS",
+  "coordinates": {
+    "lat": 37.9788,
+    "lng": 23.7235
+  },
+  "logoPath": "/usr/bin/images/psyrri.png",
+  "numberOfProducts": 2,
+  "catalog": {
+    "inventory": {
+      "Pita Souvlaki": {
+        "product": {
+          "name": "Pita Souvlaki",
+          "productCategory": "SOUVLAKI",
+          "price": 3.0
+        },
+        "quantity": 600,
+        "enabled": true
+      },
+      "Souvlaki Plate": {
+        "product": {
+          "name": "Souvlaki Plate",
+          "productCategory": "SOUVLAKI",
+          "price": 6.5
+        },
+        "quantity": 400,
+        "enabled": true
+      }
     }
-  ]
+  }
 }
