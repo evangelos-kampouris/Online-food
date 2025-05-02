@@ -71,34 +71,37 @@ public class FilterMapHandler implements Handling{
                 Set<Filtering> group = entry.getValue();
 
                 Criteria groupCriteria;
-                Set<Shop> groupShops = new HashSet<>(allShops); //Shops that match the filtergroup will be saved here.
+                Set<Shop> groupShops; //Shops that match the filtergroup will be saved here.
                 Iterator<Filtering> iterator = group.iterator();
 
                 if (group.size() == 1) {
                     Criteria criteria = buildCriteria(iterator.next());
                     groupCriteria = criteria;
-                    criteria.meetCriteria(groupShops); //Filter
+                    groupShops = criteria.meetCriteria(allShops); //Filter
                 }
                 else {
                     // Combine multiple filters of same type with OR
-                    List<Criteria> criteriaList = new ArrayList<>();
-                    Criteria combined = buildCriteria(iterator.next()); //Getting the first Criteria
-                    groupCriteria = combined;
-                    while (iterator.hasNext()) { //Composing the total OR criteria.
-                        combined = new CriteriaOR(combined, buildCriteria(iterator.next()));
-                        criteriaList.add(combined);
-                    }
-                    for (Criteria criteria : criteriaList) {
-                        criteria.meetCriteria(groupShops); //Filter
-                    }
+                    List<Set<Shop>> criteriaResultList = new ArrayList<>(); //list that later is going to be joined
 
+                    groupCriteria = buildCriteria(iterator.next()); //Getting the first Criteria
+                    criteriaResultList.add(groupCriteria.meetCriteria(new HashSet<>(allShops)));
+
+                    while (iterator.hasNext()) { //Composing the total OR criteria.
+                        groupCriteria = buildCriteria(iterator.next()); //Getting the next Criteria
+                        criteriaResultList.add(groupCriteria.meetCriteria(new HashSet<>(allShops)));
+                    }
+                    //Joining
+                    groupShops = new HashSet<>();
+                    for (Set<Shop> groupShop : criteriaResultList) {
+                        groupShops.addAll(groupShop);
+                    }
                 }
                 groupResults.put(groupCriteria,groupShops);
             }
 
             //AND FILTERING
             Set<Shop> filteredShops = new HashSet<>(allShops);
-            for (Map.Entry<Criteria, Set<Shop>> entry : groupResults.entrySet()) {
+            for (Map.Entry<Criteria, Set<Shop>> entry : groupResults.entrySet()) {//change from entry to value for
                 Criteria criteria = entry.getKey();
                 Set<Shop> groupShops = entry.getValue();
                 filteredShops.retainAll(groupShops);
