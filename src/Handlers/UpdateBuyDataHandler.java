@@ -43,10 +43,10 @@ public class UpdateBuyDataHandler implements Handling{
         else{
             try {
                 savedShop.sell(DTO.data.getCart()); //sell
+                responseDTO = new ResponseDTO<>(true, "Purchase Proceeded successfully");
             } catch (NoValidStockInput | IllegalArgumentException e) {
                 responseDTO = new ResponseDTO<>(false, e.getMessage(), DTO);
             }
-            responseDTO = new ResponseDTO<>(true, "Purchase Proceeded successfully");
         }
         //Send the response back to Master
         try {

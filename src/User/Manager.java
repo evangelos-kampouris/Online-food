@@ -215,7 +215,7 @@ public class Manager extends User {
             System.out.println(response.getMessage());
             if(response.isSuccess()) {
                 Shop updatedShop = response.getData(); //Update the store
-                shops.put(updatedShop.getName(), updatedShop);
+                shops.put(updatedShop.getName(), updatedShop);//overwrite
             }
             else
                 System.out.println(response.getMessage());
