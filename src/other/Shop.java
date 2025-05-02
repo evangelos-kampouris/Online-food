@@ -1,6 +1,7 @@
 package other;
 
 import Exceptions.NoValidStockInput;
+import Inventory.Inventory;
 import Inventory.InventoryCart;
 import Inventory.InventoryItem;
 import Inventory.ShopInventory;
@@ -66,6 +67,27 @@ public class Shop implements Serializable {
     }
 
     /**
+     * Copy constructor. Creates a new Shop with the same data as the given one.
+     * Performs defensive copies of mutable fields to avoid shared references.
+     *
+     * @param other the Shop to copy
+     */
+    public Shop(Shop other) {
+        this.name               = other.name;
+        this.productCategory    = new java.util.HashSet<>(other.productCategory);
+        this.storeCategory      = other.storeCategory;
+        this.numberOfRatings    = other.numberOfRatings;
+        this.rating             = other.rating;
+        this.ratingVar          = other.ratingVar;
+        this.coordinates        = other.coordinates != null ? new Coordinates(other.coordinates.getLatitude(), other.coordinates.getLongitude()) : null;
+        this.logoPath           = other.logoPath;
+        this.numberOfProducts   = other.numberOfProducts;
+        this.catalog            = other.catalog != null ? new ShopInventory(other.catalog) : new ShopInventory();
+        this.price              = other.price;
+        this.revenue            = other.revenue;
+    }
+
+    /**
      * Calculates the average price of all products in the shop's catalog.
      *
      * @return the average price as a float
@@ -95,14 +117,13 @@ public class Shop implements Serializable {
      * @throws NoValidStockInput if stock deduction fails due to invalid quantity
      */
     public synchronized void sell(InventoryCart cart) throws IllegalArgumentException, NoValidStockInput {
-        //Add the revenue from the cart
-        float profit = cart.getCost();
-        addRevenue(profit);
-
         //remove stock
         for (Map.Entry<String, InventoryItem> entry : cart.getInventory().entrySet()) {
             catalog.removeProduct(entry.getKey(), entry.getValue().getQuantity());
         }
+        //Add the revenue from the cart
+        float profit = cart.getCost();
+        addRevenue(profit);
     }
 
     /*
@@ -150,6 +171,7 @@ public class Shop implements Serializable {
                 ", storeCategory=" + storeCategory +
                 ", numberOfRatings=" + numberOfRatings +
                 ", rating=" + rating +
+                ",RatingVar=" + ratingVar +
                 ", coordinates=" + coordinates +
                 ", logoPath='" + logoPath + '\'' +
                 ", numberOfProducts=" + numberOfProducts +

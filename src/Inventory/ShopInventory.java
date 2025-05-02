@@ -3,11 +3,18 @@ package Inventory;
 import other.Product;
 
 import java.io.Serial;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ShopInventory extends Inventory{
-
     @Serial
     private static final long serialVersionUID = 1L;
+
+    public ShopInventory() {}
+
+    public ShopInventory(ShopInventory other) {
+        this.inventory = new HashMap<>(other.inventory);
+    }
 
     /**
      * Adds a new product to the shop's inventory with default enabled status.

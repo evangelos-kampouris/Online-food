@@ -13,6 +13,12 @@ public abstract class Inventory implements Serializable {
     private static final long serialVersionUID = 1L;
     Map<String, InventoryItem> inventory = new HashMap<String, InventoryItem>(); // Selected DataStructure <name, product>
 
+    public Inventory() {}
+
+    public Inventory(Inventory other) {
+        this.inventory = new HashMap<>(other.inventory);
+    }
+
     public abstract void addProduct(String productName, Product product, int quantity);
 
     /**
@@ -39,6 +45,7 @@ public abstract class Inventory implements Serializable {
         }
 
         InventoryItem item = inventory.get(productName);
+
         int existingQuantity = item.getQuantity();
 
         // Default to removing 1 if quantity is not provided
@@ -50,6 +57,7 @@ public abstract class Inventory implements Serializable {
         }
 
         if (quantityToReduce > existingQuantity) {
+            System.out.println("quantityToReduce > existingQuantity");//debug
             throw new NoValidStockInput("Quantity exceeds the available stock.");
         }
 

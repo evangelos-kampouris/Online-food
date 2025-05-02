@@ -16,7 +16,7 @@ public class InventoryCart extends Inventory {
      * If the product already exists in the cart, its quantity is increased accordingly.
      * </p>
      *
-     * @param name the product name key
+     * @param productName the product name key
      * @param product the product object
      * @param quantity the quantity to add; must be greater than 0
      * @throws IllegalArgumentException if quantity is non-positive or product is null
@@ -54,7 +54,6 @@ public class InventoryCart extends Inventory {
      */
     //GETTER AND SETTER
     public float getCost() {
-
         updateCost();
         return cost;
     }
