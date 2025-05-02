@@ -44,7 +44,7 @@ public class InventoryCart extends Inventory {
      */
     public void updateCost(){
         float sum = 0;
-        for (Map.Entry<String, InventoryItem> entry : inventory.entrySet()) sum += entry.getValue().getProduct().getPrice();
+        for (Map.Entry<String, InventoryItem> entry : inventory.entrySet()) sum += entry.getValue().getProduct().getPrice() * entry.getValue().getQuantity();
         setCost(sum);
     }
     /**

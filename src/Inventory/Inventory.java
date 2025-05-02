@@ -132,7 +132,12 @@ public abstract class Inventory implements Serializable {
 
 
     public Product getProduct(String productName) {
-        return inventory.get(productName).getProduct();
+        Product product = inventory.get(productName).getProduct();
+        if (product == null) {
+            System.err.println("Product not found.");
+            throw new IllegalArgumentException("Product does not exist.");
+        }
+        return product;
     }
 
     public List<Product> getAllProducts() {
