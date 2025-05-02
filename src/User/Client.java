@@ -59,9 +59,7 @@ public class Client extends User {
         BuyRequestDTO buyRequestDTO = new BuyRequestDTO(selectedShop, cart);
         ResponseDTO<Request> response = (ResponseDTO<Request>) sendAndReceiveRequest(buyRequestDTO);
         System.out.println(response.getMessage());
-        if(response.isSuccess()) {
-            cart.clearInventory();
-        }
+        cart.clearInventory();
     }
 
     /**
@@ -106,9 +104,11 @@ public class Client extends User {
     private void performRating(String storeName, float rating) {
         RateStoreRequestDTO rateRequest = new RateStoreRequestDTO(storeName, rating);
 
-        ResponseDTO<Request> response = (ResponseDTO<Request>) sendAndReceiveRequest(rateRequest);
+        ResponseDTO<Shop> response = (ResponseDTO<Shop>) sendAndReceiveRequest(rateRequest);
         if(response.isSuccess()) {
-            System.out.println("Successfully sent rating for store.");
+            System.out.println("Successfully rated the store.");
+            Shop shop = response.getData();
+            shops.put(shop.getName(), shop);//overwrites
         }
         else{
             System.out.println(response.getMessage());
@@ -173,6 +173,8 @@ public class Client extends User {
         } while(!finished);
 
         System.out.println("Total Cost: " + cart.getCost());
+
+        System.out.println("Cart holds: " + cart.toString());
         performPurchase(shop);
     }
 
@@ -377,8 +379,8 @@ public class Client extends User {
      * Validates the rating and sends it to the server.
      */
     public void rateMenuOption() {
-        System.out.print("Enter the name of the store to rate: ");
-        String storeName = scanner.nextLine().toLowerCase();
+        System.out.print("Enter the name of the store to rate(case matters): ");
+        String storeName = scanner.nextLine();
 
         float rating;
         while (true) {
