@@ -1,17 +1,17 @@
 package other;
 
 public enum Rating {
-    ONE_STAR(1.0),
-    ONE_HALF_STAR(1.5),
-    TWO_STARS(2.0),
-    TWO_HALF_STARS(2.5),
-    THREE_STARS(3.0),
-    THREE_HALF_STARS(3.5),
-    FOUR_STARS(4.0),
-    FOUR_HALF_STARS(4.5),
-    FIVE_STARS(5.0);
+    ONE_STAR(1.0f),
+    ONE_HALF_STAR(1.5f),
+    TWO_STARS(2.0f),
+    TWO_HALF_STARS(2.5f),
+    THREE_STARS(3.0f),
+    THREE_HALF_STARS(3.5f),
+    FOUR_STARS(4.0f),
+    FOUR_HALF_STARS(4.5f),
+    FIVE_STARS(5.0f);
 
-    private final double value;
+    private final float value;
 
     /**
      * Round the given float to the nearest enum constant.
@@ -29,11 +29,11 @@ public enum Rating {
         throw new IllegalArgumentException("No Rating for value " + v);
     }
 
-    Rating(double value) {
+    Rating(float value) {
         this.value = value;
     }
 
-    public double getValue() {
+    public float getValue() {
         return value;
     }
 }
