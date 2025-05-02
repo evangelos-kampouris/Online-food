@@ -116,4 +116,11 @@ public abstract class User {
         }
         shops.put(storeName, shop);
     }
+
+    public void printLocalSavedStores() {
+        System.out.println("Available stores: \n");
+        for(Shop shop : shops.values()) {
+            System.out.println("\t" + shop);
+        }
+    }
 }

@@ -87,7 +87,7 @@ public class Manager extends User {
         System.out.println("1. Add Store");
         System.out.println("2. Add/Remove Product");
         System.out.println("3. Change Stock");
-        System.out.println("4. Updates stores"); //TODO
+        System.out.println("4. View all local saved stores");
         System.out.println("5. View Sales by Store Category");
         System.out.println("6. View Sales by Product Category");
         System.out.println("0. Exit");
@@ -356,6 +356,7 @@ public class Manager extends User {
                     manager.changeStockOption();
                     break;
                 case "4":
+                    manager.printLocalSavedStores();
                     break;
                 case "5":
                     manager.viewSalesOption("StoreCategories");

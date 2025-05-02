@@ -123,6 +123,7 @@ public class Client extends User {
         System.out.println("1. Search for Stores");
         System.out.println("2. Buy Products");
         System.out.println("3. Rate a Store");
+        System.out.println("4. View all Stores and their products");
         System.out.println("0. Exit");
         System.out.print("Select an option: ");
     }
@@ -404,7 +405,7 @@ public class Client extends User {
     public static void main(String[] args) {
         //Let some time pass to initialize the Server Entities
         try {
-            Thread.sleep(10000);
+            Thread.sleep(7000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -444,6 +445,9 @@ public class Client extends User {
                     break;
                 case "3":
                     client.rateMenuOption();
+                    break;
+                case "4":
+                    client.printLocalSavedStores();
                     break;
                 case "0":
                     running = false;
