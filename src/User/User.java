@@ -32,7 +32,7 @@ public abstract class User {
     private static int idCounter = 0;
     protected int id;
     //Shop Name, Shop -- Received upon  initialization - Updated on search.
-    Map<String, Shop> shops = new HashMap<>();
+    protected Map<String, Shop> shops = new HashMap<>();
 
     /**
      * Initializes a new user instance and assigns a unique ID.

@@ -54,17 +54,18 @@ public class RemoveProductHandler implements Handling {
                 return;
             }
 
-            try (Socket socket = new Socket(worker.getIp(), worker.getPort());
-                 ObjectOutputStream handler_out = new ObjectOutputStream(socket.getOutputStream());
-                 ObjectInputStream handler_in = new ObjectInputStream(socket.getInputStream())) {
+            try {
+                Socket socket = new Socket(worker.getIp(), worker.getPort());
+                ObjectOutputStream handler_out = new ObjectOutputStream(socket.getOutputStream());
+                ObjectInputStream handler_in = new ObjectInputStream(socket.getInputStream());
 
                 handler_out.writeObject(dto);
                 handler_out.flush();
 
-                System.out.println("Forwarded Remove product request to worker " + worker.getIp());
+                System.out.println("Forwarded Remove product request to worker " + worker.getIp());//debug
 
                 // Receive the response containing the updated shop
-                responseDTO = (ResponseDTO) handler_in.readObject();
+                responseDTO = (ResponseDTO<Shop>) handler_in.readObject();
                 out.writeObject(responseDTO);
                 out.flush();
                 System.out.println("Respond sent.");

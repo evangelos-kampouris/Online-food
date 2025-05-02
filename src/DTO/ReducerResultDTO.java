@@ -29,4 +29,8 @@ public class ReducerResultDTO extends Request{
     public List<Shop> getResults() {
         return results;
     }
+
+    public String toString() {
+        return "Request ID: " + requestId + " Results " + results;
+    }
 }

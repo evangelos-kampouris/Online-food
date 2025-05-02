@@ -65,7 +65,7 @@ public class Master extends Entity {
     private void initiateWorkers() {
 
         System.out.println(System.getProperty("user.dir"));//debugging.
-        Path path = Paths.get("Resources", "WorkerConfig.json");
+        Path path = Paths.get("Eshop","Resources", "WorkerConfig.json");
         System.out.println(path);//debugging.
 
         try (FileReader reader = new FileReader(path.toFile())) {

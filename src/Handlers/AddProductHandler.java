@@ -39,7 +39,7 @@ public class AddProductHandler implements Handling {
         AddProductDTO dto = (AddProductDTO) request;
         String storeName = dto.getStoreName();
 
-        ResponseDTO<Shop> responseDTO = null;
+        ResponseDTO<?> responseDTO = null;
 
         if (entity instanceof Master master) {
             WorkerNode worker = master.workers.getNodeForKey(storeName);
@@ -51,25 +51,26 @@ public class AddProductHandler implements Handling {
                     out.writeObject(responseDTO);
                     out.flush();
                 } catch (IOException e) {
-                    System.out.println(responseDTO.getMessage());
+                    System.out.println(responseDTO.getMessage() + "Exception Message: " + e.getMessage());
                 }
                 return;
             }
 
-            try (Socket socket = new Socket(worker.getIp(), worker.getPort());
-                 ObjectOutputStream handler_out = new ObjectOutputStream(socket.getOutputStream());
-                 ObjectInputStream handler_in = new ObjectInputStream(socket.getInputStream())) {
+            try {
+                Socket socket = new Socket(worker.getIp(), worker.getPort());
+                ObjectOutputStream handler_out = new ObjectOutputStream(socket.getOutputStream());
+                ObjectInputStream handler_in = new ObjectInputStream(socket.getInputStream());
 
                 handler_out.writeObject(dto);
                 handler_out.flush();
 
-                System.out.println("Forwarded Add product request to worker " + worker.getIp());
+                System.out.println("Forwarded Add product request to worker " + worker.getIp()); //debug
 
                 // Receive the response containing the updated shop
-                responseDTO = (ResponseDTO) handler_in.readObject();
+                responseDTO = (ResponseDTO<?>) handler_in.readObject();
                 out.writeObject(responseDTO);
                 out.flush();
-                System.out.println("Respond sent.");
+                System.out.println("Respond sent."); //debug
 
                 closeConnection(socket, handler_out, handler_in);
 
@@ -79,7 +80,7 @@ public class AddProductHandler implements Handling {
                 try {
                     out.writeObject(responseDTO);
                     out.flush();
-                    closeConnection(connection,out,in);
+                    connection.shutdownOutput();
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -92,10 +93,9 @@ public class AddProductHandler implements Handling {
                 responseDTO = new ResponseDTO<>(false, "Store not found", null);
             }
             else {
-                ProductCategory category = dto.getProductCategory();
-                Product product = new Product(dto.getProductName(), category, dto.getPrice());
+                Product product = new Product(dto.getProductName(), dto.getProductCategory(), dto.getPrice());
                 shop.getCatalog().addProduct(product.getName(), product, dto.getQuantity(), true);
-                System.out.println("Added product to store: " + dto.getProductName());
+                System.out.println("Added product to store: " + dto.getProductName());//debug
                 responseDTO = new ResponseDTO<>(true, "Added product to store: " + dto.getProductName(), shop);
             }
             try {
@@ -110,6 +110,7 @@ public class AddProductHandler implements Handling {
             try {
                 out.writeObject(responseDTO);
                 out.flush();
+                connection.shutdownOutput();
             } catch (IOException e) {
                 System.err.println(responseDTO.getMessage());
             }

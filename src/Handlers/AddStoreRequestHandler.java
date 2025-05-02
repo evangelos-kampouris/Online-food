@@ -97,14 +97,13 @@ public class AddStoreRequestHandler implements Handling{
                 out.flush();
                 System.out.println("Response send back to manager."); //debug
 
-                //closeConnection(socket,handler_out,null); //Close the connection with the worker.
             }catch (IOException| ClassNotFoundException e) {
                 try {
                     System.out.println("Somehting went wrong when expecting a new response. from the worker: " + e.getMessage());
                     responseDTO = new ResponseDTO<>(false, e.getMessage());
                     out.writeObject(responseDTO);
                     out.flush();
-                    closeConnection(connection,out,in);
+                    connection.shutdownOutput();
                 } catch (IOException ex) {
                     System.out.println("Error sending back the error to the worker: " + ex.getMessage());
                 }

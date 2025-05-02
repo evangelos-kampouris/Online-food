@@ -54,7 +54,7 @@ public class SearchRequestHandler implements Handling{
                 socket.shutdownOutput();
             }
             catch(Exception e){
-                System.out.println("an error occured on searchRequestHandler");
+                System.out.println("an error occured on searchRequestHandler" + e.getMessage());
             }
         }
     }
