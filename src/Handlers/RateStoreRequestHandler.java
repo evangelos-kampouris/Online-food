@@ -98,7 +98,7 @@ public class RateStoreRequestHandler implements Handling{
             }
             else{
                 shop.updateRating(dto.getRating());
-                responseDTO = new ResponseDTO<>(true, "Successfully updated rating for store: " + dto.getStoreName());
+                responseDTO = new ResponseDTO<>(true, "Successfully updated rating for store: " + dto.getStoreName(), shop);
             }
             try{
                 out.writeObject(responseDTO);
