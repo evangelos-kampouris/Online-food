@@ -47,7 +47,7 @@ public class Manager extends User {
     public void readStore(int numberOfFilesToRead){
         for(int i = 1; i <= numberOfFilesToRead; i++){
             String filename = "store_" + i + ".json";
-            Path path = Paths.get("Resources", filename);
+            Path path = Paths.get("Eshop", "Resources", filename);
             System.out.println("reading file " + path.toString());
 
             try (FileReader fr = new FileReader(path.toFile())) {
@@ -141,7 +141,7 @@ public class Manager extends User {
     /**
      * Sends a batch of shop registration requests to the MasterNode.
      *
-     * @param shops the map of shop names to shop objects
+     * @param shopsFromInitialization the map of shop names to shop objects
      */
     private void performAddStoreRequest(Map<String, Shop> shopsFromInitialization) {
         boolean error_flag = false;
@@ -219,7 +219,6 @@ public class Manager extends User {
             }
             else
                 System.out.println(response.getMessage());
-
         }
     }
 
