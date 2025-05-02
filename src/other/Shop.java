@@ -20,6 +20,7 @@ public class Shop implements Serializable {
 
     private int numberOfRatings;
     private Rating rating;
+    private float ratingVar;
 
     private Coordinates coordinates;
     private String logoPath;
@@ -133,7 +134,27 @@ public class Shop implements Serializable {
         else{price = Price.HIGH; }
     }
 
+    public void updateRating(float newRating){
+        ratingVar = (ratingVar * numberOfRatings + newRating) / (numberOfRatings + 1);
+        numberOfRatings++;
+        rating = Rating.fromValue(ratingVar);
+    }
 
+    @Override
+    public String toString() {
+        return "Shop{" +
+                "name='" + name + '\'' +
+                ", productCategory=" + productCategory +
+                ", storeCategory=" + storeCategory +
+                ", numberOfRatings=" + numberOfRatings +
+                ", rating=" + rating +
+                ", coordinates=" + coordinates +
+                ", logoPath='" + logoPath + '\'' +
+                ", numberOfProducts=" + numberOfProducts +
+                ", price=" + price +
+                ", revenue=" + revenue +
+                '}';
+    }
 
     /**
      * Returns the price category of the shop.

@@ -9,6 +9,7 @@ import other.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a client user who can search for shops, rate them, and make purchases.
@@ -76,8 +77,9 @@ public class Client extends User {
 
         Object receivedObject = sendAndReceiveRequest(searchRequestDTO);
 
-        if (receivedObject instanceof ResponseDTO searchResponse) {
+        if (receivedObject instanceof ResponseDTO<?> searchResponse) {
             ReducerResultDTO dto = (ReducerResultDTO) searchResponse.getData();
+            System.out.println(dto);//debug
             receivedShops = dto.getResults();
         }
 
@@ -88,6 +90,10 @@ public class Client extends User {
                 System.out.println("Received shop: " + shopName);
                 shops.put(shopName, shop);
             }
+            System.out.println("Addition Completed Printing shops:\n");//debug
+            for(Map.Entry<String, Shop> entry : shops.entrySet()){ //debug
+                System.out.println(entry.getKey() + ": " + entry.getValue());//debug
+            }
         }
     }
 
@@ -97,7 +103,7 @@ public class Client extends User {
      * @param storeName the name of the store to rate
      * @param rating the rating to assign to the store
      */
-    private void performRating(String storeName, Rating rating) {
+    private void performRating(String storeName, float rating) {
         RateStoreRequestDTO rateRequest = new RateStoreRequestDTO(storeName, rating);
 
         ResponseDTO<Request> response = (ResponseDTO<Request>) sendAndReceiveRequest(rateRequest);
@@ -130,7 +136,7 @@ public class Client extends User {
     public void buyMenuOption() throws IOException {
         boolean finished = false;
 
-        System.out.println("Select a Store: ");
+        System.out.println("Select a Store (Case matter): ");
         String storeName = scanner.nextLine();
         Shop shop = shops.get(storeName);
 
@@ -140,7 +146,7 @@ public class Client extends User {
         }
 
         do{
-            System.out.println("Select a product to buy: ");
+            System.out.println("Select a product to buy : ");
             String productName = scanner.nextLine();
             Product product = shops.get(storeName).getCatalog().getProduct(productName);
 
@@ -161,15 +167,12 @@ public class Client extends User {
             addToCart(product, quantity);
 
             System.out.println("Want to buy anything else? [Y/N]");
-            String answer = scanner.nextLine();
+            String answer = scanner.nextLine().toLowerCase();
             if (answer.equalsIgnoreCase("N")) finished = true;
         } while(!finished);
 
         System.out.println("Total Cost: " + cart.getCost());
-
         performPurchase(shop);
-
-        System.out.println("Purchase Completed.");
     }
 
     /**
@@ -183,11 +186,13 @@ public class Client extends User {
         List<Filtering> selectedFilters = new ArrayList<>();
 
         do{
-            System.out.println("Select a Filter(Price/Rating/Food Category): ");
-            String filter = scanner.nextLine();
-            filter = filter.toLowerCase();
+            System.out.println("Select a Filter(Price/Rating/Food Category/empty(update)): ");
+            String filter = scanner.nextLine().toLowerCase();
 
             switch (filter) {
+                case "empty":
+
+                    break;
                 case "price":
                     System.out.println("Select a price: [$, $$, $$$]");
                     String price_str = scanner.nextLine();
@@ -358,7 +363,7 @@ public class Client extends User {
                     break;
             }
             System.out.println("Select another filter? [Y/N]: ");
-            String answer = scanner.nextLine();
+            String answer = scanner.nextLine().toLowerCase();
             if (answer.equalsIgnoreCase("N")) finished = true;
         } while(!finished);
 
@@ -372,23 +377,22 @@ public class Client extends User {
      */
     public void rateMenuOption() {
         System.out.print("Enter the name of the store to rate: ");
-        String storeName = scanner.nextLine();
+        String storeName = scanner.nextLine().toLowerCase();
 
-        Rating rating = null;
+        float rating;
         while (true) {
             System.out.print("Enter the rate of the store (1 to 5): ");
-            double stars = scanner.nextDouble();
+            float stars = scanner.nextFloat();
             scanner.nextLine(); // consume newline
 
-            try {
-                rating = Rating.fromValue(stars); // assuming this throws IllegalArgumentException if invalid
-                break; // input is valid, exit loop
-            } catch (IllegalArgumentException e) {
-                System.out.println("Invalid rating. Please enter one of: 1.0, 1.5, ..., 5.0");
+            if(stars > 5.f || stars < 1.f)
+                System.out.println("Invalid rating. Please enter between: 1.0 and 5.0");
+            else {
+                rating = stars;
+                break;
             }
         }
-
-        performRating(storeName, rating); // safe to use rating here since it's guaranteed to be valid
+        performRating(storeName, rating);
     }
 
     /**

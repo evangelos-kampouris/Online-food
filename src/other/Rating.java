@@ -14,18 +14,19 @@ public enum Rating {
     private final double value;
 
     /**
-     *
-     * @param value
-     * @return reting enum value
-     *
+     * Round the given float to the nearest enum constant.
      */
-    public static Rating fromValue(double value) throws IllegalArgumentException {
-        for (Rating rating : Rating.values()) {
-            if (rating.getValue() == value) {
-                return rating;
+    public static Rating fromValue(float v) {
+        // round to nearest 0.5
+        float halfSteps = Math.round(v * 2.0f);
+        float rounded = halfSteps / 2.0f;
+        for (Rating r : values()) {
+            if (Float.compare((float)r.value, rounded) == 0) {
+                return r;
             }
         }
-        throw new IllegalArgumentException("Invalid rating value: " + value);
+        // fallback (should never happen if v is within 1.0–5.0)
+        throw new IllegalArgumentException("No Rating for value " + v);
     }
 
     Rating(double value) {
