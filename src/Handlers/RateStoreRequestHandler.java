@@ -55,7 +55,7 @@ public class RateStoreRequestHandler implements Handling{
 
         if(entity instanceof Master master){
             String storeName = dto.getStoreName();
-            WorkerNode worker = master.workers.getNodeForKey(dto.getStoreName();
+            WorkerNode worker = master.workers.getNodeForKey(dto.getStoreName());
 
             if (worker == null) {
                 System.out.println("No Worker found for store: " + storeName);
