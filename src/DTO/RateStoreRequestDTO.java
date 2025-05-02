@@ -13,7 +13,7 @@ public class RateStoreRequestDTO extends Request implements Serializable{
     @Serial
     private static final long serialVersionUID = 1L;
     private String storeName;
-    private Rating rating;
+    private float rating;
 
     /**
      * Constructs a store rating request.
@@ -21,7 +21,7 @@ public class RateStoreRequestDTO extends Request implements Serializable{
      * @param storeName the name of the store to rate
      * @param rating the rating to assign to the store
      */
-    public RateStoreRequestDTO(String storeName, Rating rating) {
+    public RateStoreRequestDTO(String storeName, float rating) {
         this.storeName = storeName;
         this.rating = rating;
     }
@@ -30,7 +30,7 @@ public class RateStoreRequestDTO extends Request implements Serializable{
         return storeName;
     }
 
-    public Rating getRating(){
+    public float getRating(){
         return rating;
     }
 }
