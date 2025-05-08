@@ -26,8 +26,8 @@ public class Client extends User {
      *
      * @param coordinates the geographic location of the client
      */
-    public Client(Coordinates coordinates) {
-        super();
+    public Client(Coordinates coordinates, String MasterIP, int MasterPort) {
+        super(MasterIP, MasterPort);
         this.cart = new InventoryCart();
         this.coordinates = coordinates;
     }
@@ -409,7 +409,7 @@ public class Client extends User {
         }
         //Create a client object
         Coordinates coordinates = new Coordinates(37.9755, 23.7348);//Somewhere in Athens
-        Client client = new Client(coordinates);
+        Client client = new Client(coordinates, args[0], Integer.parseInt(args[1]));
         try {
             client.establishConnection();
         } catch (IOException | ClassNotFoundException e) {

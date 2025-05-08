@@ -33,7 +33,10 @@ public class Manager extends User {
      */
     public Manager() {
         super();
+    }
 
+    public Manager(String MasterIP, int MasterPort) {
+        super(MasterIP, MasterPort);
     }
 
     /**
@@ -45,7 +48,7 @@ public class Manager extends User {
     public void readStore(int numberOfFilesToRead){
         for(int i = 1; i <= numberOfFilesToRead; i++){
             String filename = "store_" + i + ".json";
-            Path path = Paths.get( "Eshop", "Resources", filename);
+            Path path = Paths.get(  "Resources", filename);
 //            System.out.println("reading file " + path.toString()); //debug
 
             try (FileReader fr = new FileReader(path.toFile())) {
@@ -100,7 +103,7 @@ public class Manager extends User {
         System.out.print("Enter the file path(fileName) of the json containing the Store: ");
         String fileName = scanner.nextLine();
 
-        Path path = Paths.get("Eshop", "Resources", fileName);
+        Path path = Paths.get( "Resources", fileName);
         //System.out.println("reading file " + path.toString());
 
         try (FileReader fr = new FileReader(path.toFile())) {
@@ -354,7 +357,7 @@ public class Manager extends User {
      * @param args command-line arguments (not used)
      */
     public static void main(String[] args) {
-        Manager manager = new Manager();
+        Manager manager = new Manager(args[0], Integer.parseInt(args[1]));
         manager.readStore(10);
 
 

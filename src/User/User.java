@@ -22,8 +22,8 @@ public abstract class User {
     protected static final Scanner scanner = new Scanner(System.in);
 
     //networking
-    protected static final String MASTER_IP = "127.0.0.1";
-    protected static final int MASTER_PORT = 9999;
+    protected String MASTER_IP;
+    protected int MASTER_PORT;
     protected Socket connectionSocket;
     protected static ObjectOutputStream out;
     protected ObjectInputStream in;
@@ -39,6 +39,12 @@ public abstract class User {
      */
     public User() {
         id = ++idCounter;
+    }
+
+    public User(String MASTER_IP, int MASTER_PORT) {
+        id = ++idCounter;
+        this.MASTER_IP = MASTER_IP;
+        this.MASTER_PORT = MASTER_PORT;
     }
 
     /**
