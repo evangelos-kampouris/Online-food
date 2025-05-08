@@ -34,11 +34,9 @@ public class Shop implements Serializable {
     private float revenue = 0.0f;
 
 
-
     private static final int PRICE_LOW_TOP_LIMIT = 5;
     private static final int PRICE_MEDIUM_TOP_LIMIT = 10;
     private static final int PRICE_HIGH_TOP_LIMIT = 15;
-
 
 
     public Shop() {}//Just the default.
@@ -126,6 +124,11 @@ public class Shop implements Serializable {
         addRevenue(profit);
     }
 
+    public synchronized void addProduct(String productName, Product product, int quantity, boolean enabled) {
+        catalog.addProduct(productName, product, quantity, enabled);
+        productCategory.add(product.getFoodCategory());
+    }
+
     /*
      * |---------------- SETTERS AND GETTERS ---------------------|
      */
@@ -135,7 +138,7 @@ public class Shop implements Serializable {
         return productCategory;
     }
 
-    public void setFoodCategories(Set<ProductCategory> productCategory) {
+    public synchronized void setFoodCategories(Set<ProductCategory> productCategory) {
         this.productCategory = productCategory;
     }
 

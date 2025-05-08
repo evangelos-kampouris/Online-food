@@ -94,7 +94,7 @@ public class AddProductHandler implements Handling {
             }
             else {
                 Product product = new Product(dto.getProductName(), dto.getProductCategory(), dto.getPrice());
-                shop.getCatalog().addProduct(product.getName(), product, dto.getQuantity(), true);
+                shop.addProduct(product.getName(), product, dto.getQuantity(), true);
                 System.out.println("Added product to store: " + dto.getProductName());//debug
                 responseDTO = new ResponseDTO<>(true, "Added product to store: " + dto.getProductName(), shop);
             }
