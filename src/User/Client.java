@@ -77,8 +77,9 @@ public class Client extends User {
 
         if (receivedObject instanceof ResponseDTO<?> searchResponse) {
             ReducerResultDTO dto = (ReducerResultDTO) searchResponse.getData();
-            System.out.println(dto);//debug
-            receivedShops = dto.getResults();
+            //System.out.println(dto);//debug
+            if (dto != null)
+                receivedShops = dto.getResults();
         }
 
         if (receivedShops != null) {
