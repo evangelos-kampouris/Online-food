@@ -98,7 +98,7 @@ public class ReducerShuffler {
             ObjectOutputStream handler_out = new ObjectOutputStream(socket.getOutputStream());
             ReducerResultDTO resultRequest = new ReducerResultDTO(requestID, resutlsList);
             handler_out.writeObject(resultRequest);
-            handler_out.flush();
+            handler_out.flush(); //TODO MISSING RESPONSE
 
         } catch (IOException e) {
             System.out.println("ERROR: couldn't send results request" + e.getMessage());

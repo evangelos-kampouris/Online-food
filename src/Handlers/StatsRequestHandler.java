@@ -6,6 +6,7 @@ import Entity.Entity;
 import Entity.Master;
 import Responses.ResponseDTO;
 import other.ProductCategory;
+import other.Stats;
 import other.StoreCategories;
 
 import java.io.IOException;
@@ -39,19 +40,21 @@ public class StatsRequestHandler implements Handling{
 
         try{
             if("storeCategories".equalsIgnoreCase(type)){
-                Map<StoreCategories, Integer> storeStats = master.getStoreCategoryStats();
-                ResponseDTO<Map<StoreCategories, Integer>> response = new ResponseDTO<>(true, "Store sales retrieved successfully.", storeStats);
+                Map<StoreCategories, Stats> storeStats = master.getStoreCategoryStats();
+                Stats stats = storeStats.get(StoreCategories.fromValue(dto.getCategory()));
+                ResponseDTO<Stats> response = new ResponseDTO<>(true, "Store sales retrieved successfully.", stats);
                 out.writeObject(response);
                 out.flush();
             }
             else if("productCategories".equalsIgnoreCase(type)){
-                Map<ProductCategory, Integer> productCategories = master.getProductCategoryStats();
-                ResponseDTO<Map<ProductCategory, Integer>> response = new ResponseDTO<>(true, "Product category sales retrieved successfully.", productCategories);
+                Map<ProductCategory, Stats> productCategoriesStats = master.getProductCategoryStats();
+                Stats stats = productCategoriesStats.get(ProductCategory.fromValue(dto.getCategory()));
+                ResponseDTO<Stats> response = new ResponseDTO<>(true, "Product category sales retrieved successfully.", stats);
                 out.writeObject(response);
                 out.flush();
             }
             else{
-                ResponseDTO<Object> response = new ResponseDTO<>(false, "Invalid stats type: " + type);
+                ResponseDTO<Stats> response = new ResponseDTO<>(false, "Invalid stats type: " + type);
                 out.writeObject(response);
                 out.flush();
             }

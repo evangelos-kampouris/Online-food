@@ -118,9 +118,27 @@ public abstract class User {
     }
 
     public void printLocalSavedStores() {
-        System.out.println("Available stores: \n");
-        for(Shop shop : shops.values()) {
-            System.out.println("\t" + shop);
+        System.out.println("\n========== STORES AVAILABLE LOCALLY ==========\n");
+
+        if (shops.isEmpty()) {
+            System.out.println("No shops saved locally.");
+            return;
         }
+
+        for (Shop shop : shops.values()) {
+            System.out.println("--------------------------------------------------");
+            System.out.printf("%-16s: %s\n", "Name", shop.getName());
+            System.out.printf("%-16s: %s\n", "Category", shop.getStoreCategory());
+            System.out.printf("%-16s: %s\n", "Food Types", shop.getFoodCategories());
+            System.out.printf("%-16s: %s\n", "Rating", shop.getRating());
+            System.out.printf("%-16s: %s\n", "Price Tag", shop.getPrice());
+            System.out.printf("%-16s: %s\n", "Location", shop.getCoordinates());
+            System.out.printf("%-16s: €%.2f\n", "Revenue", shop.getRevenue());
+
+            System.out.printf("%-16s:\n", "Total Products");
+            System.out.println(shop.getCatalog().printListProducts());
+        }
+
+        System.out.println("================================================\n");
     }
 }

@@ -16,7 +16,6 @@ import java.net.Socket;
  */
 public class MapResultHandler implements Handling{
 
-
     /**
      * Receives a MapResultDTO containing filtered shop data from a WorkerNode.
      * Passes the data to the reducer's shuffle logic and closes the connection.

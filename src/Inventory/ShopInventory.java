@@ -28,7 +28,7 @@ public class ShopInventory extends Inventory{
      * @throws IllegalArgumentException if input is invalid
      */
     @Override
-    public void addProduct(String productName, Product product, int quantity) {
+    public synchronized void addProduct(String productName, Product product, int quantity) {
 
         if (!isValidProductInput(productName, product, quantity))
             throw new IllegalArgumentException("Invalid Arguments. Given arguments are:\n\t Product" + product.toString() + ",\n\t Quantity:" + quantity);
@@ -52,7 +52,7 @@ public class ShopInventory extends Inventory{
      * @param enabled whether the product should be initially enabled
      * @throws IllegalArgumentException if input is invalid
      */
-    public void addProduct(String productName, Product product, int quantity, boolean enabled) {
+    public synchronized void addProduct(String productName, Product product, int quantity, boolean enabled) throws IllegalArgumentException {
         if (!isValidProductInput(productName, product, quantity))
             throw new IllegalArgumentException("Invalid Arguments. Given arguments are:\n\t Product" + product.toString() + ",\n\t Quantity:" + quantity);
 
@@ -96,7 +96,7 @@ public class ShopInventory extends Inventory{
      * @param enable true to enable the product, false to disable it
      */
 
-    public void setItemEnableStatus(String productName, boolean enable) {
+    public synchronized void setItemEnableStatus(String productName, boolean enable) {
         if (!isValidName(productName))
             System.err.println("Invalid Product Name");
 

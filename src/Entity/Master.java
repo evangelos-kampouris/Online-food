@@ -7,6 +7,7 @@ import other.HashRing;
 import other.PendingRequests;
 import other.ProductCategory;
 import other.StoreCategories;
+import other.Stats;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -31,8 +32,8 @@ public class Master extends Entity {
                                                       για να έχουμε καλύτερη κατανομή φορτίου.*/
 
     //stats
-    Map<StoreCategories, Integer> storeCategoryStat = new HashMap<>();       //Κρατάει πόσες πωλήσεις έγιναν ανά τύπο καταστήματος (π.χ. "Pizzeria" → 100 πωλήσεις).
-    Map<ProductCategory, Integer> productCategoryStat = new HashMap<>();     //Κρατάει πόσες πωλήσεις έγιναν ανά τύπο προϊόντος (π.χ. "Pizza" → 300 πωλήσεις).
+    Map<StoreCategories, Stats> storeCategoryStat = new HashMap<>();       //Κρατάει πόσες πωλήσεις έγιναν ανά τύπο καταστήματος (π.χ. "Pizzeria" → 100 πωλήσεις).
+    Map<ProductCategory, Stats> productCategoryStat = new HashMap<>();     //Κρατάει πόσες πωλήσεις έγιναν ανά τύπο προϊόντος (π.χ. "Pizza" → 300 πωλήσεις).
 
     public final Map<Integer, PendingRequests> pendingRequests = new HashMap<>(); // <RequestID, ObjectInput/OutputStreams>
 
@@ -51,10 +52,10 @@ public class Master extends Entity {
     }
 
 
-    public Map<StoreCategories, Integer> getStoreCategoryStats() {
+    public Map<StoreCategories, Stats> getStoreCategoryStats() {
         return storeCategoryStat;
     }
-    public Map<ProductCategory, Integer> getProductCategoryStats() {
+    public Map<ProductCategory, Stats> getProductCategoryStats() {
         return productCategoryStat;
     }
 
@@ -65,7 +66,7 @@ public class Master extends Entity {
     private void initiateWorkers() {
 
         System.out.println(System.getProperty("user.dir"));//debugging.
-        Path path = Paths.get("Resources", "WorkerConfig.json");
+        Path path = Paths.get("Eshop", "Resources", "WorkerConfig.json");
         System.out.println(path);//debugging.
 
         try (FileReader reader = new FileReader(path.toFile())) {
@@ -83,12 +84,12 @@ public class Master extends Entity {
      * @param storeCategory the type of store (e.g., PIZZERIA)
      * @param sales the number of sales to add
      */
-    public void addStatsStoreCategory(StoreCategories storeCategory, int sales) {
+    public void addStatsStoreCategory(StoreCategories storeCategory, String store_name, int sales) {
         if(storeCategoryStat.containsKey(storeCategory)) {
-            storeCategoryStat.put(storeCategory, storeCategoryStat.get(storeCategory) + sales);
+            storeCategoryStat.get(storeCategory).addStat(store_name, sales);
         }
         else {
-            storeCategoryStat.put(storeCategory, sales);
+            storeCategoryStat.put(storeCategory, new Stats(store_name, sales));
         }
     }
 
@@ -97,7 +98,7 @@ public class Master extends Entity {
      *
      * @param storeCategory the store category to update
      */
-    public void addStatsStoreCategory(StoreCategories storeCategory){addStatsStoreCategory(storeCategory, 1);}
+    //public void addStatsStoreCategory(StoreCategories storeCategory){addStatsStoreCategory(storeCategory, 1);}
 
     /**
      * Updates the product-level sales statistics by adding the given number of sales.
@@ -105,12 +106,13 @@ public class Master extends Entity {
      * @param productCategory the type of product (e.g., PIZZA, SUSHI)
      * @param sales the number of units sold to add
      */
-    public void addStatsProductCategory(ProductCategory productCategory, int sales) {
+    public void addStatsProductCategory(ProductCategory productCategory, String store_name, int sales) {
+        Stats stats = new Stats(store_name, sales);
         if(productCategoryStat.containsKey(productCategory)) {
-            productCategoryStat.put(productCategory, productCategoryStat.get(productCategory) + sales);
+            productCategoryStat.get(productCategory).addStat(store_name, sales);
         }
         else {
-            productCategoryStat.put(productCategory, sales);
+            productCategoryStat.put(productCategory, new Stats(store_name, sales));
         }
     }
 
@@ -119,7 +121,7 @@ public class Master extends Entity {
      *
      * @param productCategory the product category to update
      */
-    public void addStatsProductCategory(ProductCategory productCategory){addStatsProductCategory(productCategory, 1);}
+    //public void addStatsProductCategory(ProductCategory productCategory){addStatsProductCategory(productCategory, 1);}
 
     public List<WorkerNode> getWorkersList() {return workersList;}
 
@@ -131,4 +133,6 @@ public class Master extends Entity {
             throw new RuntimeException(e);
         }
     }
+
+
 }

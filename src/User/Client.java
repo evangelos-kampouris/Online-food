@@ -88,10 +88,6 @@ public class Client extends User {
                 System.out.println("Received shop: " + shopName);
                 shops.put(shopName, shop);
             }
-            System.out.println("Addition Completed Printing shops:\n");//debug
-            for(Map.Entry<String, Shop> entry : shops.entrySet()){ //debug
-                System.out.println(entry.getKey() + ": " + entry.getValue());//debug
-            }
         }
     }
 
@@ -407,7 +403,7 @@ public class Client extends User {
     public static void main(String[] args) {
         //Let some time pass to initialize the Server Entities
         try {
-            Thread.sleep(7000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

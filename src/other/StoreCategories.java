@@ -23,6 +23,15 @@ public enum StoreCategories {
         this.name = name;
     }
 
+    public static StoreCategories fromValue(String name) throws IllegalArgumentException {
+        for (StoreCategories category : StoreCategories.values()) {
+            if (category.getName().equalsIgnoreCase(name)) {
+                return category;
+            }
+        }
+        throw new IllegalArgumentException("Invalid category: " + name);
+    }
+
     public String getName() {
         return name;
     }

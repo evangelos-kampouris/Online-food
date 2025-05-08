@@ -14,7 +14,7 @@
   "numberOfProducts": 2,
   "catalog": {
     "inventory": {
-      "Margherita": {
+      "Margarita": {
         "product": {
           "name": "Margarita",
           "productCategory": "PIZZA",

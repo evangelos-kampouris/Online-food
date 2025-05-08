@@ -58,6 +58,14 @@ public class InventoryCart extends Inventory {
         return cost;
     }
 
+    public int cartQuantity(){
+        int cartQuantity = 0;
+        for (Map.Entry<String, InventoryItem> entry : inventory.entrySet())
+            cartQuantity += entry.getValue().getQuantity();
+
+        return cartQuantity;
+    }
+
     public void setCost(float cost) {
         this.cost = cost;
     }

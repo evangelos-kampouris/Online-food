@@ -34,7 +34,7 @@ public abstract class Inventory implements Serializable {
      * @throws IllegalArgumentException if the product name is invalid or the product is not found in inventory
      * @throws NoValidStockInput if the quantity is less than or equal to 0, or greater than the available stock
      */
-    public void removeProduct(String productName, Integer quantity) throws NoValidStockInput, IllegalArgumentException {
+    public synchronized void removeProduct(String productName, Integer quantity) throws NoValidStockInput, IllegalArgumentException {
         // Validate product name
         if (productName == null || !isValidName(productName)) {
             throw new IllegalArgumentException("Invalid product name.");
@@ -132,18 +132,55 @@ public abstract class Inventory implements Serializable {
         return productCategories;
     }
 
-    public void printListProducts() {
-        for (Map.Entry<String, InventoryItem> entry : inventory.entrySet()) {
-            System.out.println(entry.getValue().getProduct().toString());
+    public String printListProducts() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("\n========== CURRENT INVENTORY ==========\n\n");
+
+        if (inventory.isEmpty()) {
+            sb.append("Inventory is empty.\n");
+            return sb.toString();
         }
+
+        // Header
+        sb.append(String.format("%-25s %-15s %-10s %-20s\n", "Product Name", "Category", "Quantity", "Price (€)"));
+        sb.append("-----------------------------------------------------------------------\n");
+
+        for (Map.Entry<String, InventoryItem> entry : inventory.entrySet()) {
+
+            InventoryItem item = entry.getValue();
+            Product product = item.getProduct();
+
+            String name = product.getName();
+            String category = product.getFoodCategory().toString();
+            int quantity = item.getQuantity();
+            float price = product.getPrice();
+
+            sb.append(String.format("%-25s %-15s %-10d %-20.2f\n", name, category, quantity, price));
+        }
+
+        sb.append("\n=======================================\n");
+
+        return sb.toString();
     }
 
 
-    public Product getProduct(String productName) {
-        Product product = inventory.get(productName).getProduct();
+    /**
+     * @param productName
+     * @return
+     * @throws IllegalArgumentException
+     */
+    public Product getProduct(String productName){
+        InventoryItem item = inventory.get(productName);
+
+        if(item == null) {
+            //System.err.println("Product not found.");
+            return null;
+        }
+        Product product = item.getProduct();
         if (product == null) {
-            System.err.println("Product not found.");
-            throw new IllegalArgumentException("Product does not exist.");
+            //System.err.println("Product not found.");
+            return null;
         }
         return product;
     }
@@ -162,7 +199,7 @@ public abstract class Inventory implements Serializable {
      *
      * Edits the stock of an EXISTING product.
      */
-    public void changeStock(String productName, int itemStock) {
+    public synchronized void changeStock(String productName, int itemStock) {
         if (!isValidName(productName)) return;
 
         if (itemStock < 0) {
