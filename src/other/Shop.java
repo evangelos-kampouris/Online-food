@@ -158,7 +158,7 @@ public class Shop implements Serializable {
         else{price = Price.HIGH; }
     }
 
-    public void updateRating(float newRating){
+    public synchronized void updateRating(float newRating){
         if (ratingVar == null) {
             ratingVar = rating.getValue();
         }
