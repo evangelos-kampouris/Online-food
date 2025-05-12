@@ -76,23 +76,26 @@ public class RemoveProductHandler implements Handling {
                 System.out.println("Error forwarding to worker: " + e.getMessage());
             }
         } else if (entity instanceof Worker worker) {
-            Shop shop = worker.getShop(storeName);
+            synchronized (worker.getShopLock()) {
+                Shop shop = worker.getShop(storeName);
 
-            if (shop == null) {
-                System.out.println("Store not found: " + storeName);
-                responseDTO = new ResponseDTO<>(false, "Store not found", null);
+                if (shop == null) {
+                    System.out.println("Store not found: " + storeName);
+                    responseDTO = new ResponseDTO<>(false, "Store not found", null);
+                }
+                else{
+                    shop.getCatalog().setItemEnableStatus(dto.getProductName(), false);
+                    System.out.println("Removed product from store: " + dto.getProductName());
+                    responseDTO = new ResponseDTO<>(true, "successfully removed product from the store", shop);
+                }
+                try {
+                    out.writeObject(responseDTO);
+                    out.flush();
+                } catch (IOException e) {
+                    System.out.println("Error sending back to master the updated Shop " + e.getMessage());
+                }
             }
-            else{
-                shop.getCatalog().setItemEnableStatus(dto.getProductName(), false);
-                System.out.println("Removed product from store: " + dto.getProductName());
-                responseDTO = new ResponseDTO<>(true, "successfully removed product from the store", shop);
-            }
-            try {
-                out.writeObject(responseDTO);
-                out.flush();
-            } catch (IOException e) {
-                System.out.println("Error sending back to master the updated Shop " + e.getMessage());
-            }
+
         } else {
             System.err.println("Request forwarded to wrong entity, Entity is not a Master or Worker");
         }

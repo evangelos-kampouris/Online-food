@@ -52,11 +52,15 @@ public class BuyRequestHandler implements Handling {
             ResponseDTO<Request> response = (ResponseDTO<Request>) handler_in.readObject();
             if(response.isSuccess()){
                 //Add statistics
-                master.addStatsStoreCategory(buyRequestDTO.getShop().getStoreCategory(), buyRequestDTO.getShop().getName(), buyRequestDTO.getCart().cartQuantity()); //Store
-
-                for(ProductCategory category : buyRequestDTO.getCart().getProductCategories()){ //Product
-                    master.addStatsProductCategory(category, buyRequestDTO.getShop().getName(), buyRequestDTO.getCart().cartQuantity());
+                synchronized (master.lock_storeCategoryStat) {
+                    master.addStatsStoreCategory(buyRequestDTO.getShop().getStoreCategory(), buyRequestDTO.getShop().getName(), buyRequestDTO.getCart().cartQuantity()); //Store
                 }
+                synchronized (master.lock_productCategoryStat) {
+                    for(ProductCategory category : buyRequestDTO.getCart().getProductCategories()){ //Product
+                        master.addStatsProductCategory(category, buyRequestDTO.getShop().getName(), buyRequestDTO.getCart().cartQuantity());
+                    }
+                }
+
             }
             request_out.writeObject(response);
             request_out.flush();
@@ -66,7 +70,5 @@ public class BuyRequestHandler implements Handling {
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 }

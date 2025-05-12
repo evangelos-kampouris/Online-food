@@ -35,19 +35,23 @@ public class UpdateBuyDataHandler implements Handling{
         UpdateBuyDataRequestDTO DTO = (UpdateBuyDataRequestDTO) request;
         String storeName = DTO.data.getShop().getName();
 
-        Shop savedShop = worker.getShop(storeName);
         ResponseDTO<UpdateBuyDataRequestDTO> responseDTO = null;
-        if(savedShop == null){
-            responseDTO = new ResponseDTO<>(false, "Shop not found", DTO);
-        }
-        else{
-            try {
-                savedShop.sell(DTO.data.getCart()); //sell
-                responseDTO = new ResponseDTO<>(true, "Purchase Proceeded successfully");
-            } catch (NoValidStockInput | IllegalArgumentException e) {
-                responseDTO = new ResponseDTO<>(false, e.getMessage(), DTO);
+
+        synchronized (worker.getShopLock()) {
+            Shop savedShop = worker.getShop(storeName);
+            if(savedShop == null){
+                responseDTO = new ResponseDTO<>(false, "Shop not found", DTO);
+            }
+            else{
+                try {
+                    savedShop.sell(DTO.data.getCart()); //sell
+                    responseDTO = new ResponseDTO<>(true, "Purchase Proceeded successfully");
+                } catch (NoValidStockInput | IllegalArgumentException e) {
+                    responseDTO = new ResponseDTO<>(false, e.getMessage(), DTO);
+                }
             }
         }
+
         //Send the response back to Master
         try {
             out.writeObject(responseDTO);

@@ -99,7 +99,7 @@ public class AddStoreRequestHandler implements Handling{
 
             }catch (IOException| ClassNotFoundException e) {
                 try {
-                    System.out.println("Somehting went wrong when expecting a new response. from the worker: " + e.getMessage());
+                    System.out.println("Something went wrong when expecting a new response. from the worker: " + e.getMessage());
                     responseDTO = new ResponseDTO<>(false, e.getMessage());
                     out.writeObject(responseDTO);
                     out.flush();

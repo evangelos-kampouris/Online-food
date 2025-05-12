@@ -14,6 +14,7 @@ import java.util.Map;
 public class Worker extends Entity {
 
     private ReducerNode REDUCER = null;
+    private final Object shopLock = new Object();
 
     //Shop Name, Shop -- The shops the worker holds.  Received from Master.
     private Map<String, Shop> shops = new HashMap<>();
@@ -32,11 +33,15 @@ public class Worker extends Entity {
     }
 
     public Map<String, Shop> getShops() {
-        return shops;
+        synchronized (shopLock) {
+            return shops;
+        }
     }
 
     public Shop getShop(String shopName) {
-        return shops.get(shopName);
+        synchronized (shopLock) {
+            return shops.get(shopName);
+        }
     }
 
     public ReducerNode getREDUCER() {
@@ -49,8 +54,14 @@ public class Worker extends Entity {
      * @param shopName the name of the shop
      * @param shop the shop object to add
      */
-    public synchronized void addShop(String shopName, Shop shop) {
-        shops.put(shopName, shop);
+    public void addShop(String shopName, Shop shop) {
+        synchronized (shopLock) {
+            shops.put(shopName, shop);
+        }
+    }
+
+    public Object getShopLock() {
+        return shopLock;
     }
 
     public static void main(String[] args) {

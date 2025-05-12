@@ -86,23 +86,25 @@ public class AddProductHandler implements Handling {
                 }
             }
         } else if (entity instanceof Worker worker) {
-            Shop shop = worker.getShop(storeName);
+            synchronized (worker.getShopLock()) {
+                Shop shop = worker.getShop(storeName);
 
-            if (shop == null) {
-                System.out.println("Store not found: " + storeName);
-                responseDTO = new ResponseDTO<>(false, "Store not found", null);
-            }
-            else {
-                Product product = new Product(dto.getProductName(), dto.getProductCategory(), dto.getPrice());
-                shop.addProduct(product.getName(), product, dto.getQuantity(), true);
-                System.out.println("Added product to store: " + dto.getProductName());//debug
-                responseDTO = new ResponseDTO<>(true, "Added product to store: " + dto.getProductName(), shop);
-            }
-            try {
-                out.writeObject(responseDTO);
-                out.flush();
-            } catch (IOException e) {
-                System.out.println("Error sending back to master the updated Shop " + e.getMessage());
+                if (shop == null) {
+                    System.out.println("Store not found: " + storeName);
+                    responseDTO = new ResponseDTO<>(false, "Store not found", null);
+                }
+                else {
+                    Product product = new Product(dto.getProductName(), dto.getProductCategory(), dto.getPrice());
+                    shop.addProduct(product.getName(), product, dto.getQuantity(), true);
+                    System.out.println("Added product to store: " + dto.getProductName());//debug
+                    responseDTO = new ResponseDTO<>(true, "Added product to store: " + dto.getProductName(), shop);
+                }
+                try {
+                    out.writeObject(responseDTO);
+                    out.flush();
+                } catch (IOException e) {
+                    System.out.println("Error sending back to master the updated Shop " + e.getMessage());
+                }
             }
         }
         else {

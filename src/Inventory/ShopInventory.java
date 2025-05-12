@@ -71,7 +71,7 @@ public class ShopInventory extends Inventory{
      * @return true if the product is enabled, false otherwise
      */
 
-    public boolean getItemEnableStatus(String productName) {
+    public synchronized boolean getItemEnableStatus(String productName) {
         if (!isValidName(productName)) {
             System.err.println("Invalid Product Name");
             return false;

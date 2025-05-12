@@ -17,7 +17,7 @@ public class Stats implements Serializable {
         stats.put(store_name, sales);
     }
 
-    public void addStat(String store_name, int sales) {
+    public synchronized void addStat(String store_name, int sales) {
         if(stats.containsKey(store_name)) {
             stats.put(store_name, stats.get(store_name) + sales);
             return;

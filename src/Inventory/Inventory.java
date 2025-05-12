@@ -11,7 +11,7 @@ import java.util.*;
 public abstract class Inventory implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-    Map<String, InventoryItem> inventory = new HashMap<String, InventoryItem>(); // Selected DataStructure <name, product>
+    protected Map<String, InventoryItem> inventory = new HashMap<String, InventoryItem>(); // Selected DataStructure <name, product>
 
     public Inventory() {}
 
@@ -74,7 +74,7 @@ public abstract class Inventory implements Serializable {
      * @param productName
      * @throws IllegalArgumentException
      */
-    public void removeProductCompletely(String productName) throws IllegalArgumentException {
+    public synchronized void removeProductCompletely(String productName) throws IllegalArgumentException {
         // Validate product name
         if (productName == null || !isValidName(productName)) {
             throw new IllegalArgumentException("Invalid product name.");
@@ -89,18 +89,18 @@ public abstract class Inventory implements Serializable {
     /**
      * Clears the inventory
      */
-    public void clearInventory() {
+    public synchronized void clearInventory() {
         inventory.clear();
     }
-    public Map<String, InventoryItem> getInventory() {
+    public synchronized Map<String, InventoryItem> getInventory() {
         return inventory;
     }
 
-    public List<InventoryItem> getInventoryItems() {
+    public synchronized List<InventoryItem> getInventoryItems() {
         return new ArrayList<InventoryItem>(inventory.values());
     }
 
-    public int getItemQuantity(String productName){
+    public synchronized int getItemQuantity(String productName){
         if (!isValidName(productName)) {
             System.err.println("Invalid Product Name.");
             return -1;
@@ -122,7 +122,7 @@ public abstract class Inventory implements Serializable {
     /**
      * @return A set of the all the product categories of the cart.
      */
-    public Set<ProductCategory> getProductCategories(){
+    public synchronized Set<ProductCategory> getProductCategories(){
         Set<ProductCategory> productCategories = new HashSet<ProductCategory>();
 
         for (Map.Entry<String, InventoryItem> entry : inventory.entrySet()) {
@@ -132,7 +132,7 @@ public abstract class Inventory implements Serializable {
         return productCategories;
     }
 
-    public String printListProducts() {
+    public synchronized String printListProducts() {
         StringBuilder sb = new StringBuilder();
 
         sb.append("\n========== CURRENT INVENTORY ==========\n\n");
@@ -170,7 +170,7 @@ public abstract class Inventory implements Serializable {
      * @return
      * @throws IllegalArgumentException
      */
-    public Product getProduct(String productName){
+    public synchronized Product getProduct(String productName){
         InventoryItem item = inventory.get(productName);
 
         if(item == null) {
@@ -185,7 +185,7 @@ public abstract class Inventory implements Serializable {
         return product;
     }
 
-    public List<Product> getAllProducts() {
+    public synchronized List<Product> getAllProducts() {
         List<Product> products = new ArrayList<>();
         for (Map.Entry<String, InventoryItem> entry : inventory.entrySet()) {
             products.add(entry.getValue().getProduct());
@@ -216,7 +216,7 @@ public abstract class Inventory implements Serializable {
     }
 
     @Override
-    public String toString() {
+    public synchronized String toString() {
         StringBuilder sb = new StringBuilder("Inventory{");
         sb.append("items=[");
         boolean first = true;

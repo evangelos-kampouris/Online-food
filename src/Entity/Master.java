@@ -33,7 +33,9 @@ public class Master extends Entity {
 
     //stats
     Map<StoreCategories, Stats> storeCategoryStat = new HashMap<>();       //Κρατάει πόσες πωλήσεις έγιναν ανά τύπο καταστήματος (π.χ. "Pizzeria" → 100 πωλήσεις).
+    public final  Object lock_storeCategoryStat = new Object();
     Map<ProductCategory, Stats> productCategoryStat = new HashMap<>();     //Κρατάει πόσες πωλήσεις έγιναν ανά τύπο προϊόντος (π.χ. "Pizza" → 300 πωλήσεις).
+    public final Object lock_productCategoryStat = new Object();
 
     public final Map<Integer, PendingRequests> pendingRequests = new HashMap<>(); // <RequestID, ObjectInput/OutputStreams>
 
@@ -84,7 +86,7 @@ public class Master extends Entity {
      * @param storeCategory the type of store (e.g., PIZZERIA)
      * @param sales the number of sales to add
      */
-    public void addStatsStoreCategory(StoreCategories storeCategory, String store_name, int sales) {
+    public synchronized void addStatsStoreCategory(StoreCategories storeCategory, String store_name, int sales) {
         if(storeCategoryStat.containsKey(storeCategory)) {
             storeCategoryStat.get(storeCategory).addStat(store_name, sales);
         }
@@ -106,7 +108,7 @@ public class Master extends Entity {
      * @param productCategory the type of product (e.g., PIZZA, SUSHI)
      * @param sales the number of units sold to add
      */
-    public void addStatsProductCategory(ProductCategory productCategory, String store_name, int sales) {
+    public synchronized void addStatsProductCategory(ProductCategory productCategory, String store_name, int sales) {
         Stats stats = new Stats(store_name, sales);
         if(productCategoryStat.containsKey(productCategory)) {
             productCategoryStat.get(productCategory).addStat(store_name, sales);
@@ -118,8 +120,6 @@ public class Master extends Entity {
 
     /**
      * Increments the sales count for the given product category by one.
-     *
-     * @param productCategory the product category to update
      */
     //public void addStatsProductCategory(ProductCategory productCategory){addStatsProductCategory(productCategory, 1);}
 

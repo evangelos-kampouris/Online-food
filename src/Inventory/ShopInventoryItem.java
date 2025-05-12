@@ -45,7 +45,7 @@ public class ShopInventoryItem extends InventoryItem{
         return enabled;
     }
 
-    public void setEnabled(boolean enabled) {
+    public synchronized void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 }

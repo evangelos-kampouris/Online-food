@@ -27,7 +27,7 @@ public class InventoryItem implements Serializable {
         return product;
     }
 
-    public void setProduct(Product product) {
+    public synchronized void setProduct(Product product) {
         this.product = product;
     }
 
@@ -35,7 +35,7 @@ public class InventoryItem implements Serializable {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public synchronized void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 }

@@ -27,7 +27,7 @@ public class Product implements Serializable {
         return price;
     }
 
-    public void setPrice(float price) {
+    public synchronized void setPrice(float price) {
         this.price = price;
     }
 
@@ -35,7 +35,7 @@ public class Product implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
+    public synchronized void setName(String name) {
         this.name = name;
     }
 
@@ -43,7 +43,7 @@ public class Product implements Serializable {
         return productCategory;
     }
 
-    public void setFoodCategory(ProductCategory foodCategory) {
+    public synchronized void setFoodCategory(ProductCategory foodCategory) {
         this.productCategory = foodCategory;
     }
 

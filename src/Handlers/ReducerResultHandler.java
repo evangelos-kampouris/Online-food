@@ -36,14 +36,16 @@ public class ReducerResultHandler implements Handling{
         Master master = (Master) entity;
         ReducerResultDTO reducerResultDTO = (ReducerResultDTO) request;
 
-        ObjectOutputStream handler_out = master.pendingRequests.get(reducerResultDTO.getRequestId()).getOut();
-        try {
-            ResponseDTO<Request> response = new ResponseDTO<>(true, "Search Completed", reducerResultDTO);
-            handler_out.writeObject(response);
-            handler_out.flush();
-            master.pendingRequests.remove(reducerResultDTO.getRequestId());
-        } catch (IOException e) {
-            System.err.println("An error occured while handling the SEARCH request. Master to Client.");
+        synchronized (master.pendingRequests) {
+            ObjectOutputStream handler_out = master.pendingRequests.get(reducerResultDTO.getRequestId()).getOut();
+            try {
+                ResponseDTO<Request> response = new ResponseDTO<>(true, "Search Completed", reducerResultDTO);
+                handler_out.writeObject(response);
+                handler_out.flush();
+                master.pendingRequests.remove(reducerResultDTO.getRequestId());
+            } catch (IOException e) {
+                System.err.println("An error occured while handling the SEARCH request. Master to Client.");
+            }
         }
     }
 }

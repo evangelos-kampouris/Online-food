@@ -124,9 +124,20 @@ public class Shop implements Serializable {
         addRevenue(profit);
     }
 
+
+    /**
+     * Adds a product to the catalog with the specified name, quantity, and enabled status.
+     * Also updates the product category list and recalculates the average price.
+     *
+     * @param productName the name of the product to add
+     * @param product the {@link Product} object containing product details
+     * @param quantity the number of units to add to the catalog
+     * @param enabled a flag indicating whether the product is enabled or active
+     */
     public synchronized void addProduct(String productName, Product product, int quantity, boolean enabled) {
         catalog.addProduct(productName, product, quantity, enabled);
         productCategory.add(product.getFoodCategory());
+        setPrice(calculateAveragePrice());
     }
 
     /*
@@ -148,7 +159,7 @@ public class Shop implements Serializable {
      *
      * @param averagePrice the calculated average price of the shop's products
      */
-    public void setPrice(float averagePrice){
+    public synchronized void setPrice(float averagePrice){
         if(averagePrice < PRICE_LOW_TOP_LIMIT){
             price = Price.LOW;
         }
@@ -205,25 +216,25 @@ public class Shop implements Serializable {
         return rating;
     }
 
-    public void setRating(Rating rating) {
+    public synchronized void setRating(Rating rating) {
         this.rating = rating;
     }
 
     //CATALOG SETTER AND GETTER
     public ShopInventory getCatalog() {return catalog;}
 
-    public void setCatalog(ShopInventory catalog) {this.catalog = catalog;}
+    public synchronized void setCatalog(ShopInventory catalog) {this.catalog = catalog;}
 
     //NAME SETTER GETTERS
     public String getName() {return name;}
 
-    public void setName(String name) {this.name = name;}
+    public synchronized void setName(String name) {this.name = name;}
 
     public float getRevenue() {
         return revenue;
     }
 
-    public void setRevenue(float revenue) {
+    public synchronized void setRevenue(float revenue) {
         this.revenue = revenue;
     }
 
@@ -231,15 +242,15 @@ public class Shop implements Serializable {
         return storeCategory;
     }
 
-    public void setStoreCategory(StoreCategories storeCategory) {
+    public synchronized void setStoreCategory(StoreCategories storeCategory) {
         this.storeCategory = storeCategory;
     }
 
-    public Coordinates getCoordinates() {
+    public  Coordinates getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(Coordinates coordinates) {
+    public synchronized void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
     }
 

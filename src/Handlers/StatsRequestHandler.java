@@ -40,18 +40,22 @@ public class StatsRequestHandler implements Handling{
 
         try{
             if("storeCategories".equalsIgnoreCase(type)){
-                Map<StoreCategories, Stats> storeStats = master.getStoreCategoryStats();
-                Stats stats = storeStats.get(StoreCategories.fromValue(dto.getCategory()));
-                ResponseDTO<Stats> response = new ResponseDTO<>(true, "Store sales retrieved successfully.", stats);
-                out.writeObject(response);
-                out.flush();
+                synchronized (master.lock_storeCategoryStat) {
+                    Map<StoreCategories, Stats> storeStats = master.getStoreCategoryStats();
+                    Stats stats = storeStats.get(StoreCategories.fromValue(dto.getCategory()));
+                    ResponseDTO<Stats> response = new ResponseDTO<>(true, "Store sales retrieved successfully.", stats);
+                    out.writeObject(response);
+                    out.flush();
+                }
             }
             else if("productCategories".equalsIgnoreCase(type)){
-                Map<ProductCategory, Stats> productCategoriesStats = master.getProductCategoryStats();
-                Stats stats = productCategoriesStats.get(ProductCategory.fromValue(dto.getCategory()));
-                ResponseDTO<Stats> response = new ResponseDTO<>(true, "Product category sales retrieved successfully.", stats);
-                out.writeObject(response);
-                out.flush();
+                synchronized (master.lock_productCategoryStat) {
+                    Map<ProductCategory, Stats> productCategoriesStats = master.getProductCategoryStats();
+                    Stats stats = productCategoriesStats.get(ProductCategory.fromValue(dto.getCategory()));
+                    ResponseDTO<Stats> response = new ResponseDTO<>(true, "Product category sales retrieved successfully.", stats);
+                    out.writeObject(response);
+                    out.flush();
+                }
             }
             else{
                 ResponseDTO<Stats> response = new ResponseDTO<>(false, "Invalid stats type: " + type);

@@ -22,7 +22,7 @@ public class InventoryCart extends Inventory {
      * @throws IllegalArgumentException if quantity is non-positive or product is null
      */
     @Override
-    public void addProduct(String productName, Product product, int quantity) {
+    public synchronized void addProduct(String productName, Product product, int quantity) {
 
         if(inventory.containsKey(productName)) {
             System.out.println("Product already in the cart - Adjusting quantity");
@@ -42,7 +42,7 @@ public class InventoryCart extends Inventory {
      * This method sums the price of all products currently in the inventory and updates the internal cost field.
      * </p>
      */
-    public void updateCost(){
+    public synchronized void updateCost(){
         float sum = 0;
         for (Map.Entry<String, InventoryItem> entry : inventory.entrySet()) sum += entry.getValue().getProduct().getPrice() * entry.getValue().getQuantity();
         setCost(sum);
@@ -58,7 +58,7 @@ public class InventoryCart extends Inventory {
         return cost;
     }
 
-    public int cartQuantity(){
+    public synchronized int cartQuantity(){
         int cartQuantity = 0;
         for (Map.Entry<String, InventoryItem> entry : inventory.entrySet())
             cartQuantity += entry.getValue().getQuantity();
@@ -66,7 +66,7 @@ public class InventoryCart extends Inventory {
         return cartQuantity;
     }
 
-    public void setCost(float cost) {
+    public synchronized void setCost(float cost) {
         this.cost = cost;
     }
 
