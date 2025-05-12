@@ -28,8 +28,14 @@ public class CriteriaPrice implements Criteria {
      */
     @Override
     public Set<Shop> meetCriteria(Set<Shop> shops) {
-        if(filter == null)
-            throw new IllegalArgumentException("No filter Provided in the criteria.");
+        if(filter == null) {
+            System.out.println("No filter Provided in the criteria.");
+            return shops;
+        }
+        if(shops.isEmpty()) {
+            System.out.println("No Shops  to filter.");
+            return shops;
+        }
         if(filter instanceof FilterPrice selected_filter){
             Price price = (Price) selected_filter.getFilter();
             shops.removeIf(shop -> shop.getPrice() != price);

@@ -29,8 +29,14 @@ public class CriteriaFoodCategories implements Criteria {
      */
     @Override
     public Set<Shop> meetCriteria(Set<Shop> shops) {
-        if(filter == null)
-            throw new IllegalArgumentException("No filter Provided in the criteria.");
+        if(filter == null) {
+            System.out.println("No filter Provided in the criteria.");
+            return shops;
+        }
+        if(shops.isEmpty()) {
+            System.out.println("No Shops  to filter.");
+            return shops;
+        }
         if(filter instanceof FilterFoodCategory selected_filter){
             ProductCategory foodCategory = (ProductCategory) selected_filter.getFilter();
             shops.removeIf(shop -> !shop.getFoodCategories().contains(foodCategory));

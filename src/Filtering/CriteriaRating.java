@@ -29,8 +29,14 @@ public class CriteriaRating implements Criteria {
      */
     @Override
     public Set<Shop> meetCriteria(Set<Shop> shops) {
-        if(filter == null)
-            throw new IllegalArgumentException("No filter Provided in the criteria.");
+        if(filter == null) {
+            System.out.println("No filter Provided in the criteria.");
+            return shops;
+        }
+        if(shops.isEmpty()) {
+            System.out.println("No Shops  to filter.");
+            return shops;
+        }
         if(filter instanceof FilterRating selected_filter){
             Rating rating = (Rating) selected_filter.getFilter();
             shops.removeIf(shop -> shop.getRating() != rating);
