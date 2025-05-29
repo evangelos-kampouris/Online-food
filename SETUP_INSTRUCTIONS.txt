@@ -1,0 +1,41 @@
+SETUP INSTRUCTIONS FOR RUNNING JAVA DISTRIBUTED SYSTEM WITH ANDROID APP
+===============================================================================
+
+To successfully run the Java distributed food ordering system with the Android application, 
+the following 2 changes are required in the Java Application:
+
+1. DOWNLOAD GSON.JAR DEPENDENCY
+   - Download gson.jar from Maven Central
+   - Command: curl -L -o gson.jar https://repo1.maven.org/maven2/com/google/code/gson/gson/2.8.9/gson-2.8.9.jar
+   - Place the gson.jar file in the root directory of the Java project
+   - This is required for JSON processing in the server components
+
+2. UPDATE WORKER CONFIGURATION
+   - Edit the file: Resources/WorkerConfig.json
+   - Change all worker IP addresses from hardcoded IPs to localhost
+   - Update each worker entry from:
+     { "ip": "10.26.1.198", "port": "9001" }
+   - To:
+     { "ip": "127.0.0.1", "port": "9001" }
+   - Apply this change to all 3 worker entries (ports 9001, 9002, 9003)
+   - This allows the Master server to properly connect to locally running Worker servers
+
+{
+  "workers": [
+    { "ip": "127.0.0.1", "port": "9001" },
+    { "ip": "127.0.0.1", "port": "9002" },
+    { "ip": "127.0.0.1", "port": "9003" }
+  ]
+}
+
+AFTER THESE CHANGES:
+- Compile: javac -cp ".:gson.jar:src" src/*/*.java
+- Start servers in order:
+  1. Master: java -cp ".:gson.jar:src" Entity.Master 0.0.0.0 9000
+  2. Reducer: java -cp ".:gson.jar:src" Entity.Reducer 0.0.0.0 8080 0.0.0.0 9000
+  3. Workers: java -cp ".:gson.jar:src" Entity.Worker 0.0.0.0 [9001|9002|9003] 0.0.0.0 8080
+- Load data: java -cp ".:gson.jar:src" User.Manager 0.0.0.0 9000
+- Android app connects to: 10.0.2.2:9000
+
+These are the ONLY changes needed for Android-Java integration.
+=============================================================================== 

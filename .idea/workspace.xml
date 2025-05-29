@@ -4,15 +4,92 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="af33b17b-a8b2-4e7f-9e63-12936feb4e67" name="Changes" comment="Patched unimplemented code to remove the errors">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Eshop.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Shop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Shop.java" afterDir="false" />
+    <list default="true" id="af33b17b-a8b2-4e7f-9e63-12936feb4e67" name="Changes" comment="Synchronization rework">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/google_code_gson.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/google_code_gson.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Eshop.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Eshop.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/WorkerConfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/store_1.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/store_10.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/store_11.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/store_2.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/store_3.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/store_4.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/store_5.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/store_6.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/store_7.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/store_8.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/store_9.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DTO/AddProductDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DTO/AddStoreRequestDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DTO/BuyRequestDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DTO/ChangeStockDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DTO/FilterMapDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DTO/MapResultDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DTO/RateStoreRequestDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DTO/ReducerResultDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DTO/RemoveProductDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DTO/Request.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DTO/SearchRequestDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DTO/StatsRequestDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DTO/UpdateBuyDataRequestDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Entity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Master.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Reducer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Worker.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Exceptions/NoValidStockInput.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Filtering/Criteria.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Filtering/CriteriaCords.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Filtering/CriteriaFoodCategories.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Filtering/CriteriaOR.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Filtering/CriteriaPrice.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Filtering/CriteriaRating.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Filtering/FilterCords.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Filtering/FilterFoodCategory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Filtering/FilterPrice.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Filtering/FilterRating.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Filtering/Filtering.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Handlers/AddProductHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Handlers/AddStoreRequestHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Handlers/BuyRequestHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Handlers/ChangeStockHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Handlers/FilterMapHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Handlers/Handling.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Handlers/MapResultHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Handlers/RateStoreRequestHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Handlers/ReducerResultHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Handlers/RemoveProductHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Handlers/SearchRequestHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Handlers/StatsRequestHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Handlers/UpdateBuyDataHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Inventory/Inventory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Inventory/InventoryCart.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Inventory/InventoryItem.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Inventory/ShopInventory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Inventory/ShopInventoryItem.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Node/MasterNode.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Node/Node.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Node/ReducerNode.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Node/WorkerNode.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Responses/ResponseDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/User/Client.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/User/Manager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/User/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Wrappers/WorkerConfigWrapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/other/ActionType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/other/Coordinates.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/other/Handler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/other/HashRing.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/other/PendingRequests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/other/Price.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/other/Product.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/other/ProductCategory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/other/Rating.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/other/ReducerShuffler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/other/Shop.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/other/Stats.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/other/StoreCategories.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,12 +108,12 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="SIGN_OFF_COMMIT" value="true" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "evangelos-kampouris"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;evangelos-kampouris&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
     "url": "https://github.com/evangelos-kampouris/Online-food.git",
@@ -57,22 +134,161 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "add4f336",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "C:/Users/vaggo/Desktop/Distributed Systems Project/Eshop/src/Main.java",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Client Distributed.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Master Distrubuted.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Reducer Distributed.executor&quot;: &quot;Run&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/vaggo/Desktop/Distributed Systems Project&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/vaggo/Desktop/Distributed Systems Project/Eshop/src/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15180878&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
+  <component name="RunManager" selected="Compound.Start Distributed">
+    <configuration name="Client Distributed" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="User.Client" />
+      <module name="Eshop" />
+      <option name="PROGRAM_PARAMETERS" value="192.168.1.77 9999" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Client" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="User.Client" />
+      <module name="Eshop" />
+      <option name="PROGRAM_PARAMETERS" value="127.0.0.1 9999" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Manager" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="User.Manager" />
+      <module name="Eshop" />
+      <option name="PROGRAM_PARAMETERS" value="127.0.0.1 9999" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Master Distrubuted" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Entity.Master" />
+      <module name="Eshop" />
+      <option name="PROGRAM_PARAMETERS" value="192.168.1.77 9999" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Master" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Entity.Master" />
+      <module name="Eshop" />
+      <option name="PROGRAM_PARAMETERS" value="127.0.0.1 9999" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Reducer Distributed" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Entity.Reducer" />
+      <module name="Eshop" />
+      <option name="PROGRAM_PARAMETERS" value="192.168.1.77 9998 192.168.1.77 9999" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Reducer" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Entity.Reducer" />
+      <module name="Eshop" />
+      <option name="PROGRAM_PARAMETERS" value="192.168.1.50 9998 192.168.1.14 9999" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Worker1 Distrubuted" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Entity.Worker" />
+      <module name="Eshop" />
+      <option name="PROGRAM_PARAMETERS" value="127.0.0.1 9001 127.0.0.1 9998" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Worker1" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Entity.Worker" />
+      <module name="Eshop" />
+      <option name="PROGRAM_PARAMETERS" value="127.0.0.1 9001 127.0.0.1 9998" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Worker2 Distributed" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Entity.Worker" />
+      <module name="Eshop" />
+      <option name="PROGRAM_PARAMETERS" value="127.0.0.1 9002 127.0.0.1 9998" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Worker2" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Entity.Worker" />
+      <module name="Eshop" />
+      <option name="PROGRAM_PARAMETERS" value="127.0.0.1 9002 127.0.0.1 9998" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Worker3 Distributed" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Entity.Worker" />
+      <module name="Eshop" />
+      <option name="PROGRAM_PARAMETERS" value="127.0.0.1 9003 127.0.0.1 9998" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Worker3" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Entity.Worker" />
+      <module name="Eshop" />
+      <option name="PROGRAM_PARAMETERS" value="127.0.0.1 9003 127.0.0.1 9998" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Start Distributed" type="CompoundRunConfigurationType">
+      <toRun name="Client Distributed" type="Application" />
+      <toRun name="Master Distrubuted" type="Application" />
+      <toRun name="Reducer Distributed" type="Application" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Application.Master" />
+      <item itemvalue="Application.Master Distrubuted" />
+      <item itemvalue="Application.Worker1" />
+      <item itemvalue="Application.Worker1 Distrubuted" />
+      <item itemvalue="Application.Worker2" />
+      <item itemvalue="Application.Worker2 Distributed" />
+      <item itemvalue="Application.Worker3" />
+      <item itemvalue="Application.Worker3 Distributed" />
+      <item itemvalue="Application.Reducer" />
+      <item itemvalue="Application.Reducer Distributed" />
+      <item itemvalue="Application.Client" />
+      <item itemvalue="Application.Client Distributed" />
+      <item itemvalue="Application.Manager" />
+      <item itemvalue="Compound.Start Distributed" />
+    </list>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -96,6 +312,13 @@
       <workItem from="1743319619768" duration="1633000" />
       <workItem from="1743348586753" duration="11000" />
       <workItem from="1743350929627" duration="2332000" />
+      <workItem from="1746736479776" duration="32000" />
+      <workItem from="1746736519352" duration="3409000" />
+      <workItem from="1747058399695" duration="6159000" />
+      <workItem from="1747119318325" duration="4629000" />
+      <workItem from="1748440467140" duration="934000" />
+      <workItem from="1748455505317" duration="2193000" />
+      <workItem from="1748535220141" duration="6000" />
     </task>
     <task id="LOCAL-00001" summary="Filtering System - Missing cords, OR, AND">
       <option name="closed" value="true" />
@@ -113,7 +336,39 @@
       <option name="project" value="LOCAL" />
       <updated>1743351764678</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Added User entity args support. Revert to normal pathing">
+      <option name="closed" value="true" />
+      <created>1746737783387</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1746737783387</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Removed debug, nullpointer check">
+      <option name="closed" value="true" />
+      <created>1746739865870</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1746739865870</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Better criteria checks">
+      <option name="closed" value="true" />
+      <created>1747060729582</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1747060729582</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Synchronization rework">
+      <option name="closed" value="true" />
+      <created>1747064484429</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1747064484429</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -130,7 +385,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="VKamp" />
+                        <option value="main" />
                       </list>
                     </value>
                   </entry>
@@ -146,7 +401,11 @@
     <MESSAGE value="Filtering System - Missing cords" />
     <MESSAGE value="Filtering System - Missing cords, OR, AND" />
     <MESSAGE value="Patched unimplemented code to remove the errors" />
-    <option name="LAST_COMMIT_MESSAGE" value="Patched unimplemented code to remove the errors" />
+    <MESSAGE value="Added User entity args support. Revert to normal pathing" />
+    <MESSAGE value="Removed debug, nullpointer check" />
+    <MESSAGE value="Better criteria checks" />
+    <MESSAGE value="Synchronization rework" />
+    <option name="LAST_COMMIT_MESSAGE" value="Synchronization rework" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

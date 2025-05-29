@@ -1,0 +1,148 @@
+<resources>
+    <string name="app_name">Online-Food</string>
+    
+    <!-- MainActivity strings -->
+    <string name="button_connect">Connect</string>
+    <string name="button_connecting">Connecting...</string>
+    <string name="please_enter_server_ip_port">Please enter server IP and port</string>
+    <string name="port_number_range_error">Port number must be between 1 and 65535</string>
+    <string name="invalid_port_number">Invalid port number</string>
+    <string name="connected_found_shops">Connected! Found shops within 5km.</string>
+    <string name="connection_failed">Failed to connect to server. Please check IP, port and make sure server is running.</string>
+    <string name="connect_to_server">Connect to Server</string>
+    <string name="server_ip">Server IP</string>
+    <string name="server_port">Server Port</string>
+
+    <!-- StoreListActivity strings -->
+    <string name="filter_by_price">Filter by Price</string>
+    <string name="filter_by_rating">Filter by Rating</string>
+    <string name="filter_by_food_category">Filter by Food Category</string>
+    <string name="price_cheap">Cheap ($)</string>
+    <string name="price_medium">Medium ($$)</string>
+    <string name="price_expensive">Expensive ($$$)</string>
+    <string name="rating_1_star">1 Star</string>
+    <string name="rating_1_5_stars">1.5 Stars</string>
+    <string name="rating_2_stars">2 Stars</string>
+    <string name="rating_2_5_stars">2.5 Stars</string>
+    <string name="rating_3_stars">3 Stars</string>
+    <string name="rating_3_5_stars">3.5 Stars</string>
+    <string name="rating_4_stars">4 Stars</string>
+    <string name="rating_4_5_stars">4.5 Stars</string>
+    <string name="rating_5_stars">5 Stars</string>
+    <string name="select">Select</string>
+    <string name="cancel">Cancel</string>
+    <string name="refreshed_found_stores">Refreshed! Found %d stores</string>
+    <string name="no_stores_found">No stores found</string>
+    <string name="refresh_failed">Refresh failed: %s</string>
+    <string name="found_stores">Found %d stores</string>
+    <string name="no_stores_found_with_filters">No stores found with selected filters</string>
+    <string name="search_failed">Search failed: %s</string>
+    <string name="filters_cleared">Filters cleared - showing all nearby stores</string>
+    <string name="showing_all_nearby_stores">Showing all %d nearby stores</string>
+    <string name="no_stores_found_nearby">No stores found nearby</string>
+    <string name="price_filter">Price</string>
+    <string name="price_filter_with_count">Price (%d)</string>
+    <string name="rating_filter">Rating</string>
+    <string name="rating_filter_with_count">Rating (%d)</string>
+    <string name="food_category_filter">Food Category</string>
+    <string name="food_category_filter_with_count">Category (%d)</string>
+    
+    <!-- StoreDetailActivity strings -->
+    <string name="rate_store">Rate Store</string>
+    <string name="submit_rating">Submit Rating</string>
+    <string name="add_to_cart">Add to Cart</string>
+    <string name="go_to_cart">Go to Cart</string>
+    <string name="rating_submitted_successfully">Rating submitted successfully!</string>
+    <string name="rating_submission_failed">Rating submission failed. Please try again.</string>
+    <string name="added_to_cart">Added %s to cart</string>
+    <string name="store_not_found">Store not found</string>
+    <string name="no_products_available">No products available</string>
+    <string name="store_info_title">Store Info</string>
+    <string name="category">Category: </string>
+    <string name="price_range">Price Range: </string>
+    <string name="rating">Rating: </string>
+    <string name="products">Products</string>
+    <string name="rate_this_store">Rate This Store</string>
+
+    <!-- CartActivity strings -->
+    <string name="cart">Cart</string>
+    <string name="total_amount">Total: $%.2f</string>
+    <string name="checkout">Checkout</string>
+    <string name="clear_cart">Clear Cart</string>
+    <string name="cart_is_empty">Cart is empty</string>
+    <string name="purchase_successful">Purchase successful! Thank you for your order.</string>
+    <string name="purchase_failed">Purchase failed. Please try again.</string>
+    <string name="cart_cleared">Cart cleared</string>
+    <string name="remove_from_cart">Remove from cart</string>
+    <string name="cart_empty">Your cart is empty</string>
+    <string name="subtotal_placeholder">Subtotal: $0.00</string>
+
+    <!-- NetworkManager strings -->
+    <string name="user_coordinates_cannot_be_null">User coordinates cannot be null</string>
+    <string name="connecting_to_master" formatted="false">Connecting to Master at %s:%d</string>
+    <string name="connected_performing_search">Connected to server, performing auto 5km search...</string>
+    <string name="error_establishing_connection">Error establishing connection</string>
+    <string name="disconnected_from_server">Disconnected from server</string>
+    <string name="error_during_disconnection">Error during disconnection</string>
+    <string name="filters_list_null">Filters list is null, using empty list</string>
+    <string name="error_auto_search">Error in auto search</string>
+    <string name="selected_shop_cannot_be_null">Selected shop cannot be null</string>
+    <string name="cart_empty_cannot_purchase">Cart is empty, cannot perform purchase</string>
+    <string name="error_during_purchase">Error during purchase</string>
+    <string name="store_name_cannot_be_null">Store name cannot be null or empty</string>
+    <string name="rating_must_be_between_0_5">Rating must be between 0 and 5</string>
+    <string name="attempting_to_rate_store" formatted="false">Attempting to rate store: %s with rating: %f</string>
+    <string name="sending_rating_request">Sending rating request to server...</string>
+    <string name="received_response_from_server">Received response from server: %s</string>
+    <string name="rating_submission_success">Rating submission success: %b</string>
+    <string name="local_cache_updated">Local cache updated successfully</string>
+    <string name="rating_successful_no_data">Rating submission successful but no updated shop data received</string>
+    <string name="invalid_response_type">Invalid response type received</string>
+    <string name="error_rating_submission">Error during rating submission</string>
+    <string name="added_product_to_cart" formatted="false">Added %dx %s to cart</string>
+    <string name="removed_product_from_cart">Removed %s from cart</string>
+    <string name="creating_filtercords">Creating FilterCords with:</string>
+    <string name="cached_shop">Cached shop: %s</string>
+    <string name="error_closing_search_connection">Error closing search connection</string>
+    <string name="error_closing_purchase_connection">Error closing purchase connection</string>
+    <string name="purchase_result">Purchase result: %b</string>
+    <string name="error_closing_temporary_connection">Error closing temporary connection</string>
+    
+    <!-- StoreAdapter strings -->
+    <string name="unknown_store">Unknown Store</string>
+    <string name="restaurant">Restaurant</string>
+    <string name="price_symbol_low">$</string>
+    <string name="price_symbol_medium">$$</string>
+    <string name="price_symbol_high">$$$</string>
+    
+    <!-- Common strings -->
+    <string name="ok">OK</string>
+    <string name="error">Error</string>
+    <string name="loading">Loading...</string>
+    <string name="retry">Retry</string>
+    
+    <string name="error_loading_cart_data">Error loading cart data</string>
+    <string name="error_loading_store_details">Error loading store details</string>
+    <string name="shop_name_key">shop_name</string>
+    <string name="in_stock_available">In stock: Available</string>
+    <string name="please_select_at_least_one_product">Please select at least one product</string>
+    <string name="connection_failed_log">Connection failed</string>
+    
+    <!-- MainActivity debug strings -->
+    <string name="mainactivity_tag">MainActivity</string>
+    
+    <!-- StoreDetail debug strings -->
+    <string name="store_detail_tag">StoreDetail</string>
+    <string name="catalog_debug_start">=== CATALOG DEBUG START ===</string>
+    <string name="catalog_debug_end">=== CATALOG DEBUG END ===</string>
+    <string name="store_info">Store: %s</string>
+    <string name="catalog_object_info">Catalog object: %s</string>
+    <string name="products_list_size">Products list size: %s</string>
+    <string name="products_found_label">Products found:</string>
+    <string name="product_details" formatted="false">  %d. %s - Category: %s - Price: $%s</string>
+    <string name="no_products_found_catalog">No products found in catalog!</string>
+    <string name="inventory_size_info">Inventory size: %d</string>
+    <string name="inventory_contents_info">Inventory contents: %s</string>
+    <string name="catalog_inventory_null">Catalog inventory is null!</string>
+    <string name="store_catalog_null">Store catalog is null for: %s</string>
+</resources>

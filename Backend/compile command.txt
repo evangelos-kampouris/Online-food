@@ -1,0 +1,4 @@
+javac -encoding UTF-8 -cp ".;gson.jar;src" (Get-ChildItem -Recurse -Filter *.java | ForEach-Object { $_.FullName })
+
+
+delete .class files: Get-ChildItem -Recurse -Filter *.class | Remove-Item -Force
