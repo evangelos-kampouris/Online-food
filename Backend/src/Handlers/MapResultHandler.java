@@ -28,6 +28,7 @@ public class MapResultHandler implements Handling{
      */
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
+        System.out.println("Received a mapresult request from: " + connection.getRemoteSocketAddress());
         Reducer reducer = (Reducer) entity;
         MapResultDTO mapResultDTO = (MapResultDTO) request;
 

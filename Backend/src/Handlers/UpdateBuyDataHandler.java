@@ -31,6 +31,7 @@ public class UpdateBuyDataHandler implements Handling{
      */
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
+        System.out.println("Received a updateBuyData request from: " + connection.getRemoteSocketAddress());
         Worker worker = (Worker) entity;
         UpdateBuyDataRequestDTO DTO = (UpdateBuyDataRequestDTO) request;
         String storeName = DTO.data.getShop().getName();

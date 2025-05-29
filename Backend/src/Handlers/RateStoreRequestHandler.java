@@ -50,6 +50,7 @@ public class RateStoreRequestHandler implements Handling{
      */
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in){
+        System.out.println("Received a rate store request from: " + connection.getRemoteSocketAddress());
         RateStoreRequestDTO dto = (RateStoreRequestDTO) request;
         ResponseDTO<?> responseDTO = null;
 

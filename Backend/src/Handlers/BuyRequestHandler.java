@@ -33,6 +33,7 @@ public class BuyRequestHandler implements Handling {
      */
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream request_out, ObjectInputStream request_in) {
+        System.out.println("Received a purchase request from: " + connection.getRemoteSocketAddress());
         Master master = (Master) entity;
         BuyRequestDTO buyRequestDTO = (BuyRequestDTO) request;
         String storeName = buyRequestDTO.getShop().getName();

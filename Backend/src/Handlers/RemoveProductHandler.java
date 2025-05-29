@@ -34,6 +34,7 @@ public class RemoveProductHandler implements Handling {
      */
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
+        System.out.println("Received a remove product request from: " + connection.getRemoteSocketAddress());
         RemoveProductDTO dto = (RemoveProductDTO) request;
         String storeName = dto.getStoreName();
 

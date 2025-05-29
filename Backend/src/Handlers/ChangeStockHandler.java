@@ -33,6 +33,7 @@ public class ChangeStockHandler implements Handling{
      */
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
+        System.out.println("Received a stoke change request from: " + connection.getRemoteSocketAddress());
         ChangeStockDTO dto = (ChangeStockDTO) request;
         String storeName = dto.getStoreName();
 

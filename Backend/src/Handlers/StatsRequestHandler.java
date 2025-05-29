@@ -33,6 +33,7 @@ public class StatsRequestHandler implements Handling{
      */
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
+        System.out.println("Received a stats request from: " + connection.getRemoteSocketAddress());
         Master master = (Master) entity;
         StatsRequestDTO dto = (StatsRequestDTO) request;
 

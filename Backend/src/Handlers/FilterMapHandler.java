@@ -34,6 +34,7 @@ public class FilterMapHandler implements Handling{
      */
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
+        System.out.println("Received a filterMap request from: " + connection.getRemoteSocketAddress());
 
         //All the information has been sent from the master, and it's connection is no longer needed.
         closeConnection(connection, out, in);

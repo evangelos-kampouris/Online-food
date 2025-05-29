@@ -33,6 +33,7 @@ public class SearchRequestHandler implements Handling{
      */
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
+        System.out.println("Received a search request from: " + connection.getRemoteSocketAddress());
         Master master = (Master) entity;
         SearchRequestDTO dto = (SearchRequestDTO) request;
         List<Filtering> filters = dto.getSelectedFilters();

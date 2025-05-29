@@ -29,6 +29,7 @@ public class ReducerResultHandler implements Handling{
      */
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
+        System.out.println("Received a reducer result request from: " + connection.getRemoteSocketAddress());
         //All the information has been sent from the reducer, and it's connection is no longer needed.
         closeConnection(connection, out, in);
 

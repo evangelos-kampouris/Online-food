@@ -35,6 +35,7 @@ public class AddStoreRequestHandler implements Handling{
      */
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
+        System.out.println("Received a store addition request from: " + connection.getRemoteSocketAddress());
         AddStoreRequestDTO dto = (AddStoreRequestDTO) request;
         String storeName = dto.getShop().getName();
         ResponseDTO<Map<String, Shop>> responseDTO = null;

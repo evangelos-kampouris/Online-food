@@ -36,6 +36,7 @@ public class AddProductHandler implements Handling {
      */
     @Override
     public void handle(Entity entity, Socket connection, Request request, ObjectOutputStream out, ObjectInputStream in) {
+        System.out.println("Received a product addition request from: " + connection.getRemoteSocketAddress());
         AddProductDTO dto = (AddProductDTO) request;
         String storeName = dto.getStoreName();
 
