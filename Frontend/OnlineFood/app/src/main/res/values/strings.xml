@@ -125,6 +125,8 @@
     <string name="error_loading_store_details">Error loading store details</string>
     <string name="shop_name_key">shop_name</string>
     <string name="in_stock_available">In stock: Available</string>
+    <string name="out_of_stock">Out of Stock</string>
+    <string name="stock_available">Stock: %d available</string>
     <string name="please_select_at_least_one_product">Please select at least one product</string>
     <string name="connection_failed_log">Connection failed</string>
     

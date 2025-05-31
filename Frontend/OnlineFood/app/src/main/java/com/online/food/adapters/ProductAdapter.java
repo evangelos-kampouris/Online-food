@@ -17,17 +17,21 @@ import java.util.List;
 import java.util.Map;
 
 import other.Product;
+import other.Shop;
+import Inventory.InventoryItem;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
     private List<Product> products;
     private Map<String, Integer> productQuantities;
     private Context context;
+    private Shop currentShop;  // Reference to shop for stock information
 
-    public ProductAdapter(List<Product> products, Context context) {
+    public ProductAdapter(List<Product> products, Context context, Shop shop) {
         this.products = products;
         this.productQuantities = new HashMap<>();
         this.context = context;
+        this.currentShop = shop;
         
         // Initialize quantities to 0
         for (Product product : products) {
@@ -66,6 +70,40 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return result;
     }
 
+    /**
+     * Resets all product quantities to 0 and refreshes the UI
+     */
+    public void resetQuantities() {
+        for (String productName : productQuantities.keySet()) {
+            productQuantities.put(productName, 0);
+        }
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Updates the shop reference to get latest stock information
+     */
+    public void updateShop(Shop shop) {
+        this.currentShop = shop;
+        notifyDataSetChanged(); // Refresh to show updated stock
+    }
+
+    /**
+     * Gets the available stock for a product from the shop's inventory
+     */
+    private int getAvailableStock(String productName) {
+        if (currentShop == null || currentShop.getCatalog() == null) {
+            return 0;
+        }
+        
+        Map<String, InventoryItem> inventory = currentShop.getCatalog().getInventory();
+        if (inventory.containsKey(productName)) {
+            return inventory.get(productName).getQuantity();
+        }
+        
+        return 0;
+    }
+
     class ProductViewHolder extends RecyclerView.ViewHolder {
         private final TextView textViewProductName;
         private final TextView textViewProductType;
@@ -96,13 +134,21 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             
             textViewProductPrice.setText(String.format("$%.2f", product.getPrice()));
             
-            // For now, we'll assume unlimited stock since Java Product doesn't have quantity
-            textViewAvailableAmount.setText(context.getString(R.string.in_stock_available));
+            // Display actual stock quantity
+            int availableStock = getAvailableStock(product.getName());
+            if (availableStock <= 0) {
+                textViewAvailableAmount.setText(context.getString(R.string.out_of_stock));
+                textViewAvailableAmount.setTextColor(context.getResources().getColor(android.R.color.holo_red_dark));
+            } else {
+                textViewAvailableAmount.setText(context.getString(R.string.stock_available, availableStock));
+                textViewAvailableAmount.setTextColor(context.getResources().getColor(android.R.color.holo_green_dark));
+            }
+            
             textViewQuantity.setText(String.valueOf(quantity));
             
-            // Update button states based on quantity
+            // Update button states based on quantity and stock
             buttonDecrease.setEnabled(quantity > 0);
-            buttonIncrease.setEnabled(true); // Always allow increase since we don't have stock limits
+            buttonIncrease.setEnabled(availableStock > 0 && quantity < availableStock);
             
             // Set click listeners for quantity adjustment
             buttonDecrease.setOnClickListener(v -> {
@@ -112,15 +158,20 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     productQuantities.put(product.getName(), currentQuantity);
                     textViewQuantity.setText(String.valueOf(currentQuantity));
                     buttonDecrease.setEnabled(currentQuantity > 0);
+                    buttonIncrease.setEnabled(availableStock > 0 && currentQuantity < availableStock);
                 }
             });
             
             buttonIncrease.setOnClickListener(v -> {
                 int currentQuantity = productQuantities.get(product.getName());
-                currentQuantity++;
-                productQuantities.put(product.getName(), currentQuantity);
-                textViewQuantity.setText(String.valueOf(currentQuantity));
-                buttonDecrease.setEnabled(true);
+                int stock = getAvailableStock(product.getName());
+                if (stock > 0 && currentQuantity < stock) {
+                    currentQuantity++;
+                    productQuantities.put(product.getName(), currentQuantity);
+                    textViewQuantity.setText(String.valueOf(currentQuantity));
+                    buttonDecrease.setEnabled(true);
+                    buttonIncrease.setEnabled(currentQuantity < stock);
+                }
             });
         }
     }

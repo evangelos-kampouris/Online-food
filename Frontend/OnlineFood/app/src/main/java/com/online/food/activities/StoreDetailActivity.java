@@ -31,6 +31,7 @@ import com.online.food.utils.StoreImageManager;
 
 import other.Shop;
 import other.Product;
+import Inventory.InventoryCart;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,7 +148,7 @@ public class StoreDetailActivity extends AppCompatActivity {
         
         // Set up products RecyclerView
         recyclerViewProducts.setLayoutManager(new LinearLayoutManager(this));
-        productAdapter = new ProductAdapter(products, this);
+        productAdapter = new ProductAdapter(products, this, currentStore);
         recyclerViewProducts.setAdapter(productAdapter);
         
         // Set up click listeners
@@ -159,6 +160,27 @@ public class StoreDetailActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         executorService.shutdown();
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        
+        // Reset product quantities when returning from cart (after purchase)
+        // Check if cart is empty (indicates successful purchase)
+        InventoryCart cart = NetworkManager.getInstance().getCart();
+        if (cart.getInventory().isEmpty() && productAdapter != null) {
+            productAdapter.resetQuantities();
+            
+            // Update shop data to reflect current stock levels
+            Map<String, Shop> shops = NetworkManager.getInstance().getShops();
+            Shop updatedShop = shops.get(currentStore.getName());
+            if (updatedShop != null) {
+                currentStore = updatedShop;
+                productAdapter.updateShop(currentStore);
+                Log.d(getString(R.string.store_detail_tag), "Updated shop stock information after purchase");
+            }
+        }
     }
     
     private void displayStoreInfo() {
@@ -233,11 +255,10 @@ public class StoreDetailActivity extends AppCompatActivity {
     
     private void showRatingDialog() {
         final String[] ratingOptions = {
-            getString(R.string.rating_1_star), getString(R.string.rating_2_stars), 
-            getString(R.string.rating_3_stars), getString(R.string.rating_4_stars), 
-            getString(R.string.rating_5_stars)
+            "1 Star", "1.5 Stars", "2 Stars", "2.5 Stars", 
+            "3 Stars", "3.5 Stars", "4 Stars", "4.5 Stars", "5 Stars"
         };
-        final float[] ratingValues = {1.0f, 2.0f, 3.0f, 4.0f, 5.0f};
+        final float[] ratingValues = {1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f};
         
         // Track the selected rating index (-1 means no selection)
         final int[] selectedRatingIndex = {-1};
@@ -291,4 +312,4 @@ public class StoreDetailActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-} 
+}

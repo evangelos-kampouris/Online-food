@@ -210,7 +210,30 @@ public class NetworkManager {
                 purchaseOut.writeObject(buyRequestDTO);
                 purchaseOut.flush();
                 
-                return processPurchaseResponse(purchaseIn);
+                boolean success = processPurchaseResponse(purchaseIn);
+                
+                // Clear cart and refresh shop data after successful purchase
+                if (success) {
+                    cart.clearInventory();
+                    Log.d(TAG, "Cart cleared after successful purchase");
+                    
+                    // Refresh shop data to get updated stock quantities
+                    try {
+                        Log.d(TAG, "Refreshing shop data to get updated stock quantities...");
+                        List<Filtering> filters = new ArrayList<>();
+                        filters.add(new FilterCords(DEFAULT_SEARCH_RADIUS_KM, userCoordinates));
+                        
+                        List<Shop> updatedShops = performSearch(filters);
+                        if (updatedShops != null) {
+                            Log.d(TAG, "Successfully refreshed " + updatedShops.size() + " shops with updated stock");
+                        }
+                    } catch (Exception e) {
+                        Log.w(TAG, "Failed to refresh shop data after purchase", e);
+                        // Don't fail the purchase if refresh fails
+                    }
+                }
+                
+                return success;
                 
             } finally {
                 closePurchaseConnection(purchaseOut, purchaseIn, purchaseSocket);
