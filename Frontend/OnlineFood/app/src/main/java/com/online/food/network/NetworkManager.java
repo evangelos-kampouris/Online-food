@@ -77,11 +77,11 @@ public class NetworkManager {
         
         try {
             Log.d(TAG, "Connecting to Master at " + serverIP + ":" + serverPort);
-            
-            socket = new Socket(serverIP, serverPort);
-            socket.setSoTimeout(SOCKET_TIMEOUT_MS);
-            out = new ObjectOutputStream(socket.getOutputStream());
-            in = new ObjectInputStream(socket.getInputStream());
+
+//            socket = new Socket(serverIP, serverPort);
+//            socket.setSoTimeout(SOCKET_TIMEOUT_MS);
+//            out = new ObjectOutputStream(socket.getOutputStream());
+//            in = new ObjectInputStream(socket.getInputStream());
             isConnected = true;
             
             Log.d(TAG, "Connected to server, performing auto 5km search...");
