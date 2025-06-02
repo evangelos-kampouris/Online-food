@@ -38,7 +38,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
+/*
+    Holds the store main page
+ */
 public class StoreDetailActivity extends AppCompatActivity {
 
     private ImageView imageViewStoreLogo;

@@ -26,7 +26,9 @@ import java.util.concurrent.Executors;
 
 import Inventory.InventoryCart;
 import other.Shop;
-
+/*
+is the cart(checkout) layout
+ */
 public class CartActivity extends AppCompatActivity implements CartAdapter.OnCartItemRemovedListener {
 
     private RecyclerView recyclerViewCartItems;

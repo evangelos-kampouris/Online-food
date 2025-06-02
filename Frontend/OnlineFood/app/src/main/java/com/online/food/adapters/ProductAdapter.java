@@ -40,14 +40,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
     @NonNull
-    @Override
+    @Override //used by the recycler
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_product, parent, false);
         return new ProductViewHolder(view);
     }
 
-    @Override
+    @Override //used by the recycler
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = products.get(position);
         int quantity = productQuantities.getOrDefault(product.getName(), 0);
